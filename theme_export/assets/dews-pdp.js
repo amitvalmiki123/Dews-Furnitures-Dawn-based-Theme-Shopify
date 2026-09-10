@@ -3,7 +3,7 @@
    - Gallery thumbnail switching + click-to-zoom (pointer-following origin)
    - Sticky add-to-cart (shows once the buy row scrolls past)
    - Variant change sync: featured image + sticky price + wishlist data
-   Accordions are native <details>, so no JS is needed for open/close.
+   - FAQ accordion (one open at a time, smooth max-height animation)
    ========================================================================== */
 (function () {
   'use strict';
@@ -60,6 +60,44 @@
     main.addEventListener('mouseleave', function () {
       main.classList.remove('is-zoomed');
       img.style.transformOrigin = 'center';
+    });
+  }
+
+  /* ---------------- FAQ accordion (one open at a time) ---------------- */
+  function initFaq() {
+    var items = qsa('.faq__item');
+    if (!items.length) return;
+
+    var setOpen = function (item, state) {
+      var panel = qs('.faq__a', item);
+      var btn = qs('.faq__q', item);
+      item.classList.toggle('is-open', state);
+      if (btn) btn.setAttribute('aria-expanded', String(state));
+      if (panel) panel.style.maxHeight = state ? panel.scrollHeight + 'px' : '0px';
+    };
+
+    items.forEach(function (item) {
+      var btn = qs('.faq__q', item);
+      if (!btn) return;
+
+      // sync any item marked open in the markup
+      if (item.classList.contains('is-open')) setOpen(item, true);
+
+      btn.addEventListener('click', function () {
+        var willOpen = !item.classList.contains('is-open');
+        items.forEach(function (other) { setOpen(other, false); });
+        setOpen(item, willOpen);
+      });
+    });
+
+    // keep the open panel's height in sync on resize (e.g. mobile → desktop)
+    window.addEventListener('resize', function () {
+      items.forEach(function (item) {
+        if (item.classList.contains('is-open')) {
+          var panel = qs('.faq__a', item);
+          if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
+        }
+      });
     });
   }
 
@@ -129,6 +167,7 @@
 
   ready(function () {
     initGallery();
+    initFaq();
     initStickyAtc();
     initVariantSync();
   });

@@ -294,6 +294,16 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
                       </button>
                     </quantity-input>
+                    {%- comment -%}
+                      Dawn's product-info.js fetchQuantityRules() requires a
+                      `.quantity__rules-cart .loading__spinner` element. Without it,
+                      the submit handler throws synchronously and the cart drawer
+                      never opens after Add to cart. This is kept hidden (only the
+                      spinner is queried).
+                    {%- endcomment -%}
+                    <span class="quantity__rules-cart hidden" aria-hidden="true">
+                      {%- render 'loading-spinner' -%}
+                    </span>
                   </div>
 
                   <button
@@ -357,26 +367,20 @@
             </div>
             {%- endif -%}
 
-            {%- comment -%} accordions (native <details>, open/close works without JS) {%- endcomment -%}
+            {%- comment -%} accordions — button + JS, one open at a time (matches product.html) {%- endcomment -%}
             <div class="faq faq--flush">
               {%- if product.description != blank -%}
-                <details class="faq__item" open>
-                  <summary class="faq__q">
-                    <h2>{{ section.settings.acc_1_title }}</h2>
-                    <span class="faq__icon" aria-hidden="true"></span>
-                  </summary>
+                <div class="faq__item is-open">
+                  <h2><button class="faq__q" type="button" aria-expanded="true">{{ section.settings.acc_1_title }} <span class="faq__icon" aria-hidden="true"></span></button></h2>
                   <div class="faq__a">
                     <div class="acc-body">{{ product.description }}</div>
                   </div>
-                </details>
+                </div>
               {%- endif -%}
 
               {%- if specs != blank or dims != blank -%}
-                <details class="faq__item">
-                  <summary class="faq__q">
-                    <h2>{{ section.settings.acc_2_title }}</h2>
-                    <span class="faq__icon" aria-hidden="true"></span>
-                  </summary>
+                <div class="faq__item">
+                  <h2><button class="faq__q" type="button" aria-expanded="false">{{ section.settings.acc_2_title }} <span class="faq__icon" aria-hidden="true"></span></button></h2>
                   <div class="faq__a">
                     <div class="acc-body">
                       {%- if specs != blank -%}
@@ -398,31 +402,25 @@
                       {%- endif -%}
                     </div>
                   </div>
-                </details>
+                </div>
               {%- endif -%}
 
               {%- if materials != blank -%}
-                <details class="faq__item">
-                  <summary class="faq__q">
-                    <h2>{{ section.settings.acc_3_title }}</h2>
-                    <span class="faq__icon" aria-hidden="true"></span>
-                  </summary>
+                <div class="faq__item">
+                  <h2><button class="faq__q" type="button" aria-expanded="false">{{ section.settings.acc_3_title }} <span class="faq__icon" aria-hidden="true"></span></button></h2>
                   <div class="faq__a">
                     <div class="acc-body">{{ materials }}</div>
                   </div>
-                </details>
+                </div>
               {%- endif -%}
 
               {%- if delivery_content != blank -%}
-                <details class="faq__item">
-                  <summary class="faq__q">
-                    <h2>{{ section.settings.acc_4_title }}</h2>
-                    <span class="faq__icon" aria-hidden="true"></span>
-                  </summary>
+                <div class="faq__item">
+                  <h2><button class="faq__q" type="button" aria-expanded="false">{{ section.settings.acc_4_title }} <span class="faq__icon" aria-hidden="true"></span></button></h2>
                   <div class="faq__a">
                     <div class="acc-body">{{ delivery_content }}</div>
                   </div>
-                </details>
+                </div>
               {%- endif -%}
             </div>
           </div>

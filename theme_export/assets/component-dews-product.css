@@ -181,17 +181,12 @@
 .pdp__trust svg{ width:19px; height:19px; color:var(--ink-3); flex:none; margin-top:.1rem; }
 .pdp__trust b{ display:block; color:var(--ink); font-weight:600; font-size:.87rem; }
 
-/* --- product accordions (native <details>, reuse .faq from style.css) --- */
+/* --- product accordions (button + JS, one open at a time — matches product.html) --- */
 .faq--flush{ max-width:none; margin-top:2.25rem; }
 .faq--flush .faq__q{ font-size:1rem; padding-block:1.35rem; }
-
-/* native <details> accordion: open/close works without JS */
-details.faq__item .faq__q{ cursor:pointer; list-style:none; }
-details.faq__item .faq__q::-webkit-details-marker{ display:none; }
-details.faq__item .faq__q h2{ font-size:inherit; font-weight:inherit; letter-spacing:inherit; margin:0; }
-details.faq__item[open] .faq__icon::after{ transform:rotate(0); }
-/* style.css collapses .faq__a with max-height:0 — undo that for <details> */
-details.faq__item .faq__a{ max-height:none; overflow:visible; }
+/* .faq__a collapse (max-height:0) and the icon rotation on .is-open come from
+   style.css. dews-pdp.js sets the inline max-height for the smooth animation. */
+.faq__item .faq__q{ width:100%; text-align:left; }
 
 .acc-body{ padding:0 .25rem 1.75rem; color:var(--muted); line-height:1.8; font-size:.95rem; }
 .acc-body p + p{ margin-top:1rem; }
