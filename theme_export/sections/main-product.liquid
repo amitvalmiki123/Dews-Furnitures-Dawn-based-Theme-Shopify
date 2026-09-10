@@ -182,6 +182,7 @@
                     if native_swatch_count > 0
                       assign is_swatch = true
                     endif
+                    assign option_lower = option.name | downcase
                   -%}
                   <fieldset class="variant product-form__input">
                     <legend class="variant__label">
@@ -226,7 +227,7 @@
                         {%- endif -%}
                       {%- endfor -%}
                     </div>
-                    {%- if option.name | downcase contains 'fabric' -%}
+                    {%- if option_lower contains 'fabric' -%}
                       <p class="swatch-note">
                         {%- if section.settings.swatch_link_text != blank -%}
                           <a href="{{ section.settings.swatch_link_url | default: '#' }}">{{ section.settings.swatch_link_text }}</a>
