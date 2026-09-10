@@ -2,13 +2,8 @@
   assign current_variant = product.selected_or_first_available_variant
   assign product_form_id = 'product-form-' | append: section.id
   assign dims = product.metafields.custom.dimensions.value
-  assign specs = product.metafields.custom.specifications.value
   assign materials = product.metafields.custom.materials_care.value
   assign delivery = product.metafields.custom.delivery_returns.value
-  assign delivery_content = delivery
-  if delivery_content == blank and section.settings.delivery_page != blank
-    assign delivery_content = section.settings.delivery_page.content
-  endif
   assign lead = product.metafields.custom.short_description.value
   if lead == blank
     assign lead = product.description | strip_html | truncate: 160
@@ -436,28 +431,26 @@
                 </div>
               {%- endif -%}
 
-              {%- if specs != blank or dims != blank -%}
+              {%- if dims != blank -%}
                 <div class="faq__item">
                   <h2><button class="faq__q" type="button" aria-expanded="false">{{ section.settings.acc_2_title }} <span class="faq__icon" aria-hidden="true"></span></button></h2>
                   <div class="faq__a">
                     <div class="acc-body">
-                      {%- if specs != blank -%}
-                        <table class="spec">
-                          <caption class="sr-only">{{ section.settings.acc_2_title }}</caption>
-                          <tbody>
-                            {%- for row in specs -%}
-                              <tr><th scope="row">{{ row.label }}</th><td>{{ row.value }}</td></tr>
-                            {%- endfor -%}
-                          </tbody>
-                        </table>
-                      {%- elsif dims != blank -%}
-                        <table class="spec">
-                          <caption class="sr-only">{{ section.settings.acc_2_title }}</caption>
-                          <tbody>
-                            <tr><th scope="row">Overall dimensions</th><td>{{ dims }}</td></tr>
-                          </tbody>
-                        </table>
-                      {%- endif -%}
+                      <table class="spec">
+                        <caption class="sr-only">{{ section.settings.acc_2_title }}</caption>
+                        <tbody>
+                          {%- assign dim_lines = dims | newline_to_br | split: '<br />' -%}
+                          {%- for line in dim_lines -%}
+                            {%- assign line = line | strip -%}
+                            {%- if line != blank -%}
+                              <tr>
+                                <th scope="row">{{ line | split: '|' | first | strip }}</th>
+                                <td>{%- if line contains '|' -%}{{ line | split: '|' | last | strip }}{%- endif -%}</td>
+                              </tr>
+                            {%- endif -%}
+                          {%- endfor -%}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -467,16 +460,38 @@
                 <div class="faq__item">
                   <h2><button class="faq__q" type="button" aria-expanded="false">{{ section.settings.acc_3_title }} <span class="faq__icon" aria-hidden="true"></span></button></h2>
                   <div class="faq__a">
-                    <div class="acc-body">{{ materials }}</div>
+                    <div class="acc-body">
+                      <ul>
+                        {%- assign mat_lines = materials | newline_to_br | split: '<br />' -%}
+                        {%- for line in mat_lines -%}
+                          {%- assign line = line | strip -%}
+                          {%- if line != blank -%}
+                            <li><span>{{ line }}</span></li>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </ul>
+                    </div>
                   </div>
                 </div>
               {%- endif -%}
 
-              {%- if delivery_content != blank -%}
+              {%- if delivery != blank or section.settings.delivery_page != blank -%}
                 <div class="faq__item">
                   <h2><button class="faq__q" type="button" aria-expanded="false">{{ section.settings.acc_4_title }} <span class="faq__icon" aria-hidden="true"></span></button></h2>
                   <div class="faq__a">
-                    <div class="acc-body">{{ delivery_content }}</div>
+                    <div class="acc-body">
+                      {%- if delivery != blank -%}
+                        {%- assign del_lines = delivery | newline_to_br | split: '<br />' -%}
+                        {%- for line in del_lines -%}
+                          {%- assign line = line | strip -%}
+                          {%- if line != blank -%}
+                            <p>{{ line }}</p>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      {%- else -%}
+                        {{ section.settings.delivery_page.content }}
+                      {%- endif -%}
+                    </div>
                   </div>
                 </div>
               {%- endif -%}
@@ -651,19 +666,22 @@
       "type": "text",
       "id": "acc_2_title",
       "label": "Accordion 2 — title",
-      "default": "Dimensions & specifications"
+      "default": "Dimensions & specifications",
+      "info": "Content comes from the per-product 'custom.dimensions' metafield. Enter one 'Label | Value' per line (e.g. Three-seater | 78\" W × 33\" D × 31\" H)."
     },
     {
       "type": "text",
       "id": "acc_3_title",
       "label": "Accordion 3 — title",
-      "default": "Materials & care"
+      "default": "Materials & care",
+      "info": "Content comes from the per-product 'custom.materials_care' metafield. Enter one bullet point per line."
     },
     {
       "type": "text",
       "id": "acc_4_title",
       "label": "Accordion 4 — title",
-      "default": "Delivery & returns"
+      "default": "Delivery & returns",
+      "info": "Content comes from the per-product 'custom.delivery_returns' metafield (one paragraph per line), or falls back to the page selected below."
     },
     {
       "type": "page",
