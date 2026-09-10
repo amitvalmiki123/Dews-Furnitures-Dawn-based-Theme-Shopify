@@ -18,6 +18,7 @@
   if compare_price == blank or compare_price <= current_price
     assign compare_price = nil
   endif
+  assign option_swatches = product.metafields.custom.option_swatches.value
 -%}
 
 {{ 'component-dews-product.css' | asset_url | stylesheet_tag }}
@@ -169,9 +170,16 @@
               >
                 {%- for option in product.options_with_values -%}
                   {%- liquid
-                    assign swatch_count = option.values | map: 'swatch' | compact | size
                     assign is_swatch = false
-                    if swatch_count > 0
+                    assign swatch_map = blank
+                    if option_swatches != blank
+                      assign swatch_map = option_swatches[option.name]
+                      if swatch_map != blank
+                        assign is_swatch = true
+                      endif
+                    endif
+                    assign native_swatch_count = option.values | map: 'swatch' | compact | size
+                    if native_swatch_count > 0
                       assign is_swatch = true
                     endif
                   -%}
@@ -188,12 +196,17 @@
                             assign option_disabled = true
                           endunless
                           assign input_id = section.id | append: '-' | append: option.position | append: '-' | append: forloop.index0
+                          assign raw_value = value.name | default: value
+                          assign swatch_color = blank
+                          if swatch_map != blank and is_swatch
+                            assign swatch_color = swatch_map[raw_value]
+                          endif
                         -%}
                         <input
                           type="radio"
                           id="{{ input_id }}"
                           name="options[{{ option.name | escape }}]"
-                          value="{{ value | escape }}"
+                          value="{{ raw_value | escape }}"
                           form="{{ product_form_id }}"
                           {% if value.selected %}checked{% endif %}
                           {% if option_disabled %}class="disabled"{% endif %}
@@ -205,14 +218,24 @@
                           <label
                             for="{{ input_id }}"
                             class="swatch-btn"
-                            style="background:{% if value.swatch.color %}rgb({{ value.swatch.color.rgb }}){% elsif value.swatch.image %}url({{ value.swatch.image | image_url: width: 50 }}) center/cover{% else %}var(--bone-deep){% endif %};"
-                            aria-label="{{ option.name }}: {{ value | escape }}"
+                            style="background:{% if swatch_color != blank %}{{ swatch_color }}{% elsif value.swatch.color %}rgb({{ value.swatch.color.rgb }}){% elsif value.swatch.image %}url({{ value.swatch.image | image_url: width: 50 }}) center/cover{% else %}var(--bone-deep){% endif %};"
+                            aria-label="{{ option.name }}: {{ raw_value | escape }}"
                           ></label>
                         {%- else -%}
-                          <label for="{{ input_id }}" class="opt">{{ value | escape }}</label>
+                          <label for="{{ input_id }}" class="opt">{{ raw_value | escape }}</label>
                         {%- endif -%}
                       {%- endfor -%}
                     </div>
+                    {%- if option.name | downcase contains 'fabric' -%}
+                      <p class="swatch-note">
+                        {%- if section.settings.swatch_link_text != blank -%}
+                          <a href="{{ section.settings.swatch_link_url | default: '#' }}">{{ section.settings.swatch_link_text }}</a>
+                        {%- endif -%}
+                        {%- if section.settings.swatch_note != blank -%}
+                          — {{ section.settings.swatch_note }}
+                        {%- endif -%}
+                      </p>
+                    {%- endif -%}
                   </fieldset>
                 {%- endfor -%}
 
@@ -514,6 +537,27 @@
       "id": "trust_4_text",
       "label": "Trust 4 — text",
       "default": "Shop Pay, PayPal, Apple Pay and all major cards."
+    },
+    {
+      "type": "header",
+      "content": "Fabric swatch note"
+    },
+    {
+      "type": "text",
+      "id": "swatch_link_text",
+      "label": "Link text",
+      "default": "Order free fabric swatches"
+    },
+    {
+      "type": "url",
+      "id": "swatch_link_url",
+      "label": "Link URL"
+    },
+    {
+      "type": "text",
+      "id": "swatch_note",
+      "label": "Suffix text",
+      "default": "match the finish at home first."
     },
     {
       "type": "header",

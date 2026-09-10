@@ -103,6 +103,11 @@
 .variant input:checked + .swatch-btn::after{ border-color:var(--ink); }
 .variant input:disabled + .swatch-btn{ opacity:.42; cursor:not-allowed; }
 
+/* "order free fabric swatches" note below the fabric option */
+.swatch-note{ margin-top:.9rem; font-size:.82rem; color:var(--muted); }
+.swatch-note a{ text-decoration:underline; text-underline-offset:3px; color:inherit; }
+.swatch-note a:hover{ color:var(--red-ink); }
+
 /* --- buy row --- */
 .buy{ display:flex; flex-wrap:wrap; gap:.7rem; margin-top:1.9rem; }
 .qty{ display:inline-flex; align-items:center; border:1px solid var(--line); border-radius:var(--r-pill); overflow:hidden; flex:none; }
@@ -159,6 +164,10 @@
 .buy-now .shopify-payment-button__button--unbranded{
   width:100%; min-height:52px; border-radius:var(--r-pill);
   font-family:var(--font); font-weight:600; letter-spacing:.01em;
+  background:var(--jdgm-star-color, var(--red));
+}
+.buy-now .shopify-payment-button__button--unbranded::after{
+  display:none;
 }
 
 .pdp__pay{ margin-top:.9rem; font-size:.8rem; color:var(--muted-2); text-align:center; }
