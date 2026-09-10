@@ -2,8 +2,8 @@
    Dew's Furniture — PDP interactions
    - Gallery thumbnail switching + click-to-zoom (pointer-following origin)
    - Sticky add-to-cart (shows once the buy row scrolls past)
-   - Variant change sync: featured image + sticky price (via Dawn pubsub)
-   Accordions are native <details> (Dawn), so no JS is needed for them.
+   - Variant change sync: featured image + sticky price + wishlist data
+   Accordions are native <details>, so no JS is needed for open/close.
    ========================================================================== */
 (function () {
   'use strict';
@@ -109,10 +109,7 @@
       // refresh the sticky price from the already-updated main price block
       var priceEl = qs('[data-sticky-price]');
       if (priceEl) {
-        var src =
-          qs('.dews-product .price .price-item--last') ||
-          qs('.dews-product .price .price-item--sale') ||
-          qs('.dews-product .price .price-item--regular');
+        var src = qs('.pdp__price .price');
         if (src) priceEl.textContent = src.textContent.trim();
       }
 
