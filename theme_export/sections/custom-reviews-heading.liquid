@@ -1,0 +1,46 @@
+<section class="section" aria-labelledby="rev-title-{{ section.id }}">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> {{ section.settings.eyebrow }}</p>
+        <h2 id="rev-title-{{ section.id }}">{{ section.settings.heading }}</h2>
+        {%- if section.settings.description != blank -%}
+          <p>{{ section.settings.description }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Reviews heading",
+  "tag": "section",
+  "class": "section dews-reviews-heading",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Customer reviews"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What owners say"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": ""
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews heading"
+    }
+  ]
+}
+{% endschema %}

@@ -782,3 +782,8 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 /* --- Product page: wishlist button below the buy buttons --- */
 .dews-wishlist-pdp { margin-top: 1rem }
 .dews-wishlist-pdp:has(> .wishlist-hero-custom-button:empty) { display: none; margin-top: 0 }
+
+/* --- Complete the look / Recently viewed product grids (design reference) --- */
+.grid-products{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(1.75rem,3vw,2.75rem) clamp(1rem,2vw,1.75rem); }
+@media (max-width:860px){ .grid-products{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:480px){ .grid-products{ grid-template-columns:minmax(0,1fr); } }

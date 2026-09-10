@@ -1,98 +1,137 @@
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
-{{ 'section-related-products.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
 
-{% if section.settings.image_shape == 'blob' %}
-  {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
-{%- endif -%}
+<section class="section section--bone" aria-labelledby="rel-title-{{ section.id }}" id="RelSection-{{ section.id }}">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> {{ section.settings.eyebrow }}</p>
+        <h2 id="rel-title-{{ section.id }}">{{ section.settings.heading }}</h2>
+      </div>
+      {%- if section.settings.view_all_link != blank -%}
+        <a class="link-arrow" href="{{ section.settings.view_all_link }}">{{ section.settings.view_all_text }} <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      {%- endif -%}
+    </div>
 
-{%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
+    <product-recommendations
+      class="related-products"
+      data-url="{{ routes.product_recommendations_url }}?limit={{ section.settings.products_to_show }}"
+      data-section-id="{{ section.id }}"
+      data-product-id="{{ product.id }}"
+    >
+      {%- if recommendations.performed and recommendations.products_count > 0 -%}
+        <div class="rail" data-rail>
+          <div class="rail__track" data-rail-track>
+            {%- for recommendation in recommendations.products -%}
+              {%- render 'dews-product-card', product: recommendation, index: forloop.index -%}
+            {%- endfor -%}
+          </div>
 
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
+          <div class="rail__foot">
+            <div class="rail__progress"><span class="rail__bar" data-rail-bar></span></div>
+            <div class="rail__nav">
+              <button class="rail__btn" data-rail-prev aria-label="Previous products"><svg aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+              <button class="rail__btn" data-rail-next aria-label="Next products"><svg aria-hidden="true"><use href="#i-chev-r"/></svg></button>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    </product-recommendations>
+  </div>
+</section>
+
+{%- comment -%}
+  The recommendation cards are injected asynchronously by global.js
+  (product-recommendations), so they miss the initial reveal-on-scroll sweep
+  AND the script.js rail wiring (arrows + progress bar). This inline script
+  reveals the cards and wires up the rail as soon as it appears.
+{%- endcomment -%}
+<script>
+  (function () {
+    var wrap = document.getElementById('RelSection-{{ section.id }}');
+    if (!wrap) return;
+
+    var railInited = false;
+
+    var initRail = function (rail) {
+      var track = rail.querySelector('[data-rail-track]');
+      var bar = rail.querySelector('[data-rail-bar]');
+      var prev = rail.querySelector('[data-rail-prev]');
+      var next = rail.querySelector('[data-rail-next]');
+      if (!track) return;
+
+      var page = function () {
+        return Math.max(track.clientWidth * 0.8, 240);
+      };
+
+      var update = function () {
+        var max = track.scrollWidth - track.clientWidth;
+        if (bar) {
+          var visible = track.clientWidth / track.scrollWidth;
+          var ratio = max > 0 ? track.scrollLeft / max : 0;
+          bar.style.width = Math.max(visible * 100, 12) + '%';
+          bar.style.transform = 'translateX(' + (ratio * ((1 / Math.max(visible, 0.12)) - 1) * 100) + '%)';
+        }
+        if (prev) prev.disabled = track.scrollLeft <= 2;
+        if (next) next.disabled = track.scrollLeft >= max - 2;
+      };
+
+      if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -page(), behavior: 'smooth' }); });
+      if (next) next.addEventListener('click', function () { track.scrollBy({ left: page(), behavior: 'smooth' }); });
+
+      track.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+    };
+
+    var onMutate = function () {
+      wrap.querySelectorAll('.reveal:not(.is-in)').forEach(function (el) {
+        el.classList.add('is-in');
+      });
+      if (!railInited) {
+        var rail = wrap.querySelector('[data-rail]');
+        if (rail) {
+          initRail(rail);
+          railInited = true;
+        }
+      }
+    };
+
+    if ('MutationObserver' in window) {
+      new MutationObserver(onMutate).observe(wrap, { childList: true, subtree: true });
     }
-  }
-{%- endstyle -%}
-
-<div class="color-{{ section.settings.color_scheme }} gradient">
-  <product-recommendations
-    class="related-products page-width section-{{ section.id }}-padding isolate{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-    data-url="{{ routes.product_recommendations_url }}?limit={{ section.settings.products_to_show }}"
-    data-section-id="{{ section.id }}"
-    data-product-id="{{ product.id }}"
-  >
-    {% if recommendations.performed and recommendations.products_count > 0 %}
-      <h2 class="related-products__heading inline-richtext {{ section.settings.heading_size }}">
-        {{ section.settings.heading }}
-      </h2>
-      <ul
-        class="grid product-grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
-        role="list"
-      >
-        {% assign skip_card_product_styles = false %}
-        {% for recommendation in recommendations.products %}
-          <li class="grid__item">
-            {% render 'dews-product-card', product: recommendation, index: forloop.index %}
-          </li>
-          {%- assign skip_card_product_styles = true -%}
-        {% endfor %}
-      </ul>
-    {% endif %}
-  </product-recommendations>
-  {% if section.settings.image_shape == 'arch' %}
-    {{ 'mask-arch.svg' | inline_asset_content }}
-  {%- endif -%}
-</div>
+    onMutate();
+  })();
+</script>
 
 {% schema %}
 {
-  "name": "t:sections.related-products.name",
+  "name": "More from the collection",
   "tag": "section",
   "class": "section dews-related-wrapper",
   "settings": [
     {
-      "type": "paragraph",
-      "content": "t:sections.related-products.settings.paragraph__1.content"
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "You may also like"
     },
     {
-      "type": "inline_richtext",
+      "type": "text",
       "id": "heading",
-      "default": "t:sections.related-products.settings.paragraph__1.default",
-      "label": "t:sections.related-products.settings.heading.label"
+      "label": "Heading",
+      "default": "More from the collection"
     },
     {
-      "type": "select",
-      "id": "heading_size",
-      "options": [
-        {
-          "value": "h2",
-          "label": "t:sections.all.heading_size.options__1.label"
-        },
-        {
-          "value": "h1",
-          "label": "t:sections.all.heading_size.options__2.label"
-        },
-        {
-          "value": "h0",
-          "label": "t:sections.all.heading_size.options__3.label"
-        },
-        {
-          "value": "hxl",
-          "label": "t:sections.all.heading_size.options__4.label"
-        },
-        {
-          "value": "hxxl",
-          "label": "t:sections.all.heading_size.options__5.label"
-        }
-      ],
-      "default": "h1",
-      "label": "t:sections.all.heading_size.label"
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View all text",
+      "default": "View all"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View all link"
     },
     {
       "type": "range",
@@ -100,147 +139,13 @@
       "min": 2,
       "max": 10,
       "step": 1,
-      "default": 4,
-      "label": "t:sections.related-products.settings.products_to_show.label"
-    },
+      "default": 8,
+      "label": "Products to show"
+    }
+  ],
+  "presets": [
     {
-      "type": "range",
-      "id": "columns_desktop",
-      "min": 1,
-      "max": 6,
-      "step": 1,
-      "default": 4,
-      "label": "t:sections.related-products.settings.columns_desktop.label"
-    },
-    {
-      "type": "select",
-      "id": "columns_mobile",
-      "default": "2",
-      "label": "t:sections.related-products.settings.columns_mobile.label",
-      "options": [
-        {
-          "value": "1",
-          "label": "t:sections.related-products.settings.columns_mobile.options__1.label"
-        },
-        {
-          "value": "2",
-          "label": "t:sections.related-products.settings.columns_mobile.options__2.label"
-        }
-      ]    
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "t:sections.all.colors.label",
-      "info": "t:sections.all.colors.has_cards_info",
-      "default": "scheme-1"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.related-products.settings.header__2.content"
-    },
-    {
-      "type": "select",
-      "id": "image_ratio",
-      "options": [
-        {
-          "value": "adapt",
-          "label": "t:sections.related-products.settings.image_ratio.options__1.label"
-        },
-        {
-          "value": "portrait",
-          "label": "t:sections.related-products.settings.image_ratio.options__2.label"
-        },
-        {
-          "value": "square",
-          "label": "t:sections.related-products.settings.image_ratio.options__3.label"
-        }
-      ],
-      "default": "adapt",
-      "label": "t:sections.related-products.settings.image_ratio.label"
-    },
-    {
-      "type": "select",
-      "id": "image_shape",
-      "options": [
-        {
-          "value": "default",
-          "label": "t:sections.all.image_shape.options__1.label"
-        },
-        {
-          "value": "arch",
-          "label": "t:sections.all.image_shape.options__2.label"
-        },
-        {
-          "value": "blob",
-          "label": "t:sections.all.image_shape.options__3.label"
-        },
-        {
-          "value": "chevronleft",
-          "label": "t:sections.all.image_shape.options__4.label"
-        },
-        {
-          "value": "chevronright",
-          "label": "t:sections.all.image_shape.options__5.label"
-        },
-        {
-          "value": "diamond",
-          "label": "t:sections.all.image_shape.options__6.label"
-        },
-        {
-          "value": "parallelogram",
-          "label": "t:sections.all.image_shape.options__7.label"
-        },
-        {
-          "value": "round",
-          "label": "t:sections.all.image_shape.options__8.label"
-        }
-      ],
-      "default": "default",
-      "label": "t:sections.all.image_shape.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_secondary_image",
-      "default": false,
-      "label": "t:sections.related-products.settings.show_secondary_image.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_vendor",
-      "default": false,
-      "label": "t:sections.related-products.settings.show_vendor.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_rating",
-      "default": false,
-      "label": "t:sections.related-products.settings.show_rating.label",
-      "info": "t:sections.related-products.settings.show_rating.info"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.all.padding.section_padding_heading"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_top",
-      "default": 36
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_bottom",
-      "default": 36
+      "name": "More from the collection"
     }
   ]
 }

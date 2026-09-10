@@ -1,0 +1,98 @@
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+
+<section class="section section--tight" aria-labelledby="recent-title-{{ section.id }}" data-recently-viewed-section data-current-handle="{{ product.handle | escape }}">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> {{ section.settings.eyebrow }}</p>
+        <h2 id="recent-title-{{ section.id }}">{{ section.settings.heading }}</h2>
+      </div>
+    </div>
+
+    <div class="grid-products" data-recently-viewed></div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var section = document.querySelector('[data-recently-viewed-section]');
+    var root = document.querySelector('[data-recently-viewed]');
+    if (!section || !root) return;
+
+    var escapeHtml = function (str) {
+      return String(str == null ? '' : str).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    };
+
+    var list = [];
+    try { list = JSON.parse(localStorage.getItem('dews-recent') || '[]'); } catch (e) { list = []; }
+
+    var current = section.getAttribute('data-current-handle') || '';
+    list = (list || []).filter(function (item) {
+      return item && item.handle && item.handle !== current;
+    });
+
+    if (!list.length) {
+      section.style.display = 'none';
+      return;
+    }
+
+    var max = {{ section.settings.products_to_show | default: 3 }};
+    list = list.slice(0, max);
+
+    root.innerHTML = list.map(function (p) {
+      var price = '<span class="price">' + escapeHtml(p.price) + '</span>';
+      var was = p.compare_at_price ? '<span class="price--was">' + escapeHtml(p.compare_at_price) + '</span>' : '';
+      return (
+        '<article class="product reveal is-in">' +
+          '<div class="product__media">' +
+            '<a href="' + escapeHtml(p.url) + '" aria-label="' + escapeHtml(p.title) + '">' +
+              '<img class="img-base" src="' + escapeHtml(p.image) + '" alt="' + escapeHtml(p.title) + '" width="600" height="600" loading="lazy" decoding="async">' +
+            '</a>' +
+          '</div>' +
+          '<div class="product__info">' +
+            '<h3><a href="' + escapeHtml(p.url) + '">' + escapeHtml(p.title) + '</a></h3>' +
+            '<p class="price-row">' + price + was + '</p>' +
+          '</div>' +
+        '</article>'
+      );
+    }).join('');
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Recently viewed",
+  "tag": "section",
+  "class": "section dews-recently-viewed",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Recently viewed"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Pick up where you left off"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "default": 3,
+      "label": "Products to show"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recently viewed"
+    }
+  ]
+}
+{% endschema %}

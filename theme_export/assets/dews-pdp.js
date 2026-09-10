@@ -126,6 +126,28 @@
     }
   }
 
+  /* ---------------- Recently viewed (record this product) ---------------- */
+  function recordRecentlyViewed() {
+    try {
+      var el = qs('script[data-recent-product]');
+      if (!el) return;
+      var data = JSON.parse(el.textContent);
+      if (!data || !data.handle) return;
+
+      var key = 'dews-recent';
+      var list = [];
+      try { list = JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) { list = []; }
+
+      list = (list || []).filter(function (item) {
+        return item && item.handle !== data.handle;
+      });
+      list.unshift(data);
+      if (list.length > 8) list = list.slice(0, 8);
+
+      localStorage.setItem(key, JSON.stringify(list));
+    } catch (e) { /* private mode / storage disabled — ignore */ }
+  }
+
   /* ---------------- Variant change sync ---------------- */
   function initVariantSync() {
     try {
@@ -170,5 +192,6 @@
     initFaq();
     initStickyAtc();
     initVariantSync();
+    recordRecentlyViewed();
   });
 })();

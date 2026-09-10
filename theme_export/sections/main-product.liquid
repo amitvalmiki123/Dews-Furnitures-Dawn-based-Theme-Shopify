@@ -504,6 +504,21 @@
   <script type="application/ld+json">
     {{ product | structured_data }}
   </script>
+
+  {%- comment -%}
+    Data used by the "Recently viewed" section (saved to localStorage by
+    dews-pdp.js so the section can render recently viewed products client-side).
+  {%- endcomment -%}
+  <script type="application/json" data-recent-product>
+    {
+      "handle": {{ product.handle | json }},
+      "title": {{ product.title | json }},
+      "url": {{ product.url | json }},
+      "image": {{ product.featured_image | image_url: width: 800 | json }},
+      "price": {{ product.price | money | json }},
+      "compare_at_price": {%- if product.compare_at_price > product.price -%}{{ product.compare_at_price | money | json }}{%- else -%}null{%- endif -%}
+    }
+  </script>
 </product-info>
 
 {% schema %}

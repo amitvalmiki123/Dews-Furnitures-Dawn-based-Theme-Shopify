@@ -1,1 +1,104 @@
-{"sections": {"main": {"type": "main-product", "blocks": {"judge_me_reviews_preview_badge_CQNfPg": {"type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8", "settings": {}}}, "block_order": ["judge_me_reviews_preview_badge_CQNfPg"], "settings": {"pay_note": "or 4 interest-free payments — payment provider to be confirmed", "inventory_threshold": 10, "show_rating": true, "show_trust": true, "show_sticky_atc": true, "trust_1_title": "Free white-glove delivery", "trust_1_text": "Placed in your room, assembled, packaging taken away.", "trust_2_title": "30-day returns", "trust_2_text": "Live with it a month. We collect if it isn't right.", "trust_3_title": "1-year warranty", "trust_3_text": "Structural cover against manufacturing defects.", "trust_4_title": "Secure checkout", "trust_4_text": "Shop Pay, PayPal, Apple Pay and all major cards.", "acc_1_title": "Description", "acc_2_title": "Dimensions & specifications", "acc_3_title": "Materials & care", "acc_4_title": "Delivery & returns", "swatch_link_text": "Order free fabric swatches", "swatch_link_url": "", "swatch_note": "match the finish at home first."}}, "related-products": {"type": "related-products", "settings": {"heading": "More from the collection", "heading_size": "h2", "products_to_show": 8, "columns_desktop": 4, "columns_mobile": "2", "color_scheme": "scheme-1", "image_ratio": "square", "image_shape": "default", "show_secondary_image": true, "show_vendor": false, "show_rating": false, "padding_top": 0, "padding_bottom": 0}}, "1787573759d3a0ee1b": {"type": "apps", "blocks": {"judge_me_reviews_review_widget_nXbebm": {"type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8", "settings": {"review_data": "sample_data", "max_width": 1200, "show_shop_reviews": false, "empty_state": "empty_widget"}}}, "block_order": ["judge_me_reviews_review_widget_nXbebm"], "settings": {"include_margins": true}}}, "order": ["main", "related-products", "1787573759d3a0ee1b"]}
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "judge_me_reviews_preview_badge_CQNfPg": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_preview_badge_CQNfPg"
+      ],
+      "settings": {
+        "pay_note": "or 4 interest-free payments — payment provider to be confirmed",
+        "inventory_threshold": 10,
+        "show_rating": true,
+        "show_trust": true,
+        "show_sticky_atc": true,
+        "trust_1_title": "Free white-glove delivery",
+        "trust_1_text": "Placed in your room, assembled, packaging taken away.",
+        "trust_2_title": "30-day returns",
+        "trust_2_text": "Live with it a month. We collect if it isn't right.",
+        "trust_3_title": "1-year warranty",
+        "trust_3_text": "Structural cover against manufacturing defects.",
+        "trust_4_title": "Secure checkout",
+        "trust_4_text": "Shop Pay, PayPal, Apple Pay and all major cards.",
+        "acc_1_title": "Description",
+        "acc_2_title": "Dimensions & specifications",
+        "acc_3_title": "Materials & care",
+        "acc_4_title": "Delivery & returns",
+        "swatch_link_text": "Order free fabric swatches",
+        "swatch_link_url": "",
+        "swatch_note": "match the finish at home first."
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": {
+        "eyebrow": "You may also like",
+        "heading": "More from the collection",
+        "view_all_text": "View all",
+        "view_all_link": "",
+        "products_to_show": 8
+      }
+    },
+    "1787573759d3a0ee1b": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_nXbebm": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_nXbebm"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "complete-the-look": {
+      "type": "custom-complete-the-look",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "eyebrow": "Styled with",
+        "heading": "Complete the look",
+        "description": "The pieces our customers most often order alongside this set.",
+        "link_text": "Shop the collection",
+        "link_url": ""
+      }
+    },
+    "reviews-heading": {
+      "type": "custom-reviews-heading",
+      "settings": {
+        "eyebrow": "Customer reviews",
+        "heading": "What owners say",
+        "description": ""
+      }
+    },
+    "recently-viewed": {
+      "type": "custom-recently-viewed",
+      "settings": {
+        "eyebrow": "Recently viewed",
+        "heading": "Pick up where you left off",
+        "products_to_show": 3
+      }
+    }
+  },
+  "order": [
+    "main",
+    "complete-the-look",
+    "reviews-heading",
+    "1787573759d3a0ee1b",
+    "related-products",
+    "recently-viewed"
+  ]
+}

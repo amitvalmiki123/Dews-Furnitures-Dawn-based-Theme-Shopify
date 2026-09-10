@@ -1,0 +1,92 @@
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+
+<section class="section section--bone" aria-labelledby="look-title-{{ section.id }}">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> {{ section.settings.eyebrow }}</p>
+        <h2 id="look-title-{{ section.id }}">{{ section.settings.heading }}</h2>
+        {%- if section.settings.description != blank -%}
+          <p>{{ section.settings.description }}</p>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.link_url != blank -%}
+        <a class="link-arrow" href="{{ section.settings.link_url }}">{{ section.settings.link_text }} <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      {%- endif -%}
+    </div>
+
+    <div class="grid-products">
+      {%- for block in section.blocks -%}
+        {%- if block.settings.product != blank -%}
+          <div {{ block.shopify_attributes }}>
+            {%- render 'dews-product-card', product: block.settings.product, index: forloop.index -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Complete the look",
+  "tag": "section",
+  "class": "section dews-complete-look",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Styled with"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Complete the look"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "The pieces our customers most often order alongside this set."
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text",
+      "default": "Shop the collection"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Complete the look",
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}
