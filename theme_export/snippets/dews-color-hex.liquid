@@ -1,0 +1,58 @@
+{%- comment -%}
+  Maps a finish / fabric value NAME to a hex color. Used as a fallback so the
+  product page still renders round colour swatches even when Shopify's native
+  swatch data (value.swatch) or the option_swatches metafield has no colour.
+
+  Matching is case-insensitive and trims whitespace. Edit the list below to add
+  or change colours — this is the single place that maps names like "Espresso"
+  to their swatch colour.
+
+  Accepts:
+    - name: {String} the option value name (e.g. "Espresso", "Ivory Linen")
+
+  Outputs the hex colour (e.g. #2a221c) or nothing when there is no match.
+{%- endcomment -%}
+{%- liquid
+  assign n = name | downcase | strip
+-%}
+{%- case n -%}
+  {%- comment -%} Frame / wood finishes {%- endcomment -%}
+  {%- when 'espresso', 'dark espresso', 'coffee', 'dark coffee', 'dark brown', 'dark walnut' -%}#2a221c
+  {%- when 'walnut' -%}#6b4a33
+  {%- when 'natural sheesham', 'sheesham', 'natural', 'natural wood', 'natural oak', 'natural sheesham wood' -%}#c9a274
+  {%- when 'oak', 'light oak', 'light wood', 'maple' -%}#b58a5a
+  {%- when 'teak' -%}#8b5a2b
+  {%- when 'mahogany' -%}#5c3a21
+  {%- when 'cherry', 'cherry wood' -%}#7a3b2e
+  {%- when 'brown', 'dark oak' -%}#6b4a33
+  {%- when 'black', 'ebony', 'wenge' -%}#1a1a1a
+  {%- when 'white', 'off white', 'offwhite' -%}#f5f3ef
+  {%- when 'ash', 'ash wood' -%}#cbb89d
+  {%- when 'cane', 'natural cane', 'rattan', 'honey' -%}#d8b489
+  {%- when 'pecan' -%}#8f5a2b
+  {%- when 'smoke', 'smoked', 'smoked oak' -%}#5d544c
+  {%- when 'mocha' -%}#6f4e37
+  {%- when 'caramel' -%}#b97a3d
+  {%- when 'cognac' -%}#9a4f2f
+  {%- when 'latte' -%}#cbb9a4
+
+  {%- comment -%} Cushion / fabric finishes {%- endcomment -%}
+  {%- when 'ivory linen', 'ivory', 'linen', 'cream linen' -%}#e8e2d8
+  {%- when 'oat boucle', 'oat bouclé', 'oat', 'boucle', 'bouclé', 'oat boucle linen' -%}#efe9dd
+  {%- when 'charcoal linen', 'charcoal', 'dark grey', 'dark gray', 'graphite' -%}#4a4440
+  {%- when 'beige' -%}#d8cfc0
+  {%- when 'grey', 'gray' -%}#8a857f
+  {%- when 'cream' -%}#f2ece2
+  {%- when 'sand' -%}#d9c9a8
+  {%- when 'stone' -%}#a89f92
+  {%- when 'taupe' -%}#9a8a76
+  {%- when 'camel', 'tan', 'leather tan', 'tan leather' -%}#c19a6b
+  {%- when 'terracotta', 'rust', 'clay' -%}#b0653f
+  {%- when 'bronze' -%}#8c6a3f
+  {%- when 'navy', 'navy blue' -%}#2c3540
+  {%- when 'olive', 'forest green', 'sage', 'moss' -%}#6b6a55
+  {%- when 'denim' -%}#4a5568
+  {%- when 'slate' -%}#5f6b6a
+  {%- when 'cloud', 'cloud white' -%}#ece8e0
+{%- else -%}
+{%- endcase -%}

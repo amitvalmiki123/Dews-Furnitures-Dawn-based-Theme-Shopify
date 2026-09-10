@@ -172,12 +172,15 @@
                   {%- liquid
                     assign is_swatch = false
                     assign swatch_map = blank
+                    assign option_lower = option.name | downcase
+
                     if option_swatches != blank
                       assign swatch_map = option_swatches[option.name]
                       if swatch_map != blank
                         assign is_swatch = true
                       endif
                     endif
+
                     if is_swatch == false
                       for swatch_option_value in option.values
                         if swatch_option_value.swatch.image != blank or swatch_option_value.swatch.color != blank
@@ -185,7 +188,40 @@
                         endif
                       endfor
                     endif
-                    assign option_lower = option.name | downcase
+
+                    comment
+                      Fallback: render round swatches for colour-like options even
+                      when Shopify's native swatch data or a metafield map is
+                      missing. The colour itself then comes from the value NAME via
+                      the dews-color-hex snippet (like the product cards).
+                    endcomment
+                    if is_swatch == false
+                      if option_lower contains 'color'
+                        assign is_swatch = true
+                      elsif option_lower contains 'colour'
+                        assign is_swatch = true
+                      elsif option_lower contains 'finish'
+                        assign is_swatch = true
+                      elsif option_lower contains 'fabric'
+                        assign is_swatch = true
+                      elsif option_lower contains 'material'
+                        assign is_swatch = true
+                      elsif option_lower contains 'shade'
+                        assign is_swatch = true
+                      elsif option_lower contains 'stain'
+                        assign is_swatch = true
+                      elsif option_lower contains 'upholstery'
+                        assign is_swatch = true
+                      elsif option_lower contains 'leather'
+                        assign is_swatch = true
+                      elsif option_lower contains 'cane'
+                        assign is_swatch = true
+                      elsif option_lower contains 'wood'
+                        assign is_swatch = true
+                      elsif option_lower contains 'cushion'
+                        assign is_swatch = true
+                      endif
+                    endif
                   -%}
                   <fieldset class="variant product-form__input">
                     <legend class="variant__label">
@@ -201,11 +237,30 @@
                           endunless
                           assign input_id = section.id | append: '-' | append: option.position | append: '-' | append: forloop.index0
                           assign raw_value = value.name | default: value
-                          assign swatch_color = blank
-                          if swatch_map != blank and is_swatch
-                            assign swatch_color = swatch_map[raw_value]
-                          endif
                         -%}
+                        {%- if is_swatch -%}
+                          {%- liquid
+                            assign swatch_bg = blank
+                            if value.swatch.image
+                              assign swatch_img = value.swatch.image | image_url: width: 50
+                              assign swatch_bg = 'url(' | append: swatch_img | append: ') center/cover'
+                            elsif value.swatch.color
+                              assign swatch_bg = 'rgb(' | append: value.swatch.color.rgb | append: ')'
+                            endif
+                            if swatch_bg == blank and swatch_map != blank
+                              assign swatch_bg = swatch_map[raw_value]
+                            endif
+                          -%}
+                          {%- if swatch_bg == blank -%}
+                            {%- capture swatch_bg -%}
+                              {%- render 'dews-color-hex', name: raw_value -%}
+                            {%- endcapture -%}
+                            {%- assign swatch_bg = swatch_bg | strip -%}
+                          {%- endif -%}
+                          {%- if swatch_bg == blank -%}
+                            {%- assign swatch_bg = 'var(--bone-deep)' -%}
+                          {%- endif -%}
+                        {%- endif -%}
                         <input
                           type="radio"
                           id="{{ input_id }}"
@@ -222,7 +277,7 @@
                           <label
                             for="{{ input_id }}"
                             class="swatch-btn"
-                            style="background:{% if value.swatch.image %}url({{ value.swatch.image | image_url: width: 50 }}) center/cover{% elsif value.swatch.color %}rgb({{ value.swatch.color.rgb }}){% elsif swatch_color != blank %}{{ swatch_color }}{% else %}var(--bone-deep){% endif %};"
+                            style="background:{{ swatch_bg }};"
                             aria-label="{{ option.name }}: {{ raw_value | escape }}"
                           ></label>
                         {%- else -%}
