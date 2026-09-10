@@ -1,28 +1,23 @@
 /* ==========================================================================
-   Dew's PDP — Add to cart + Wishlist side by side, Buy Now full-width below
+   Dew's PDP — Wishlist Hero placement
    Moves Wishlist Hero's automatic product-page button
-   (.wishlisthero-product-page-button-container) into Dawn's
-   .product-form__buttons row, right after the Add to cart submit.
+   (.wishlisthero-product-page-button-container) into the design's buy row,
+   sitting after the "Add to cart" submit (inside the [data-wishlist-slot]).
    ========================================================================== */
 (function () {
   'use strict';
 
-  var ROW_SEL = '.dews-product .product-form__buttons';
+  var SLOT_SEL = '.pdp__info .buy [data-wishlist-slot]';
   var BTN_SEL = '.wishlisthero-product-page-button-container';
   var DONE_CLASS = 'dews-wishlist-inline';
 
   function place() {
-    var row = document.querySelector(ROW_SEL);
-    if (!row) return;
+    var slot = document.querySelector(SLOT_SEL);
+    if (!slot) return;
     var btn = document.querySelector(BTN_SEL + ':not(.' + DONE_CLASS + ')');
     if (!btn) return;
 
-    var pay = row.querySelector('.shopify-payment-button');
-    if (pay) {
-      row.insertBefore(btn, pay);
-    } else {
-      row.appendChild(btn);
-    }
+    slot.appendChild(btn);
     btn.classList.add(DONE_CLASS);
 
     btn.querySelectorAll('button:not([type])').forEach(function (b) {

@@ -5,6 +5,10 @@
   assign specs = product.metafields.custom.specifications.value
   assign materials = product.metafields.custom.materials_care.value
   assign delivery = product.metafields.custom.delivery_returns.value
+  assign delivery_content = delivery
+  if delivery_content == blank and section.settings.delivery_page != blank
+    assign delivery_content = section.settings.delivery_page.content
+  endif
   assign lead = product.metafields.custom.short_description.value
   if lead == blank
     assign lead = product.description | strip_html | truncate: 160
@@ -34,6 +38,7 @@
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'dews-pdp.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'dews-wishlist-pdp.js' | asset_url }}" defer="defer"></script>
 
   <product-component view-event-payload="{{ product | standard_event_data: 'view', context: 'page' | escape }}">
     <div class="page-head">
@@ -286,9 +291,14 @@
                     </div>
                   </button>
 
-                  <button class="tool-btn" type="button" data-wishlist aria-label="Save to wishlist">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 20.5s-7.6-4.6-10-9.3C.4 8 1.7 4.5 5 3.6c2.2-.6 4.3.4 5.8 2.2C12.3 4 14.4 3 16.6 3.6c3.3.9 4.6 4.4 3 7.6-2.4 4.7-10 9.3-10 9.3z" stroke-linejoin="round"/></svg>
-                  </button>
+                  {%- comment -%} Wishlist Hero app auto-injects its product-page
+                     button; dews-wishlist-pdp.js moves it into this row. {%- endcomment -%}
+                  <div class="buy__wishlist" data-wishlist-slot aria-label="Wishlist"></div>
+                </div>
+
+                {%- comment -%} Buy now — Shopify dynamic checkout (express). {%- endcomment -%}
+                <div class="buy-now">
+                  {{ form | payment_button }}
                 </div>
               {%- endform -%}
             </product-form>
@@ -357,11 +367,11 @@
                 </div>
               {%- endif -%}
 
-              {%- if delivery != blank -%}
+              {%- if delivery_content != blank -%}
                 <div class="faq__item">
                   <h2><button class="faq__q" aria-expanded="false">{{ section.settings.acc_4_title }} <span class="faq__icon" aria-hidden="true"></span></button></h2>
                   <div class="faq__a">
-                    <div class="acc-body">{{ delivery }}</div>
+                    <div class="acc-body">{{ delivery_content }}</div>
                   </div>
                 </div>
               {%- endif -%}
@@ -487,6 +497,12 @@
       "id": "acc_4_title",
       "label": "Accordion 4 — title",
       "default": "Delivery & returns"
+    },
+    {
+      "type": "page",
+      "id": "delivery_page",
+      "label": "Delivery & returns — page",
+      "info": "Used when the product has no custom.delivery_returns metafield. Useful for a store-wide shipping/returns policy."
     }
   ],
   "blocks": [

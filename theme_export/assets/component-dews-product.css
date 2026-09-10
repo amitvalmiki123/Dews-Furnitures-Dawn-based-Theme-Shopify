@@ -119,6 +119,23 @@
 .buy > .tool-btn{ width:52px; height:52px; border:1px solid var(--line); box-shadow:none; background:var(--paper); }
 .buy > .tool-btn.is-saved{ background:var(--red); border-color:var(--red); color:#fff; }
 
+/* Wishlist Hero slot — square, matching the design */
+.buy__wishlist{ width:52px; height:52px; flex:none; display:grid; place-items:center; }
+.buy__wishlist:empty{ display:none; }
+.buy__wishlist .wishlisthero-product-page-button-container{ width:100%; height:100%; display:grid; place-items:center; }
+.buy__wishlist .wishlisthero-product-page-button-container button{
+  width:52px; height:52px; border-radius:var(--r-pill);
+  border:1px solid var(--line); background:var(--paper); color:var(--ink);
+}
+
+/* Buy now — full width below the buy row */
+.buy-now{ margin-top:.7rem; }
+.buy-now .shopify-payment-button{ width:100%; display:block; }
+.buy-now .shopify-payment-button__button--unbranded{
+  width:100%; min-height:52px; border-radius:var(--r-pill);
+  font-family:var(--font); font-weight:600; letter-spacing:.01em;
+}
+
 .pdp__pay{ margin-top:.9rem; font-size:.8rem; color:var(--muted-2); text-align:center; }
 
 /* --- trust --- */
