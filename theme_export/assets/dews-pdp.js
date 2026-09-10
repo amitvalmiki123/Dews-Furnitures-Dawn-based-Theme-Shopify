@@ -115,6 +115,18 @@
           qs('.dews-product .price .price-item--regular');
         if (src) priceEl.textContent = src.textContent.trim();
       }
+
+      // keep the Wishlist Hero button's data in sync with the selected variant
+      var wlBtn = qs('.buy__wishlist [data-wlh-id]');
+      if (wlBtn && variant.id) {
+        wlBtn.setAttribute('data-wlh-variantid', variant.id);
+        wlBtn.setAttribute('data-wlh-link', window.location.origin + window.location.pathname + '?variant=' + variant.id);
+        if (variant.price) wlBtn.setAttribute('data-wlh-price', (variant.price / 100).toString());
+        var vImg = variant.featured_media && variant.featured_media.src
+          ? variant.featured_media.src
+          : (variant.featured_image && variant.featured_image.src ? variant.featured_image.src : null);
+        if (vImg) wlBtn.setAttribute('data-wlh-image', vImg);
+      }
     });
   }
 

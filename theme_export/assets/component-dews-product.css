@@ -207,28 +207,41 @@
 .dews-product .product-form__submit:hover { background: var(--ink-2) !important; }
 .dews-product .product-form__submit[disabled] { background: var(--muted-2) !important; }
 
-/* wishlist slot (Wishlist Hero app button is moved here) */
+/* wishlist (Wishlist Hero app button rendered in the buy row).
+   Mirrors the proven collection-card styling (style.css .product__tools),
+   but as a 52px bordered pill matching the Add to cart button height. */
 .dews-product .buy__wishlist { width: 52px; height: 52px; flex: none; display: grid; place-items: center; }
-.dews-product .buy__wishlist:empty { display: none; }
-.dews-product .wishlisthero-product-page-button-container.dews-wishlist-inline {
-  width: 100%; height: 100%; display: grid; place-items: center; margin: 0 !important; padding: 0 !important;
+.dews-product .buy__wishlist .wishlist-hero-custom-button {
+  display: grid; place-items: center; position: relative;
+  width: 52px; height: 52px; margin: 0; padding: 0;
 }
-.dews-product .dews-wishlist-inline a,
-.dews-product .dews-wishlist-inline button {
-  display: flex !important; align-items: center; justify-content: center;
+.dews-product .buy__wishlist .wishlist-hero-custom-button:empty { display: none; }
+/* neutralise the app's floating positioning (it adds .wishlisthero-floating) */
+.dews-product .buy__wishlist .wishlist-hero-custom-button.wishlisthero-floating {
+  position: relative !important; top: auto !important; right: auto !important;
+  bottom: auto !important; left: auto !important; transform: none !important; margin: 0 !important;
+}
+.dews-product .buy__wishlist .wishlist-hero-custom-button a,
+.dews-product .buy__wishlist .wishlist-hero-custom-button button {
+  position: static !important; top: auto !important; right: auto !important;
+  bottom: auto !important; left: auto !important; transform: none !important; float: none !important;
   width: 52px !important; height: 52px !important; min-width: 0 !important; min-height: 52px !important;
-  margin: 0 !important; padding: 0 !important; border: 1px solid var(--line) !important;
-  border-radius: var(--r-pill) !important; background: var(--paper) !important; color: var(--ink) !important;
-  box-shadow: none !important;
+  margin: 0 !important; padding: 0 !important; display: grid !important; place-items: center;
+  background: var(--paper) !important; border: 1px solid var(--line) !important;
+  border-radius: var(--r-pill) !important; color: var(--ink) !important;
+  opacity: 1 !important; box-shadow: none !important; line-height: 1;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease);
 }
-.dews-product .dews-wishlist-inline a:hover,
-.dews-product .dews-wishlist-inline button:hover { background: var(--bone) !important; color: var(--ink) !important; }
-.dews-product .dews-wishlist-inline svg { width: 20px !important; height: 20px !important; fill: none !important; stroke: currentColor !important; }
-.dews-product .dews-wishlist-inline svg * { fill: none !important; stroke: currentColor !important; }
-.dews-product .dews-wishlist-inline a::before,
-.dews-product .dews-wishlist-inline a::after,
-.dews-product .dews-wishlist-inline button::before,
-.dews-product .dews-wishlist-inline button::after { display: none !important; content: none !important; }
+.dews-product .buy__wishlist .wishlist-hero-custom-button a:hover,
+.dews-product .buy__wishlist .wishlist-hero-custom-button button:hover {
+  background: var(--bone) !important; color: var(--red-ink) !important;
+  border-color: var(--red-ink) !important; opacity: 1 !important;
+}
+.dews-product .buy__wishlist .wishlist-hero-custom-button svg { width: 20px !important; height: 20px !important; }
+.dews-product .buy__wishlist .wishlist-hero-custom-button a::before,
+.dews-product .buy__wishlist .wishlist-hero-custom-button a::after,
+.dews-product .buy__wishlist .wishlist-hero-custom-button button::before,
+.dews-product .buy__wishlist .wishlist-hero-custom-button button::after { display: none !important; content: none !important; }
 
 /* buy now (dynamic checkout) full width below */
 .dews-product .buy-now { flex: 1 1 100%; margin-top: .7rem; }

@@ -1,0 +1,31 @@
+{% comment %}
+  Wishlist Hero — product page button (app-powered)
+  Renders the Wishlist Hero button with complete product + variant data so the
+  app's "added to wishlist" popup can show the product. Mirrors the proven
+  wishlisthero-collection-product.liquid snippet, but for the product page
+  (view = Product, mode = icon_only).
+
+  Usage:
+    {% render 'wishlisthero-product-page', product: product, variant: product.selected_or_first_available_variant %}
+{% endcomment %}
+{%- liquid
+  assign wl_variant = variant | default: product.selected_or_first_available_variant
+  assign wl_name = product.title
+  if wl_variant.title != blank and wl_variant.title != 'Default Title'
+    assign wl_name = wl_variant.title
+  endif
+  assign wl_image = wl_variant.featured_image | default: wl_variant.image | default: product.featured_image
+  assign wl_url = wl_variant.url | default: product.url
+-%}
+<div
+  data-wlh-id="{{ product.id }}"
+  data-wlh-handle="{{ product.handle }}"
+  data-wlh-link="https://{{ shop.domain }}{{ wl_url }}"
+  data-wlh-variantid="{{ wl_variant.id }}"
+  data-wlh-price="{{ wl_variant.price | remove: '.' | remove: ',' | divided_by: 100.0 }}"
+  data-wlh-name="{{ wl_name | strip_html }}"
+  data-wlh-image="{{ wl_image | image_url: width: 1024 }}"
+  class="wishlist-hero-custom-button dews-wishlist"
+  data-wlh-view="Product"
+  data-wlh-mode="icon_only"
+></div>

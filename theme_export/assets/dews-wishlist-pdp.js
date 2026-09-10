@@ -1,43 +1,36 @@
 /* ==========================================================================
-   Dew's PDP — Wishlist Hero placement
-   Moves Wishlist Hero's automatic product-page button
-   (.wishlisthero-product-page-button-container) into the design's buy row,
-   after the "Add to cart" submit (into the [data-wishlist-slot]).
+   Dew's PDP — Wishlist Hero cleanup
+   The theme renders its own Wishlist Hero button in the buy row
+   (snippets/wishlisthero-product-page.liquid). This removes the app's
+   auto-injected product-page button (.wishlisthero-product-page-button-container)
+   so there is never a duplicate button on the product page.
    ========================================================================== */
 (function () {
   'use strict';
 
-  var SLOT_SEL = '.dews-product .buy [data-wishlist-slot]';
-  var BTN_SEL = '.wishlisthero-product-page-button-container';
-  var DONE_CLASS = 'dews-wishlist-inline';
+  var AUTO_SEL = '.wishlisthero-product-page-button-container';
 
-  function place() {
-    var slot = document.querySelector(SLOT_SEL);
-    if (!slot) return;
-    var btn = document.querySelector(BTN_SEL + ':not(.' + DONE_CLASS + ')');
-    if (!btn) return;
-
-    slot.appendChild(btn);
-    btn.classList.add(DONE_CLASS);
-
-    btn.querySelectorAll('button:not([type])').forEach(function (b) {
-      b.setAttribute('type', 'button');
+  function removeAuto() {
+    document.querySelectorAll(AUTO_SEL).forEach(function (el) {
+      // keep it only if it landed inside our own slot (shouldn't happen)
+      if (el.closest('.buy__wishlist')) return;
+      el.remove();
     });
   }
 
-  place();
+  removeAuto();
 
   if ('MutationObserver' in window) {
-    var obs = new MutationObserver(place);
+    var obs = new MutationObserver(removeAuto);
     obs.observe(document.documentElement, { childList: true, subtree: true });
   } else {
     var tries = 0;
     var timer = setInterval(function () {
       tries += 1;
-      place();
+      removeAuto();
       if (tries >= 20) clearInterval(timer);
     }, 500);
   }
 
-  document.addEventListener('shopify:section:load', place);
+  document.addEventListener('shopify:section:load', removeAuto);
 })();

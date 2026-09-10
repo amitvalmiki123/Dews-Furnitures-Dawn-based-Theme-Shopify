@@ -753,7 +753,9 @@
                             </div>
                           </button>
 
-                          <div class="buy__wishlist" data-wishlist-slot aria-label="Wishlist"></div>
+                          <div class="buy__wishlist" data-wishlist-slot aria-label="Wishlist">
+                            {%- render 'wishlisthero-product-page', product: product, variant: product.selected_or_first_available_variant -%}
+                          </div>
                         </div>
 
                         {%- if show_dynamic_checkout -%}
