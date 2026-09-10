@@ -183,8 +183,8 @@
 /* --- product accordions (button + JS, one open at a time — matches product.html) --- */
 .faq--flush{ max-width:none; margin-top:2.25rem; }
 .faq--flush .faq__q{ font-size:1rem; padding-block:1.35rem; }
-/* .faq__a open/close (CSS grid-template-rows 0fr→1fr) and the icon rotation on
-   .is-open come from style.css. dews-pdp.js only toggles .is-open + aria-expanded. */
+/* .faq__a collapse (max-height:0) and the icon rotation on .is-open come from
+   style.css. script.js sets the inline max-height for the smooth animation. */
 .faq__item .faq__q{ width:100%; text-align:left; }
 
 .acc-body{ padding:0 .25rem 1.75rem; color:var(--muted); line-height:1.8; font-size:.95rem; }

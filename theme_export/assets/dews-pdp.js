@@ -3,7 +3,7 @@
    - Gallery thumbnail switching + click-to-zoom (pointer-following origin)
    - Sticky add-to-cart (shows once the buy row scrolls past)
    - Variant change sync: featured image + sticky price + wishlist data
-   - FAQ accordion (one open at a time, CSS grid animation)
+   (FAQ accordion lives in script.js — shared with the homepage FAQ)
    ========================================================================== */
 (function () {
   'use strict';
@@ -60,35 +60,6 @@
     main.addEventListener('mouseleave', function () {
       main.classList.remove('is-zoomed');
       img.style.transformOrigin = 'center';
-    });
-  }
-
-  /* ---------------- FAQ accordion (one open at a time) ----------------
-     Opening/closing is handled in CSS via .faq__item.is-open (grid-template-rows
-     0fr -> 1fr). The JS only flips the class + aria-expanded so height measurement
-     (and any max-height:0 quirk) is never involved. */
-  function initFaq() {
-    var faqs = qsa('.faq');
-    faqs.forEach(function (faq) {
-      var items = qsa('.faq__item', faq);
-      if (!items.length) return;
-
-      var setOpen = function (item, state) {
-        var btn = qs('.faq__q', item);
-        item.classList.toggle('is-open', state);
-        if (btn) btn.setAttribute('aria-expanded', String(state));
-      };
-
-      items.forEach(function (item) {
-        var btn = qs('.faq__q', item);
-        if (!btn) return;
-
-        btn.addEventListener('click', function () {
-          var willOpen = !item.classList.contains('is-open');
-          items.forEach(function (other) { setOpen(other, false); });
-          setOpen(item, willOpen);
-        });
-      });
     });
   }
 
@@ -180,7 +151,6 @@
 
   ready(function () {
     initGallery();
-    initFaq();
     initStickyAtc();
     initVariantSync();
     recordRecentlyViewed();
