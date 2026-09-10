@@ -3,7 +3,7 @@
    - Gallery thumbnail switching + click-to-zoom (pointer-following origin)
    - Sticky add-to-cart (shows once the buy row scrolls past)
    - Variant change sync: featured image + sticky price + wishlist data
-   - FAQ accordion (one open at a time, smooth max-height animation)
+   - FAQ accordion (one open at a time, CSS grid animation)
    ========================================================================== */
 (function () {
   'use strict';
@@ -63,40 +63,31 @@
     });
   }
 
-  /* ---------------- FAQ accordion (one open at a time) ---------------- */
+  /* ---------------- FAQ accordion (one open at a time) ----------------
+     Opening/closing is handled in CSS via .faq__item.is-open (grid-template-rows
+     0fr -> 1fr). The JS only flips the class + aria-expanded so height measurement
+     (and any max-height:0 quirk) is never involved. */
   function initFaq() {
-    var items = qsa('.faq__item');
-    if (!items.length) return;
+    var faqs = qsa('.faq');
+    faqs.forEach(function (faq) {
+      var items = qsa('.faq__item', faq);
+      if (!items.length) return;
 
-    var setOpen = function (item, state) {
-      var panel = qs('.faq__a', item);
-      var btn = qs('.faq__q', item);
-      item.classList.toggle('is-open', state);
-      if (btn) btn.setAttribute('aria-expanded', String(state));
-      if (panel) panel.style.maxHeight = state ? panel.scrollHeight + 'px' : '0px';
-    };
+      var setOpen = function (item, state) {
+        var btn = qs('.faq__q', item);
+        item.classList.toggle('is-open', state);
+        if (btn) btn.setAttribute('aria-expanded', String(state));
+      };
 
-    items.forEach(function (item) {
-      var btn = qs('.faq__q', item);
-      if (!btn) return;
-
-      // sync any item marked open in the markup
-      if (item.classList.contains('is-open')) setOpen(item, true);
-
-      btn.addEventListener('click', function () {
-        var willOpen = !item.classList.contains('is-open');
-        items.forEach(function (other) { setOpen(other, false); });
-        setOpen(item, willOpen);
-      });
-    });
-
-    // keep the open panel's height in sync on resize (e.g. mobile → desktop)
-    window.addEventListener('resize', function () {
       items.forEach(function (item) {
-        if (item.classList.contains('is-open')) {
-          var panel = qs('.faq__a', item);
-          if (panel) panel.style.maxHeight = panel.scrollHeight + 'px';
-        }
+        var btn = qs('.faq__q', item);
+        if (!btn) return;
+
+        btn.addEventListener('click', function () {
+          var willOpen = !item.classList.contains('is-open');
+          items.forEach(function (other) { setOpen(other, false); });
+          setOpen(item, willOpen);
+        });
       });
     });
   }
