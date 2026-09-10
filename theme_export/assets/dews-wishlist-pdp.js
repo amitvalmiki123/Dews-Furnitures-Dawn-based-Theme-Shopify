@@ -2,12 +2,12 @@
    Dew's PDP — Wishlist Hero placement
    Moves Wishlist Hero's automatic product-page button
    (.wishlisthero-product-page-button-container) into the design's buy row,
-   sitting after the "Add to cart" submit (inside the [data-wishlist-slot]).
+   after the "Add to cart" submit (into the [data-wishlist-slot]).
    ========================================================================== */
 (function () {
   'use strict';
 
-  var SLOT_SEL = '.pdp__info .buy [data-wishlist-slot]';
+  var SLOT_SEL = '.dews-product .buy [data-wishlist-slot]';
   var BTN_SEL = '.wishlisthero-product-page-button-container';
   var DONE_CLASS = 'dews-wishlist-inline';
 

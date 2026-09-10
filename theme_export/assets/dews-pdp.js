@@ -1,10 +1,9 @@
 /* ==========================================================================
    Dew's Furniture — PDP interactions
    - Gallery thumbnail switching + click-to-zoom (pointer-following origin)
-   - FAQ accordion (one open at a time)
    - Sticky add-to-cart (shows once the buy row scrolls past)
    - Variant change sync: featured image + sticky price (via Dawn pubsub)
-   All safe no-ops when the relevant markup isn't on the page.
+   Accordions are native <details> (Dawn), so no JS is needed for them.
    ========================================================================== */
 (function () {
   'use strict';
@@ -64,40 +63,6 @@
     });
   }
 
-  /* ---------------- FAQ accordion ---------------- */
-  function initFaq() {
-    var items = qsa('.faq__item');
-    if (!items.length) return;
-
-    function setOpen(item, state) {
-      var panel = qs('.faq__a', item);
-      var btn = qs('.faq__q', item);
-      item.classList.toggle('is-open', state);
-      if (btn) btn.setAttribute('aria-expanded', String(state));
-      if (panel) panel.style.maxHeight = state ? panel.scrollHeight + 'px' : '0px';
-    }
-
-    items.forEach(function (item) {
-      var btn = qs('.faq__q', item);
-      if (!btn) return;
-      if (item.classList.contains('is-open')) setOpen(item, true);
-      btn.addEventListener('click', function () {
-        var willOpen = !item.classList.contains('is-open');
-        items.forEach(function (other) { setOpen(other, false); });
-        setOpen(item, willOpen);
-      });
-    });
-
-    var resync = function () {
-      items.forEach(function (item) {
-        if (item.classList.contains('is-open')) setOpen(item, true);
-      });
-    };
-    window.addEventListener('resize', resync);
-    window.addEventListener('load', resync);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(resync);
-  }
-
   /* ---------------- Sticky ATC ---------------- */
   function initStickyAtc() {
     var bar = document.getElementById('stickyAtc');
@@ -141,10 +106,13 @@
         if (img) img.src = variant.featured_media.src;
       }
 
-      // refresh the sticky price from the already-updated price block
+      // refresh the sticky price from the already-updated main price block
       var priceEl = qs('[data-sticky-price]');
       if (priceEl) {
-        var src = qs('.pdp__price .price-item--sale') || qs('.pdp__price .price-item--regular') || qs('.pdp__price .price');
+        var src =
+          qs('.dews-product .price .price-item--last') ||
+          qs('.dews-product .price .price-item--sale') ||
+          qs('.dews-product .price .price-item--regular');
         if (src) priceEl.textContent = src.textContent.trim();
       }
     });
@@ -152,7 +120,6 @@
 
   ready(function () {
     initGallery();
-    initFaq();
     initStickyAtc();
     initVariantSync();
   });
