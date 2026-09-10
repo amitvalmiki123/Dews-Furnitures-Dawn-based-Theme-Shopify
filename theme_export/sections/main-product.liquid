@@ -178,9 +178,12 @@
                         assign is_swatch = true
                       endif
                     endif
-                    assign native_swatch_count = option.values | map: 'swatch' | compact | size
-                    if native_swatch_count > 0
-                      assign is_swatch = true
+                    if is_swatch == false
+                      for swatch_option_value in option.values
+                        if swatch_option_value.swatch.image != blank or swatch_option_value.swatch.color != blank
+                          assign is_swatch = true
+                        endif
+                      endfor
                     endif
                     assign option_lower = option.name | downcase
                   -%}
