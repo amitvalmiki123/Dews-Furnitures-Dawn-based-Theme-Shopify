@@ -218,7 +218,7 @@
                           <label
                             for="{{ input_id }}"
                             class="swatch-btn"
-                            style="background:{% if swatch_color != blank %}{{ swatch_color }}{% elsif value.swatch.color %}rgb({{ value.swatch.color.rgb }}){% elsif value.swatch.image %}url({{ value.swatch.image | image_url: width: 50 }}) center/cover{% else %}var(--bone-deep){% endif %};"
+                            style="background:{% if value.swatch.image %}url({{ value.swatch.image | image_url: width: 50 }}) center/cover{% elsif value.swatch.color %}rgb({{ value.swatch.color.rgb }}){% elsif swatch_color != blank %}{{ swatch_color }}{% else %}var(--bone-deep){% endif %};"
                             aria-label="{{ option.name }}: {{ raw_value | escape }}"
                           ></label>
                         {%- else -%}
