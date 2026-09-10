@@ -9,7 +9,7 @@
         <p>{{ section.settings.news_subheading }}</p>
       </div>
       <div>
-        {%- form 'customer', class: 'newsletter__form' -%}
+        {%- form 'customer', id: 'ContactFooter', class: 'newsletter__form' -%}
           <input type="hidden" name="contact[tags]" value="newsletter">
           <label class="sr-only" for="newsEmail">Email address</label>
           <input
@@ -21,19 +21,34 @@
             autocomplete="email"
             autocorrect="off"
             autocapitalize="off"
+            {%- if form.errors -%}
+              aria-invalid="true"
+              autofocus
+            {%- endif -%}
             required
           >
           <button type="submit" name="commit" class="btn btn--light">Subscribe <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
-        {%- endform -%}
-        <div class="form-msg{% if form.posted_successfully? %} is-ok{% elsif form.errors %} is-err{% endif %}" aria-live="polite">
+
           {%- if form.posted_successfully? -%}
-            Thanks for subscribing! Please check your inbox to confirm.
+            <div class="form-msg is-ok" role="status" tabindex="-1" autofocus>
+              Thanks for subscribing! Please check your inbox to confirm.
+            </div>
           {%- elsif form.errors -%}
-            {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
+            <div class="form-msg is-err" role="alert">
+              {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
+            </div>
           {%- endif -%}
-        </div>
+        {%- endform -%}
         <p class="fineprint">By subscribing you agree to our terms. Unsubscribe at any time.</p>
       </div>
+
+      <script>
+        (function () {
+          if (!/contact_posted/.test(window.location.search)) return;
+          var el = document.querySelector('.footer__signup .form-msg.is-ok');
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        })();
+      </script>
     </div>
 
     <!-- Main Footer Grid -->

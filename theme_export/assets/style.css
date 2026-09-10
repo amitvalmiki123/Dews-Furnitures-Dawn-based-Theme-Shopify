@@ -352,6 +352,7 @@ body .product__media .badge--new { background: #fff; color: var(--ink); box-shad
 .newsletter__perks div { display: inline-flex; align-items: center; gap: 0.45rem }
 .newsletter__perks svg { width: 14px; height: 14px; color: #1f7a4d }
 .form-msg { margin-top: 1rem; font-size: 0.88rem; min-height: 1.3em }
+.newsletter__form .form-msg { flex-basis: 100%; }
 .form-msg.is-ok { color: #1f7a4d }
 .form-msg.is-err { color: var(--red-ink) }
 .fineprint { margin-top: 1.25rem; font-size: 0.76rem; color: var(--muted-2) }
