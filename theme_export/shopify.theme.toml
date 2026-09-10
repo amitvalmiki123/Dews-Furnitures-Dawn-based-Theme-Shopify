@@ -1,0 +1,13 @@
+# Shopify CLI — theme configuration
+# Store: dew-s-furnitures.myshopify.com
+# Theme: Dews Furniture (development theme)
+#
+# After running `shopify theme push --unpublished` the first time, the CLI
+# will fill in the [theme] id automatically. Keep this file in the same
+# folder as the theme files (theme_export/).
+
+[theme]
+store = "dew-s-furnitures.myshopify.com"
+
+[role]
+theme = "development"
