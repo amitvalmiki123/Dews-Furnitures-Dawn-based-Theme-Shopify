@@ -66,27 +66,79 @@
     <h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
     
     <!-- COLOR SWATCH CODE WITH VARIANT IMAGE LOGIC -->
+    {%- comment -%}
+      Show colour pills for any colour-like option — including "Frame finish",
+      "Finish", "Fabric", etc. (matches the PDP's swatch detection). The pill
+      colour comes from Shopify's native swatch data first, then the
+      dews-color-hex name map, then a neutral fallback. Only the first
+      colour-like option is rendered (one row of pills below the title).
+    {%- endcomment -%}
+    {%- assign swatches_done = false -%}
     {%- for option in product.options_with_values -%}
-      {%- assign option_name = option.name | downcase -%}
-      {%- if option_name == 'color' or option_name == 'colour' -%}
-        <div class="product__swatches">
+      {%- unless swatches_done -%}
+        {%- assign option_name = option.name | downcase -%}
+        {%- assign is_color_option = false -%}
+        {%- if option_name contains 'color'
+          or option_name contains 'colour'
+          or option_name contains 'finish'
+          or option_name contains 'fabric'
+          or option_name contains 'material'
+          or option_name contains 'shade'
+          or option_name contains 'stain'
+          or option_name contains 'upholstery'
+          or option_name contains 'leather'
+          or option_name contains 'cane'
+          or option_name contains 'wood'
+          or option_name contains 'cushion'
+        -%}
+          {%- assign is_color_option = true -%}
+        {%- endif -%}
+        {%- if is_color_option == false -%}
           {%- for value in option.values -%}
-            {%- assign bg_color = value | downcase | replace: ' ', '' -%}
-            
-            {%- comment -%} Find the image attached to this specific color variant {%- endcomment -%}
-            {%- assign variant_img = '' -%}
-            {%- for variant in product.variants -%}
-              {%- if variant.options contains value and variant.image -%}
-                {%- assign variant_img = variant.image | image_url: width: 800 -%}
-                {%- break -%}
-              {%- endif -%}
-            {%- endfor -%}
-
-            <!-- Yahan forloop.first se pehle color ko 'is-active' class mil jayegi -->
-            <span class="product__swatch {% if forloop.first %}is-active{% endif %}" data-swatch-hover style="background-color: {{ bg_color }};" title="{{ value }}" {% if variant_img != blank %}data-variant-img="{{ variant_img }}"{% endif %}></span>
+            {%- if value.swatch.image != blank or value.swatch.color != blank -%}
+              {%- assign is_color_option = true -%}
+            {%- endif -%}
           {%- endfor -%}
-        </div>
-      {%- endif -%}
+        {%- endif -%}
+
+        {%- if is_color_option -%}
+          {%- assign swatches_done = true -%}
+          <div class="product__swatches">
+            {%- for value in option.values -%}
+              {%- assign raw_value = value.name | default: value -%}
+              {%- liquid
+                assign swatch_bg = blank
+                if value.swatch.image
+                  assign swatch_bg = 'url(' | append: value.swatch.image | image_url: width: 50 | append: ') center/cover'
+                elsif value.swatch.color
+                  assign swatch_bg = 'rgb(' | append: value.swatch.color.rgb | append: ')'
+                endif
+                if swatch_bg == blank
+                  capture swatch_bg
+                    render 'dews-color-hex', name: raw_value
+                  endcapture
+                  assign swatch_bg = swatch_bg | strip
+                endif
+                if swatch_bg == blank
+                  assign swatch_bg = 'var(--bone-deep)'
+                endif
+              -%}
+
+              {%- comment -%} Find the image attached to this specific color variant {%- endcomment -%}
+              {%- assign variant_img = '' -%}
+              {%- for variant in product.variants -%}
+                {%- if variant.options contains raw_value and variant.image -%}
+                  {%- assign variant_img = variant.image | image_url: width: 800 -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+
+              <!-- Yahan forloop.first se pehle color ko 'is-active' class mil jayegi -->
+              <span class="product__swatch {% if forloop.first %}is-active{% endif %}" data-swatch-hover style="background: {{ swatch_bg }};" title="{{ raw_value | escape }}" {% if variant_img != blank %}data-variant-img="{{ variant_img }}"{% endif %}></span>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      {%- endunless -%}
     {%- endfor -%}
 
     <!-- 2. DYNAMIC PRICE & "SAVE $X" CALCULATION -->
