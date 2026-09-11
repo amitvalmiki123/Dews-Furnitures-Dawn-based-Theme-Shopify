@@ -22,6 +22,14 @@
   endif
   assign materials = product.metafields.custom.materials_care
   assign delivery = product.metafields.custom.delivery_returns
+  assign dimension_sheet_mf = product.metafields.custom.dimension_sheet
+  assign dimension_sheet_url = dimension_sheet_mf.value.url
+  if dimension_sheet_url == blank
+    assign dimension_sheet_url = dimension_sheet_mf.value
+  endif
+  if dimension_sheet_url == blank
+    assign dimension_sheet_url = section.settings.dimension_sheet_url
+  endif
   assign lead = product.metafields.custom.short_description.value
   if lead == blank
     assign lead = product.description | strip_html | truncate: 160
@@ -504,8 +512,8 @@
                           {%- endif -%}
                         </tbody>
                       </table>
-                      {%- if section.settings.dimension_sheet_url != blank -%}
-                        <a class="spec-download" href="{{ section.settings.dimension_sheet_url }}" target="_blank" rel="noopener">
+                      {%- if dimension_sheet_url != blank -%}
+                        <a class="spec-download" href="{{ dimension_sheet_url }}" target="_blank" rel="noopener">
                           {{ section.settings.dimension_sheet_text | default: 'Download the full dimension sheet (PDF)' }}
                         </a>
                       {%- endif -%}
@@ -738,8 +746,8 @@
     {
       "type": "url",
       "id": "dimension_sheet_url",
-      "label": "Dimension sheet (PDF) link",
-      "info": "Shown at the end of the Dimensions & specifications accordion."
+      "label": "Dimension sheet (PDF) link — fallback",
+      "info": "Fallback link shown at the end of the Dimensions & specifications accordion when the per-product 'custom.dimension_sheet' metafield is empty."
     },
     {
       "type": "text",
