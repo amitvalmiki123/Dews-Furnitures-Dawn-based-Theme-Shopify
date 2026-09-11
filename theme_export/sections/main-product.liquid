@@ -1,8 +1,8 @@
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
   assign product_form_id = 'product-form-' | append: section.id
-  assign dims = product.metafields.custom.dimensions.value
-  assign materials = product.metafields.custom.materials_care.value
+  assign dim_rows = product.metafields.custom.dimension_rows.value
+  assign materials = product.metafields.custom.materials_care
   assign delivery = product.metafields.custom.delivery_returns.value
   assign lead = product.metafields.custom.short_description.value
   if lead == blank
@@ -431,7 +431,7 @@
                 </div>
               {%- endif -%}
 
-              {%- if dims != blank -%}
+              {%- if dim_rows != blank -%}
                 <div class="faq__item">
                   <h2><button class="faq__q" type="button" aria-expanded="false">{{ section.settings.acc_2_title }} <span class="faq__icon" aria-hidden="true"></span></button></h2>
                   <div class="faq__a">
@@ -439,13 +439,13 @@
                       <table class="spec">
                         <caption class="sr-only">{{ section.settings.acc_2_title }}</caption>
                         <tbody>
-                          {%- assign dim_lines = dims | newline_to_br | split: '<br />' -%}
-                          {%- for line in dim_lines -%}
-                            {%- assign line = line | strip -%}
-                            {%- if line != blank -%}
+                          {%- for row in dim_rows -%}
+                            {%- assign row_label = row.label.value | strip -%}
+                            {%- assign row_value = row.value.value | strip -%}
+                            {%- if row_label != blank or row_value != blank -%}
                               <tr>
-                                <th scope="row">{{ line | split: '|' | first | strip }}</th>
-                                <td>{%- if line contains '|' -%}{{ line | split: '|' | last | strip }}{%- endif -%}</td>
+                                <th scope="row">{{ row_label }}</th>
+                                <td>{{ row_value }}</td>
                               </tr>
                             {%- endif -%}
                           {%- endfor -%}
@@ -460,17 +460,7 @@
                 <div class="faq__item">
                   <h2><button class="faq__q" type="button" aria-expanded="false">{{ section.settings.acc_3_title }} <span class="faq__icon" aria-hidden="true"></span></button></h2>
                   <div class="faq__a">
-                    <div class="acc-body">
-                      <ul>
-                        {%- assign mat_lines = materials | newline_to_br | split: '<br />' -%}
-                        {%- for line in mat_lines -%}
-                          {%- assign line = line | strip -%}
-                          {%- if line != blank -%}
-                            <li><span>{{ line }}</span></li>
-                          {%- endif -%}
-                        {%- endfor -%}
-                      </ul>
-                    </div>
+                    <div class="acc-body">{{ materials | metafield_tag }}</div>
                   </div>
                 </div>
               {%- endif -%}
@@ -667,14 +657,14 @@
       "id": "acc_2_title",
       "label": "Accordion 2 — title",
       "default": "Dimensions & specifications",
-      "info": "Content comes from the per-product 'custom.dimensions' metafield. Enter one 'Label | Value' per line (e.g. Three-seater | 78\" W × 33\" D × 31\" H)."
+      "info": "Content comes from the per-product 'custom.dimension_rows' metafield (a list of metaobjects, each with a Label + Value). See setup notes."
     },
     {
       "type": "text",
       "id": "acc_3_title",
       "label": "Accordion 3 — title",
       "default": "Materials & care",
-      "info": "Content comes from the per-product 'custom.materials_care' metafield. Enter one bullet point per line."
+      "info": "Content comes from the per-product 'custom.materials_care' Rich text metafield — write paragraphs and/or bullet lists."
     },
     {
       "type": "text",
