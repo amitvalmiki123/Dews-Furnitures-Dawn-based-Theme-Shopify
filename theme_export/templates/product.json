@@ -2,15 +2,6 @@
   "sections": {
     "main": {
       "type": "main-product",
-      "blocks": {
-        "judge_me_reviews_preview_badge_CQNfPg": {
-          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "judge_me_reviews_preview_badge_CQNfPg"
-      ],
       "settings": {
         "pay_note": "or 4 interest-free payments — payment provider to be confirmed",
         "inventory_threshold": 10,
@@ -42,26 +33,6 @@
         "view_all_text": "View all",
         "view_all_link": "",
         "products_to_show": 8
-      }
-    },
-    "1787573759d3a0ee1b": {
-      "type": "apps",
-      "blocks": {
-        "judge_me_reviews_review_widget_nXbebm": {
-          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {
-            "review_data": "sample_data",
-            "max_width": 1200,
-            "show_shop_reviews": false,
-            "empty_state": "empty_widget"
-          }
-        }
-      },
-      "block_order": [
-        "judge_me_reviews_review_widget_nXbebm"
-      ],
-      "settings": {
-        "include_margins": true
       }
     },
     "complete-the-look": {
@@ -97,7 +68,6 @@
     "main",
     "complete-the-look",
     "reviews-heading",
-    "1787573759d3a0ee1b",
     "related-products",
     "recently-viewed"
   ]
