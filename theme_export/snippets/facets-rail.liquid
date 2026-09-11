@@ -31,14 +31,7 @@
           {%- liquid
             assign filter_label = filter.label | downcase
             assign has_swatches = false
-            if filter_label contains 'color'
-              or filter_label contains 'colour'
-              or filter_label contains 'finish'
-              or filter_label contains 'fabric'
-              or filter_label contains 'shade'
-              or filter_label contains 'stain'
-              or filter_label contains 'upholstery'
-              or filter_label contains 'leather'
+            if filter_label contains 'color' or filter_label contains 'colour' or filter_label contains 'finish' or filter_label contains 'fabric' or filter_label contains 'shade' or filter_label contains 'stain' or filter_label contains 'upholstery' or filter_label contains 'leather'
               assign has_swatches = true
             endif
             if has_swatches == false
