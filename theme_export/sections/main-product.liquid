@@ -504,6 +504,11 @@
                           {%- endif -%}
                         </tbody>
                       </table>
+                      {%- if section.settings.dimension_sheet_url != blank -%}
+                        <a class="spec-download" href="{{ section.settings.dimension_sheet_url }}" target="_blank" rel="noopener">
+                          {{ section.settings.dimension_sheet_text | default: 'Download the full dimension sheet (PDF)' }}
+                        </a>
+                      {%- endif -%}
                     </div>
                   </div>
                 </div>
@@ -725,6 +730,22 @@
       "id": "delivery_page",
       "label": "Delivery & returns — page",
       "info": "Used when the product has no custom.delivery_returns metafield. Useful for a store-wide shipping/returns policy."
+    },
+    {
+      "type": "header",
+      "content": "Dimension sheet"
+    },
+    {
+      "type": "url",
+      "id": "dimension_sheet_url",
+      "label": "Dimension sheet (PDF) link",
+      "info": "Shown at the end of the Dimensions & specifications accordion."
+    },
+    {
+      "type": "text",
+      "id": "dimension_sheet_text",
+      "label": "Dimension sheet link text",
+      "default": "Download the full dimension sheet (PDF)"
     }
   ],
   "blocks": [

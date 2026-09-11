@@ -100,7 +100,12 @@
 }
 .swatch-btn:hover::after{ border-color:var(--line); }
 .variant input:checked + .swatch-btn::after{ border-color:var(--ink); }
-.variant input:disabled + .swatch-btn{ opacity:.42; cursor:not-allowed; }
+.variant input:disabled + .swatch-btn{ opacity:.55; cursor:not-allowed; }
+.variant input:disabled + .swatch-btn::before{
+  content:''; position:absolute; top:50%; left:50%; width:138%; height:1.5px;
+  background:var(--red); border-radius:1px;
+  transform:translate(-50%,-50%) rotate(-45deg);
+}
 
 /* "order free fabric swatches" note below the fabric option */
 .swatch-note{ margin-top:.9rem; font-size:.82rem; color:var(--muted); }
@@ -202,6 +207,11 @@
 .spec tr:last-child th, .spec tr:last-child td{ border-bottom:0; }
 .spec th{ width:44%; color:var(--muted); font-weight:600; }
 .spec td{ color:var(--ink-2); }
+.spec-download{
+  display:inline-block; margin-top:1.25rem; font-size:.85rem; font-weight:600;
+  color:var(--ink); text-decoration:underline; text-underline-offset:3px;
+}
+.spec-download:hover{ color:var(--red-ink); }
 
 /* --- sticky add-to-cart --- */
 .sticky-atc{
