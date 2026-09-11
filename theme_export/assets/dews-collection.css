@@ -274,5 +274,13 @@ span.mobile-facets__open-label.button-label {
   }
   .mobile-facets__clear { font-size: 0.82rem; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
   .mobile-facets__clear:hover { color: var(--red-ink); }
-  .mobile-facets__footer .button { flex: 1; margin: 0; }
+  .mobile-facets__footer .button {
+    flex: 1; margin: 0;
+    font-size: 0.9rem !important;
+    letter-spacing: normal !important;
+    line-height: 1.2 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 0.8rem 1.6rem !important;
+  }
 }

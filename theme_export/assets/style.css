@@ -494,7 +494,7 @@ body .product__media .badge--new { background: #fff; color: var(--ink); box-shad
 .collection-hero__desc p { margin: 0; }
 
 /* Collection page shell: toolbar + grid */
-.collection-page { padding-top: clamp(1.5rem, 3vw, 2.5rem) !important; padding-bottom: var(--section-y) !important; }
+.collection-page { padding-top: 0; padding-bottom: 0; }
 .collection-toolbar { border-bottom: 1px solid var(--line); }
 .collection-page .grid-products { align-items: start; }
 
