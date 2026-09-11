@@ -1,5 +1,18 @@
 {
   "sections": {
+    "banner": {
+      "type": "main-list-collections-banner",
+      "settings": {
+        "eyebrow": "Shop by collection",
+        "heading": "Collections",
+        "description": "",
+        "image": "",
+        "show_meta": true,
+        "meta_1_text": "Hand-woven cane",
+        "meta_2_text": "Free delivery over $999",
+        "meta_3_text": "30-day returns"
+      }
+    },
     "main": {
       "type": "main-list-collections",
       "settings": {
@@ -12,6 +25,7 @@
     }
   },
   "order": [
+    "banner",
     "main"
   ]
 }

@@ -1,0 +1,123 @@
+{{ 'dews-collection.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  Dew's Furniture — collections list banner (/collections)
+  Mirrors the collection banner (.page-head + .chero): left = eyebrow, heading,
+  description + 3 meta badges; right = image.
+{%- endcomment -%}
+
+<div class="page-head">
+  <div class="container">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb">
+        <li><a href="{{ routes.root_url }}">Home</a></li>
+        <li><span aria-current="page">{{ section.settings.heading | default: 'Collections' | escape }}</span></li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<section class="section collection-banner" aria-labelledby="collections-title-{{ section.id }}">
+  <div class="container">
+    <div class="chero{% if section.settings.image == blank %} chero--single{% endif %}">
+      <div class="chero__text">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow"><i class="dew" aria-hidden="true"></i> {{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h1 id="collections-title-{{ section.id }}">{{ section.settings.heading | default: 'Collections' | escape }}</h1>
+
+        {%- if section.settings.description != blank -%}
+          <div class="chero__desc"><p>{{ section.settings.description }}</p></div>
+        {%- endif -%}
+
+        {%- if section.settings.show_meta -%}
+          <div class="chero__meta">
+            {%- if section.settings.meta_1_text != blank -%}
+              <div><svg aria-hidden="true"><use href="#i-hammer"/></svg> {{ section.settings.meta_1_text }}</div>
+            {%- endif -%}
+            {%- if section.settings.meta_2_text != blank -%}
+              <div><svg aria-hidden="true"><use href="#i-truck"/></svg> {{ section.settings.meta_2_text }}</div>
+            {%- endif -%}
+            {%- if section.settings.meta_3_text != blank -%}
+              <div><svg aria-hidden="true"><use href="#i-rotate"/></svg> {{ section.settings.meta_3_text }}</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.image != blank -%}
+        <div class="chero__media">
+          <img
+            src="{{ section.settings.image | image_url: width: 1200 }}"
+            alt="{{ section.settings.image.alt | default: section.settings.heading | default: 'Collections' | escape }}"
+            width="1000"
+            height="625"
+            loading="eager"
+            decoding="async"
+          >
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collections list banner",
+  "tag": "section",
+  "class": "section collection-banner-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "default": "Shop by collection",
+      "label": "Eyebrow text"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Collections",
+      "label": "Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_meta",
+      "default": true,
+      "label": "Show meta badges"
+    },
+    {
+      "type": "text",
+      "id": "meta_1_text",
+      "default": "Hand-woven cane",
+      "label": "Meta badge 1"
+    },
+    {
+      "type": "text",
+      "id": "meta_2_text",
+      "default": "Free delivery over $999",
+      "label": "Meta badge 2"
+    },
+    {
+      "type": "text",
+      "id": "meta_3_text",
+      "default": "30-day returns",
+      "label": "Meta badge 3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collections list banner"
+    }
+  ]
+}
+{% endschema %}
