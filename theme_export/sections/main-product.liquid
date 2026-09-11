@@ -1,7 +1,17 @@
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
   assign product_form_id = 'product-form-' | append: section.id
-  assign dim_rows = product.metafields.custom.dimension_rows.value
+  assign dim_three_seater = product.metafields.custom.dim_three_seater.value
+  assign dim_armchair = product.metafields.custom.dim_armchair.value
+  assign dim_seat_height = product.metafields.custom.dim_seat_height.value
+  assign dim_loveseat = product.metafields.custom.dim_loveseat.value
+  assign dim_width = product.metafields.custom.dim_width.value
+  assign dim_depth = product.metafields.custom.dim_depth.value
+  assign dim_height = product.metafields.custom.dim_height.value
+  assign has_dims = false
+  if dim_three_seater != blank or dim_armchair != blank or dim_seat_height != blank or dim_loveseat != blank or dim_width != blank or dim_depth != blank or dim_height != blank
+    assign has_dims = true
+  endif
   assign materials = product.metafields.custom.materials_care
   assign delivery = product.metafields.custom.delivery_returns
   assign lead = product.metafields.custom.short_description.value
@@ -431,7 +441,7 @@
                 </div>
               {%- endif -%}
 
-              {%- if dim_rows != blank -%}
+              {%- if has_dims -%}
                 <div class="faq__item">
                   <h2><button class="faq__q" type="button" aria-expanded="false">{{ section.settings.acc_2_title }} <span class="faq__icon" aria-hidden="true"></span></button></h2>
                   <div class="faq__a">
@@ -439,16 +449,27 @@
                       <table class="spec">
                         <caption class="sr-only">{{ section.settings.acc_2_title }}</caption>
                         <tbody>
-                          {%- for row in dim_rows -%}
-                            {%- assign row_label = row.label.value | strip -%}
-                            {%- assign row_value = row.value.value | strip -%}
-                            {%- if row_label != blank or row_value != blank -%}
-                              <tr>
-                                <th scope="row">{{ row_label }}</th>
-                                <td>{{ row_value }}</td>
-                              </tr>
-                            {%- endif -%}
-                          {%- endfor -%}
+                          {%- if dim_three_seater != blank -%}
+                            <tr><th scope="row">Three-seater</th><td>{{ dim_three_seater }}</td></tr>
+                          {%- endif -%}
+                          {%- if dim_armchair != blank -%}
+                            <tr><th scope="row">Armchair (each)</th><td>{{ dim_armchair }}</td></tr>
+                          {%- endif -%}
+                          {%- if dim_seat_height != blank -%}
+                            <tr><th scope="row">Seat height</th><td>{{ dim_seat_height }}</td></tr>
+                          {%- endif -%}
+                          {%- if dim_loveseat != blank -%}
+                            <tr><th scope="row">Loveseat</th><td>{{ dim_loveseat }}</td></tr>
+                          {%- endif -%}
+                          {%- if dim_width != blank -%}
+                            <tr><th scope="row">Width</th><td>{{ dim_width }}</td></tr>
+                          {%- endif -%}
+                          {%- if dim_depth != blank -%}
+                            <tr><th scope="row">Depth</th><td>{{ dim_depth }}</td></tr>
+                          {%- endif -%}
+                          {%- if dim_height != blank -%}
+                            <tr><th scope="row">Height</th><td>{{ dim_height }}</td></tr>
+                          {%- endif -%}
                         </tbody>
                       </table>
                     </div>
@@ -651,7 +672,7 @@
       "id": "acc_2_title",
       "label": "Accordion 2 — title",
       "default": "Dimensions & specifications",
-      "info": "Content comes from the per-product 'custom.dimension_rows' metafield (a list of metaobjects, each with a Label + Value). See setup notes."
+      "info": "Rows come from separate single-line-text metafields (custom.dim_three_seater, custom.dim_armchair, custom.dim_seat_height, custom.dim_loveseat, custom.dim_width, custom.dim_depth, custom.dim_height). Only filled values are shown."
     },
     {
       "type": "text",
