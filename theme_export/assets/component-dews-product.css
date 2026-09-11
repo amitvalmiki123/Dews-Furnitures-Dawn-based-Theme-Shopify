@@ -58,7 +58,8 @@
 
 .pdp__price{ display:flex; align-items:baseline; flex-wrap:wrap; gap:.8rem; margin-top:1.2rem; }
 .pdp__price .price{ font-size:1.65rem; letter-spacing:-.03em; }
-.pdp__price .price--was{ font-size:1rem; }
+.pdp__price .price--was{ font-size:1rem; color:var(--muted-2); text-decoration:line-through; }
+.pdp__price .price--save{ font-size:.85rem; font-weight:700; color:var(--red-ink); letter-spacing:.04em; }
 
 .pdp__stock{ display:inline-flex; align-items:center; gap:.55rem; margin-top:1rem; font-size:.85rem; font-weight:500; color:#1f7a4d; }
 .pdp__stock i{ width:7px; height:7px; border-radius:50%; background:#1f7a4d; flex:none; }

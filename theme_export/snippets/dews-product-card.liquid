@@ -142,15 +142,15 @@
     {%- endfor -%}
 
     <!-- 2. DYNAMIC PRICE & "SAVE $X" CALCULATION -->
-    <p class="price-row" style="display: flex; align-items: center; gap: 8px;">
-      <span class="price" style="font-weight: 600;">{{ product.price | money }}</span>
+    <p class="price-row">
+      <span class="price">{{ product.price | money }}</span>
       
       {%- if product.compare_at_price > product.price -%}
-        <span class="price--was" style="text-decoration: line-through; color: #888; font-size: 0.9em;">{{ product.compare_at_price | money }}</span>
+        <span class="price--was">{{ product.compare_at_price | money }}</span>
         
         <!-- Har product ka real-time save amount calculate hoga -->
         {%- assign saved_amount = product.compare_at_price | minus: product.price | money -%}
-        <span class="price-save" style="color: #d32f2f; font-weight: 700; font-size: 0.85em;">Save {{ saved_amount }}</span>
+        <span class="price-save">Save {{ saved_amount }}</span>
       {%- endif -%}
     </p>
   </div>

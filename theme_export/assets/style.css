@@ -204,7 +204,6 @@ clamp(3rem, 6vw, 5rem) clamp(3.5rem, 6vw, 7rem); position: relative; z-index: 2 
 body .product__media .badge { position: absolute; top: 0.9rem; left: 0.9rem; z-index: 3; padding: 0.35rem 0.7rem; border-radius: var(--r-pill); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: var(--ink); color: #fff }
 body .product__media .badge--sale { background: var(--red) }
 body .product__media .badge--new { background: #fff; color: var(--ink); box-shadow: var(--shadow-xs) }
-.product__info .price-row .price {font-size: var(--t-body);letter-spacing:normal;}
 .product__tools { position: absolute; top: 0.9rem; right: 0.9rem; z-index: 3; display: flex; flex-direction: column; gap: 0.5rem; opacity: 0; transform: translateX(10px); transition: opacity 0.4s var(--ease), transform 0.4s var(--ease) }
 .product:hover .product__tools,
 .product:focus-within .product__tools { opacity: 1; transform: translateX(0) }
@@ -229,10 +228,20 @@ body .product__media .badge--new { background: #fff; color: var(--ink); box-shad
 .collection #product-grid {row-gap: 2rem;}
 .product__swatches { display: flex; gap: 0.35rem; margin-top: 0.15rem }
 .product__swatch { width: 15px; height: 15px; border-radius: var(--r-pill); border: 1px solid rgba(23, 19, 16, 0.14) }
-.price-row { display: flex; align-items: baseline; gap: 0.6rem; margin-top: 0.2rem }
-.product-grid .product .price { font-size: 1rem; font-weight: 600; color: var(--ink) }
-.price--was { font-size: 0.85rem; color: var(--muted-2); text-decoration: line-through }
-.price--save { font-size: 0.75rem; font-weight: 700; color: var(--red-ink); letter-spacing: 0.04em }
+/* Product card price row (collection grid) */
+.price-row {
+  display: flex;
+  align-items: baseline;
+  gap: .6rem;
+  margin-top: .2rem;
+  flex-wrap: wrap;
+  gap: 0 .6rem !important;
+  line-height: 1.2;
+}
+.price-row .price { font-size: 0.9rem; font-weight: 600; color: var(--ink); letter-spacing: normal; }
+.price-row .price--was { font-size: 0.8rem; color: var(--muted-2); text-decoration: line-through; }
+.price-row .price-save,
+.price--save { font-size: 0.75rem; font-weight: 700; color: var(--red-ink); letter-spacing: 0.04em; }
 .rail { position: relative; --rail-gap: clamp(1rem, 2vw, 1.75rem); --rail-per-view: 4 }
 .rail__track { display: flex; gap: var(--rail-gap); overflow-x: auto; scroll-behavior: smooth; scroll-snap-type: x mandatory; padding-bottom: 0.5rem; scrollbar-width: none; -ms-overflow-style: none }
 .rail__track::-webkit-scrollbar { display: none }
@@ -712,28 +721,6 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-.price-row {
-    display: grid !important;
-    grid-template-columns: max-content max-content;
-    align-items: center;
-    column-gap: 8px;
-    row-gap: 0px !important;
-}
-
-.price-row .price {
-    grid-column: 1;
-}
-
-.price-row .price-was {
-    grid-column: 2;
-}
-
-.price-row .price-save {
-    grid-column: 1 / -1;
-    display: block !important;
-    margin: 0 !important;
-    line-height: 1.4;
 }
 }
 

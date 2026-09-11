@@ -12,6 +12,16 @@
    ============================================================================= */
 .collection-banner { padding-block: clamp(1.5rem, 3vw, 2.5rem) clamp(2rem, 4vw, 3rem); }
 
+/* Zero out the base.css / style.css `.section` padding-block and
+   `.section + .section` margin on the collection sections, and give the hero +
+   main content a clean paper background so nothing bleeds a different colour. */
+.shopify-section.collection-banner-section,
+.shopify-section.collection-product-grid-section {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: var(--paper);
+}
+
 .chero { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(2rem, 4vw, 4rem); align-items: center; }
 .chero--single { grid-template-columns: minmax(0, 1fr); }
 .chero--single .chero__text { max-width: 60ch; }
@@ -33,7 +43,7 @@
   position: sticky; top: calc(var(--header-h) + var(--announce-h)); z-index: 40;
   display: flex; width: 100%; align-items: center; justify-content: space-between;
   gap: 1rem; flex-wrap: wrap; padding: 0.85rem 0;
-  background: var(--paper); border-block: 1px solid var(--line);
+  background: none; border-block: 1px solid var(--line);
 }
 .toolbar__group { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
 .toolbar__count { font-size: var(--t-sm); color: var(--muted); margin: 0; }
@@ -59,7 +69,7 @@
 .facet-filters__sort.select { position: relative; display: inline-flex; }
 .facet-filters__sort.select select {
   appearance: none; -webkit-appearance: none;
-  padding: 0.55rem 2.5rem 0.55rem 1.1rem; min-height: 42px;
+  padding: 0.55rem 2.5rem 0.55rem 1.1rem; min-height: 42px; height: auto;
   background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-pill);
   font-size: 0.85rem; font-weight: 500; color: var(--ink); cursor: pointer;
   transition: border-color 0.25s var(--ease);
@@ -73,7 +83,7 @@
 /* =============================================================================
    3. SHOP LAYOUT (filter rail + results)
    ============================================================================= */
-.shop { display: grid; grid-template-columns: 262px minmax(0, 1fr); gap: clamp(2rem, 4vw, 3.5rem); align-items: start; }
+.shop { display: grid; grid-template-columns: 262px minmax(0, 1fr); gap: clamp(2rem, 4vw, 3.5rem); align-items: start; padding-block: clamp(3rem, 5vw, 5rem); }
 
 /* =============================================================================
    4. FILTER RAIL (desktop)
