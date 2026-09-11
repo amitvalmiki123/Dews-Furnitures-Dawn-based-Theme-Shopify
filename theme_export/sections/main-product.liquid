@@ -19,8 +19,9 @@
   assign dim_folding = product.metafields.custom.dim_folding.value
   assign dim_colour = product.metafields.custom.dim_colour.value
   assign dim_style = product.metafields.custom.dim_style.value
+  assign dim_primary_material = product.metafields.custom.dim_primary_material.value
   assign has_dims = false
-  if dim_three_seater != blank or dim_armchair != blank or dim_loveseat != blank or dim_seat_height != blank or dim_seat_depth != blank or dim_width != blank or dim_depth != blank or dim_height != blank or dim_frame != blank or dim_panels != blank or dim_cushion_fill != blank or dim_weight_capacity != blank or dim_assembly != blank or dim_care != blank or dim_finish != blank or dim_folding != blank or dim_colour != blank or dim_style != blank
+  if dim_three_seater != blank or dim_armchair != blank or dim_loveseat != blank or dim_seat_height != blank or dim_seat_depth != blank or dim_width != blank or dim_depth != blank or dim_height != blank or dim_frame != blank or dim_panels != blank or dim_cushion_fill != blank or dim_weight_capacity != blank or dim_assembly != blank or dim_care != blank or dim_finish != blank or dim_folding != blank or dim_colour != blank or dim_style != blank or dim_primary_material != blank
     assign has_dims = true
   endif
   assign materials = product.metafields.custom.materials_care
@@ -494,6 +495,9 @@
                           {%- endif -%}
                           {%- if dim_frame != blank -%}
                             <tr><th scope="row">Frame</th><td>{{ dim_frame }}</td></tr>
+                          {%- endif -%}
+                          {%- if dim_primary_material != blank -%}
+                            <tr><th scope="row">Primary material</th><td>{{ dim_primary_material }}</td></tr>
                           {%- endif -%}
                           {%- if dim_panels != blank -%}
                             <tr><th scope="row">Panels</th><td>{{ dim_panels }}</td></tr>
