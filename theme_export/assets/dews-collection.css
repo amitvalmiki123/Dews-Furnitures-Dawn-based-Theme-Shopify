@@ -59,6 +59,18 @@
 }
 .pill-btn:hover { border-color: var(--ink); }
 .pill-btn svg { width: 16px; height: 16px; flex: none; }
+
+/* The "Filter" drawer trigger carries base.css `.button-label`, which forces
+   1.5rem (24px) text below 1100px and inflates the pill. Reset it so the button
+   stays compact at every breakpoint where the drawer is shown. */
+.mobile-facets__open .mobile-facets__open-label,
+span.mobile-facets__open-label.button-label {
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  letter-spacing: normal !important;
+  line-height: 1.2 !important;
+  color: var(--ink) !important;
+}
 .pill-btn__badge {
   min-width: 19px; height: 19px; padding: 0 5px; border-radius: var(--r-pill);
   background: var(--red); color: #fff; font-size: 0.65rem; font-weight: 700;
