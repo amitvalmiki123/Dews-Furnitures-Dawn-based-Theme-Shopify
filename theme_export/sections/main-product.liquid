@@ -281,7 +281,7 @@
                           value="{{ raw_value | escape }}"
                           form="{{ product_form_id }}"
                           {% if value.selected %}checked{% endif %}
-                          {% if option_disabled %}class="disabled"{% endif %}
+                          {% if option_disabled %}class="disabled" disabled{% endif %}
                           data-option-value-id="{{ value.id }}"
                           data-option-name="{{ option.name | escape }}"
                           data-product-url="{{ value.product_url }}"
