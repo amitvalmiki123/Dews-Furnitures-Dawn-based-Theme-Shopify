@@ -3,7 +3,7 @@
   assign product_form_id = 'product-form-' | append: section.id
   assign dim_rows = product.metafields.custom.dimension_rows.value
   assign materials = product.metafields.custom.materials_care
-  assign delivery = product.metafields.custom.delivery_returns.value
+  assign delivery = product.metafields.custom.delivery_returns
   assign lead = product.metafields.custom.short_description.value
   if lead == blank
     assign lead = product.description | strip_html | truncate: 160
@@ -471,13 +471,7 @@
                   <div class="faq__a">
                     <div class="acc-body">
                       {%- if delivery != blank -%}
-                        {%- assign del_lines = delivery | newline_to_br | split: '<br />' -%}
-                        {%- for line in del_lines -%}
-                          {%- assign line = line | strip -%}
-                          {%- if line != blank -%}
-                            <p>{{ line }}</p>
-                          {%- endif -%}
-                        {%- endfor -%}
+                        {{ delivery | metafield_tag }}
                       {%- else -%}
                         {{ section.settings.delivery_page.content }}
                       {%- endif -%}
@@ -671,7 +665,7 @@
       "id": "acc_4_title",
       "label": "Accordion 4 — title",
       "default": "Delivery & returns",
-      "info": "Content comes from the per-product 'custom.delivery_returns' metafield (one paragraph per line), or falls back to the page selected below."
+      "info": "Content comes from the per-product 'custom.delivery_returns' Rich text metafield (bold headings + paragraphs), or falls back to the page selected below."
     },
     {
       "type": "page",
