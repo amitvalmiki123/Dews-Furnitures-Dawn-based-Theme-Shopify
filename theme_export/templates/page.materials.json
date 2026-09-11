@@ -1,1 +1,72 @@
-{"sections":{"main":{"type":"main-page","disabled":true,"settings":{"padding_top":28,"padding_bottom":28}},"custom_page_banner_k8Ybqw":{"type":"custom-page-banner","name":"Custom Page Banner","settings":{"bg_color":"bone","title":"","text":"<p>Discover the story, materials, and craftsmanship.<\/p>","btn_text":"","btn_link":""}},"custom_materials_dGFBCt":{"type":"custom-materials","blocks":{"material_crj9jz":{"type":"material","settings":{"title":"Sheesham Wood","color_bg":"linear-gradient(135deg, #8a5a34, #5c3a22)"}},"material_dGFkEJ":{"type":"material","settings":{"title":"Mango Wood","color_bg":"linear-gradient(135deg, #e0c096, #c79c6a)"}},"material_jnWytb":{"type":"material","settings":{"title":"Natural Cane","color_bg":"linear-gradient(135deg, #e5c99f, #cfa878)"}},"material_dGgMwc":{"type":"material","settings":{"title":"Natural Linen","color_bg":"linear-gradient(135deg, #efe9dd, #ddd3c3)"}},"material_f99xtc":{"type":"material","settings":{"title":"Bouclé","color_bg":"linear-gradient(135deg, #fbf8f3, #e9e3d8)"}}},"block_order":["material_crj9jz","material_dGFkEJ","material_jnWytb","material_dGgMwc","material_f99xtc"],"name":"Custom Materials","settings":{"eyebrow":"Materials","heading":"What we build with"}},"custom_craft_story_wVKmYU":{"type":"custom-craft-story","name":"Custom Craft Story","settings":{"image":"shopify:\/\/shop_images\/craft-finished-inspected.jpg","heading":"The Dew's Difference","text":"<p>Add your story here. Use bullet points for a clean list layout.<\/p>"}}},"order":["main","custom_page_banner_k8Ybqw","custom_materials_dGFBCt","custom_craft_story_wVKmYU"]}
+{
+  "sections": {
+    "banner": {
+      "type": "custom-page-banner",
+      "settings": {
+        "eyebrow": "Materials",
+        "title": "What we build with",
+        "text": "<p>Honest materials, chosen for their character and their durability. From richly grained Sheesham to hand-woven natural cane, every material in our furniture is selected to age beautifully in your home.</p>",
+        "image": "shopify:\/\/shop_images\/Kiln-dried_solid_timber.png",
+        "show_meta": true,
+        "meta_1_text": "Solid hardwoods",
+        "meta_2_text": "Natural cane",
+        "meta_3_text": "Low-VOC finishes",
+        "btn_text": "Shop the collection",
+        "btn_link": "shopify:\/\/collections\/all"
+      }
+    },
+    "materials": {
+      "type": "custom-materials",
+      "blocks": {
+        "material_1": { "type": "material", "settings": { "title": "Sheesham Wood", "color_bg": "linear-gradient(135deg, #8a5a34, #5c3a22)" } },
+        "material_2": { "type": "material", "settings": { "title": "Mango Wood", "color_bg": "linear-gradient(135deg, #e0c096, #c79c6a)" } },
+        "material_3": { "type": "material", "settings": { "title": "Natural Cane", "color_bg": "linear-gradient(135deg, #e5c99f, #cfa878)" } },
+        "material_4": { "type": "material", "settings": { "title": "Natural Linen", "color_bg": "linear-gradient(135deg, #efe9dd, #ddd3c3)" } },
+        "material_5": { "type": "material", "settings": { "title": "Bouclé", "color_bg": "linear-gradient(135deg, #fbf8f3, #e9e3d8)" } }
+      },
+      "block_order": ["material_1", "material_2", "material_3", "material_4", "material_5"],
+      "settings": {
+        "eyebrow": "Materials",
+        "heading": "What we build with"
+      }
+    },
+    "split": {
+      "type": "custom-craft-split",
+      "blocks": {
+        "split_1": {
+          "type": "split_block",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Kiln-dried_solid_timber.png",
+            "layout": "left",
+            "bg_color": "white",
+            "eyebrow": "Solid hardwood",
+            "heading": "Sheesham & mango wood",
+            "text": "<p>Our frames are cut from premium Sheesham and sustainably farmed mango wood — kiln-dried to a stable moisture content so your furniture won't warp, split or creak as seasons change.</p><ul><li>Rich, unique grain on every piece</li><li>Kiln-dried for lifelong stability</li><li>Finished with natural, low-VOC oils</li></ul>"
+          }
+        },
+        "split_2": {
+          "type": "split_block",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/craft-hand-woven-cane.jpg",
+            "layout": "right",
+            "bg_color": "bone",
+            "eyebrow": "Hand-woven",
+            "heading": "Natural cane",
+            "text": "<p>Breathable, lightweight and endlessly tactile, our cane panels are hand-woven from sustainably harvested rattan. It's a painstaking process that rewards you with furniture that feels airy yet deeply grounded.</p><ul><li>Hand-woven panel by panel</li><li>Even, uniform tension</li><li>Ages with a warm honey patina</li></ul>"
+          }
+        }
+      },
+      "block_order": ["split_1", "split_2"]
+    },
+    "story": {
+      "type": "custom-craft-story",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/Finished_and_inspected.png",
+        "eyebrow": "Sourcing",
+        "heading": "Sourced with care",
+        "text": "<p>Every material we use is chosen for its character, durability and responsible origin — so what you bring home is beautiful, and made the right way.</p><ul><li><strong>Sustainably harvested cane</strong> from managed sources.</li><li><strong>Farmed mango wood</strong> that reduces waste from fruit orchards.</li><li><strong>Natural, non-toxic finishes</strong> that are safe for your home.</li><li><strong>Built to be repaired</strong>, not replaced — a lifetime of use.</li></ul>"
+      }
+    }
+  },
+  "order": ["banner", "materials", "split", "story"]
+}

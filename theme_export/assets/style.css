@@ -448,39 +448,8 @@ body .product__media .badge--new { background: #fff; color: var(--ink); box-shad
   .reveal,
   .reveal-img { opacity: 1; transform: none; clip-path: none }
 }
-.page-banner { padding: 6rem 2rem 4rem; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center }
-.page-banner.bg-bone { background-color: var(--bone, #fbf8f3) }
-.page-banner.bg-white { background-color: #ffffff }
-.page-banner__title { font-family: var(--font-heading-family, inherit); font-size: clamp(2.5rem, 5vw, 4.5rem); color: #1a1a1a; margin-bottom: 1rem; font-weight: 600; letter-spacing: -0.02em; margin-top: 0 }
-.page-banner__text { font-size: 1.1rem; color: #4a4a4a; max-width: 650px; line-height: 1.6; margin: 0 auto 2rem }
-.page-banner__btn { display: inline-block; padding: 14px 32px; background-color: #1a1a1a; color: #ffffff; text-decoration: none; border-radius: 30px; font-weight: 500; transition: transform 0.3s ease, background-color 0.3s ease }
-.page-banner__btn:hover { background-color: #333333; transform: translateY(-2px) }
-.craft-split { overflow: hidden }
-.craft-row { padding: 5rem 0 }
-.craft-row.bg-bone { background-color: var(--bone, #fbf8f3) }
-.craft-row.bg-white { background-color: #ffffff }
-.craft-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; align-items: center }
-.craft-content { max-width: 500px; margin: 0 auto; text-align: center }
-.craft-content h2 { font-family: var(--font-heading-family, inherit); font-size: 2.2rem; margin-bottom: 1.5rem; color: #1a1a1a }
-.craft-content p { color: #4a4a4a; line-height: 1.7; font-size: 1.1rem }
-.craft-img img { width: 100%; height: auto; border-radius: 4px; object-fit: cover }
-.craft-features { padding: 5rem 0; text-align: center }
-.craft-features.bg-bone { background-color: var(--bone, #fbf8f3) }
-.craft-features.bg-white { background-color: #ffffff }
-.craft-features__grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; max-width: 1200px; margin: 0 auto; padding: 0 2rem }
-.feature-item { display: flex; flex-direction: column; align-items: center }
-.feature-item__icon { width: 60px; height: 60px; margin-bottom: 1.5rem; object-fit: contain }
-.feature-item h3 { font-family: var(--font-heading-family, inherit); font-size: 1.2rem; color: #1a1a1a; margin-bottom: 0.5rem; font-weight: 600 }
-.feature-item p { font-size: 0.95rem; color: #4a4a4a; line-height: 1.5; margin: 0; max-width: 250px }
-.craft-story { background-color: #8c4a30; color: #ffffff; overflow: hidden }
-.craft-story__grid { display: grid; grid-template-columns: 1fr }
-.craft-story__img img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 350px }
-.craft-story__content { padding: 4rem 2rem; display: flex; flex-direction: column; justify-content: center; max-width: 600px; margin: 0 auto }
-.craft-story__content h2 { font-family: var(--font-heading-family, inherit); color: #ffffff; font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 1.5rem }
-.craft-story__content .rte { color: #ffffff !important; font-size: 1.1rem }
-.craft-story__content .rte ul { list-style: none; padding: 0; margin: 1.5rem 0 }
-.craft-story__content .rte li { margin-bottom: 1rem; position: relative; padding-left: 1.5rem }
-.craft-story__content .rte li::before { content: "✓"; position: absolute; left: 0; color: #ffffff; font-weight: bold }
+/* Content-page sections (page banner, craft split/features/story) now live in
+   dews-pages.css and are loaded by those sections. */
 
 /* =========================================================
     8. COLLECTION PAGE OVERHAUL (Clean Banner & Layout)
@@ -662,16 +631,6 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
   .footer__brand { grid-column: 1/-1 }
   .footer__col--last { grid-column: auto }
 }
-@media screen and (min-width:769px) {
-  .craft-grid { grid-template-columns: 1fr 1fr; gap: 6rem }
-  .craft-content { text-align: left; margin: 0 }
-  .craft-row.image-right .craft-grid { direction: rtl }
-  .craft-row.image-right .craft-content { direction: ltr }
-  .craft-story__grid { grid-template-columns: 1fr 1fr }
-  .craft-story__content { padding: 5rem 4rem; margin: 0 }
-  .craft-features__grid { grid-template-columns: repeat(4, 1fr) }
-}
-
 @media (max-width:768px) {
   body { padding-bottom: 0 }
   .mobile-cta { display: flex }

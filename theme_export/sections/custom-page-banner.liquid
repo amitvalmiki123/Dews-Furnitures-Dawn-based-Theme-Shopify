@@ -1,50 +1,139 @@
-<section class="page-banner bg-{{ section.settings.bg_color }}">
-  <h1 class="page-banner__title">{{ section.settings.title | default: page.title }}</h1>
-  
-  {%- if section.settings.text != blank -%}
-    <div class="page-banner__text">{{ section.settings.text }}</div>
-  {%- endif -%}
-  
-  {%- if section.settings.btn_text != blank and section.settings.btn_link != blank -%}
-    <a href="{{ section.settings.btn_link }}" class="page-banner__btn">{{ section.settings.btn_text }}</a>
-  {%- endif -%}
+{{ 'dews-pages.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  Dew's Furniture — premium page banner (Our Craft / Materials / Sustainability).
+  Mirrors the collection banner: breadcrumb + two-column hero
+  (eyebrow + heading + description + 3 meta badges + CTA left; image right).
+  Heading falls back to the page title when left blank.
+{%- endcomment -%}
+
+{%- assign heading = section.settings.title | default: page.title -%}
+
+<div class="page-head">
+  <div class="container">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb">
+        <li><a href="{{ routes.root_url }}">Home</a></li>
+        <li><span aria-current="page">{{ heading | escape }}</span></li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<section class="section collection-banner page-hero-section" aria-labelledby="page-hero-{{ section.id }}">
+  <div class="container">
+    <div class="phero{% if section.settings.image == blank %} phero--single{% endif %}">
+      <div class="phero__text">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow"><i class="dew" aria-hidden="true"></i> {{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h1 id="page-hero-{{ section.id }}">{{ heading | escape }}</h1>
+
+        {%- if section.settings.text != blank -%}
+          <div class="phero__desc">{{ section.settings.text }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.show_meta -%}
+          <div class="phero__meta">
+            {%- if section.settings.meta_1_text != blank -%}
+              <div><svg aria-hidden="true"><use href="#i-hammer"/></svg> {{ section.settings.meta_1_text }}</div>
+            {%- endif -%}
+            {%- if section.settings.meta_2_text != blank -%}
+              <div><svg aria-hidden="true"><use href="#i-truck"/></svg> {{ section.settings.meta_2_text }}</div>
+            {%- endif -%}
+            {%- if section.settings.meta_3_text != blank -%}
+              <div><svg aria-hidden="true"><use href="#i-rotate"/></svg> {{ section.settings.meta_3_text }}</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.btn_text != blank and section.settings.btn_link != blank -%}
+          <a class="btn phero__cta" href="{{ section.settings.btn_link }}">{{ section.settings.btn_text }} <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.image != blank -%}
+        <div class="phero__media">
+          <img
+            src="{{ section.settings.image | image_url: width: 1200 }}"
+            alt="{{ section.settings.image.alt | default: heading | escape }}"
+            width="1000"
+            height="625"
+            loading="eager"
+            decoding="async"
+          >
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
 </section>
 
 {% schema %}
 {
   "name": "Custom Page Banner",
+  "tag": "section",
+  "class": "section collection-banner-section",
   "settings": [
     {
-      "type": "select",
-      "id": "bg_color",
-      "label": "Background Color",
-      "options": [
-        { "value": "bone", "label": "Bone (Theme Default)" },
-        { "value": "white", "label": "White" }
-      ],
-      "default": "bone"
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Our craft"
     },
     {
       "type": "text",
       "id": "title",
-      "label": "Custom Title",
+      "label": "Heading",
       "info": "Leave blank to use the page's actual title."
     },
     {
       "type": "richtext",
       "id": "text",
       "label": "Description",
-      "default": "<p>Discover the story, materials, and craftsmanship.</p>"
+      "default": "<p>Every frame is cut, joined and finished by hand — no shortcuts, no staples pretending to be joinery.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_meta",
+      "label": "Show meta badges",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "meta_1_text",
+      "label": "Meta badge 1",
+      "default": "Hand-woven cane"
+    },
+    {
+      "type": "text",
+      "id": "meta_2_text",
+      "label": "Meta badge 2",
+      "default": "Kiln-dried solid timber"
+    },
+    {
+      "type": "text",
+      "id": "meta_3_text",
+      "label": "Meta badge 3",
+      "default": "30-day returns"
+    },
+    {
+      "type": "header",
+      "content": "Call to action"
     },
     {
       "type": "text",
       "id": "btn_text",
-      "label": "Button Text"
+      "label": "Button text"
     },
     {
       "type": "url",
       "id": "btn_link",
-      "label": "Button Link"
+      "label": "Button link"
     }
   ],
   "presets": [

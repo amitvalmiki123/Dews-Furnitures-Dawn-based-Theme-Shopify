@@ -1,24 +1,31 @@
+{{ 'dews-pages.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  Dew's Furniture — premium full-width story (dark panel): image left, content
+  right with a checklist. Rich text <ul> renders as styled tick-list items.
+{%- endcomment -%}
+
 <section class="craft-story">
   <div class="craft-story__grid">
-    
     <div class="craft-story__img">
       {%- if section.settings.image != blank -%}
-        {{ section.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy' }}
+        {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy' }}
       {%- else -%}
         {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
       {%- endif -%}
     </div>
 
     <div class="craft-story__content">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> {{ section.settings.eyebrow }}</p>
+      {%- endif -%}
       {%- if section.settings.heading != blank -%}
         <h2>{{ section.settings.heading }}</h2>
       {%- endif -%}
-      
       {%- if section.settings.text != blank -%}
         <div class="rte">{{ section.settings.text }}</div>
       {%- endif -%}
     </div>
-    
   </div>
 </section>
 
@@ -29,19 +36,25 @@
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Section Image"
+      "label": "Section image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "The difference"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "The Dew's Difference"
+      "default": "The Dew's difference"
     },
     {
       "type": "richtext",
       "id": "text",
-      "label": "Text/Bullet Points",
-      "default": "<p>Add your story here. Use bullet points for a clean list layout.</p>"
+      "label": "Text / checklist",
+      "default": "<p>Add your story here. Use a bullet list for the tick-list layout.</p>"
     }
   ],
   "presets": [

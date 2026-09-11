@@ -1,0 +1,110 @@
+/* =============================================================================
+   DEW'S FURNITURE — CONTENT PAGES (Our Craft / Materials / Sustainability)
+   Premium page hero + story sections. Loaded only by the page sections below.
+   Shares the design tokens from style.css `:root` (--ink, --paper, --bone,
+   --cane, --muted, --line, --r-*, --t-*, --ease, etc.).
+   ============================================================================= */
+
+/* =============================================================================
+   1. PAGE HERO (mirrors the collection .chero banner)
+   ============================================================================= */
+/* zero out the base `.section` padding on the banner, then re-add a tight,
+   collection-style rhythm + paper background */
+.shopify-section.collection-banner-section { padding: 0 !important; margin: 0 !important; background: var(--paper); }
+.collection-banner { padding-block: clamp(1.5rem, 3vw, 2.5rem) clamp(2rem, 4vw, 3rem); }
+
+/* two-column hero: text left, media right */
+.phero { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(2rem, 4vw, 4rem); align-items: center; }
+.phero--single { grid-template-columns: minmax(0, 1fr); }
+.phero--single .phero__text { max-width: 62ch; }
+.phero__text .eyebrow { margin-bottom: 1.1rem; }
+.phero h1 { font-size: var(--t-display); line-height: 1.02; letter-spacing: -0.03em; margin: 0; color: var(--ink); }
+.phero__desc { margin-top: 1.15rem; color: var(--muted); font-size: var(--t-lead); line-height: 1.75; max-width: 54ch; }
+.phero__desc p { margin: 0; }
+.phero__desc p + p { margin-top: 1rem; }
+.phero__meta { display: flex; flex-wrap: wrap; gap: 1.75rem; margin-top: 1.75rem; font-size: var(--t-sm); color: var(--muted); }
+.phero__meta div { display: inline-flex; align-items: center; gap: 0.5rem; }
+.phero__meta svg { width: 17px; height: 17px; color: var(--ink-3); flex: none; }
+.phero__cta { margin-top: 2rem; display: inline-flex; }
+.phero__media { border-radius: var(--r-md); overflow: hidden; aspect-ratio: 16/10; background: var(--bone); }
+.phero__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* =============================================================================
+   2. CRAFT SPLIT — alternating image + text rows
+   ============================================================================= */
+.craft-split { background: var(--paper); }
+.craft-row { padding-block: clamp(3.5rem, 7vw, 6.5rem); }
+.craft-row.bg-bone { background: var(--bone); }
+.craft-row.bg-white { background: var(--paper); }
+.craft-row.bg-ink { background: var(--ink); }
+.craft-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2.5rem, 5vw, 6rem); align-items: center; }
+.craft-row.image-right .craft-img { order: 2; }
+.craft-img { position: relative; border-radius: var(--r-md); overflow: hidden; aspect-ratio: 4/5; background: var(--bone-deep); }
+.craft-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.2s var(--ease); }
+.craft-img:hover img { transform: scale(1.04); }
+.craft-content .eyebrow { margin-bottom: 1.1rem; }
+.craft-content h2 { font-size: var(--t-h2); letter-spacing: -0.02em; line-height: 1.05; margin: 0; color: var(--ink); }
+.craft-content .rte { margin-top: 1.25rem; color: var(--muted); font-size: var(--t-lead); line-height: 1.8; }
+.craft-content .rte p { margin: 0 0 1rem; }
+.craft-content .rte p:last-child { margin-bottom: 0; }
+.craft-content .rte ul { padding-left: 1.15rem; margin: 0.5rem 0 1rem; display: grid; gap: 0.55rem; }
+.craft-content .rte li::marker { color: var(--cane); }
+.craft-row.bg-ink .craft-content h2 { color: #fff; }
+.craft-row.bg-ink .craft-content .rte { color: #b9afa6; }
+.craft-row.bg-ink .eyebrow { color: var(--cane); }
+
+/* =============================================================================
+   3. CRAFT FEATURES — premium pillar cards
+   ============================================================================= */
+.craft-features { padding-block: clamp(3.5rem, 7vw, 6rem); background: var(--paper); }
+.craft-features.bg-bone { background: var(--bone); }
+.craft-features__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1.25rem, 2.5vw, 2rem); }
+.feature-item {
+  display: flex; flex-direction: column; gap: 0.9rem;
+  padding: clamp(1.5rem, 2.5vw, 2.25rem);
+  border: 1px solid var(--line); border-radius: var(--r-md); background: #fff;
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+.feature-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.feature-item__icon { width: 46px; height: 46px; object-fit: contain; }
+.feature-item h3 { font-size: 1.08rem; font-weight: 600; letter-spacing: -0.01em; margin: 0; color: var(--ink); }
+.feature-item p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; margin: 0; }
+
+/* =============================================================================
+   4. CRAFT STORY — full-width image + checklist panel
+   ============================================================================= */
+.craft-story { background: var(--ink); color: var(--bone); }
+.craft-story__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; }
+.craft-story__img img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 420px; }
+.craft-story__content { padding: clamp(3rem, 6vw, 5.5rem); display: flex; flex-direction: column; justify-content: center; }
+.craft-story__content .eyebrow { color: var(--cane); margin-bottom: 1.1rem; }
+.craft-story__content h2 { color: #fff; font-size: var(--t-h2); letter-spacing: -0.02em; margin: 0 0 1.5rem; }
+.craft-story__content .rte { color: #b9afa6; font-size: var(--t-lead); line-height: 1.8; }
+.craft-story__content .rte p { margin: 0 0 1.1rem; }
+.craft-story__content .rte p:last-child { margin-bottom: 0; }
+.craft-story__content .rte ul { list-style: none; padding: 0; margin: 0.25rem 0 0; display: grid; gap: 1rem; }
+.craft-story__content .rte li { position: relative; padding-left: 2.2rem; }
+.craft-story__content .rte li::before {
+  content: '\2713'; position: absolute; left: 0; top: 0.05rem;
+  width: 1.45rem; height: 1.45rem; border-radius: 50%;
+  background: var(--cane); color: var(--ink); font-size: 0.85rem; font-weight: 700;
+  display: grid; place-items: center;
+}
+.craft-story__content .rte strong { color: #fff; }
+
+/* =============================================================================
+   5. RESPONSIVE
+   ============================================================================= */
+@media (max-width: 900px) {
+  .phero { grid-template-columns: minmax(0, 1fr); }
+  .phero__media { order: -1; }
+  .craft-grid { grid-template-columns: minmax(0, 1fr); }
+  .craft-row.image-right .craft-img { order: 0; }
+  .craft-story__grid { grid-template-columns: minmax(0, 1fr); }
+  .craft-story__img img { min-height: 280px; }
+  .craft-features__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .craft-features__grid { grid-template-columns: minmax(0, 1fr); }
+  .phero__meta { gap: 1rem; }
+}

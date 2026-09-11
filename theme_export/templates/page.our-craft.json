@@ -1,1 +1,135 @@
-{"sections":{"custom_page_banner_iKUMQL":{"type":"custom-page-banner","name":"Custom Page Banner","settings":{"bg_color":"bone","title":"","text":"<p>Discover the story, materials, and craftsmanship.<\/p>","btn_text":"","btn_link":""}},"custom_craft_split_ntwjR6":{"type":"custom-craft-split","blocks":{"split_block_eMxiGY":{"type":"split_block","settings":{"image":"shopify:\/\/shop_images\/Finished_and_inspected.png","layout":"left","bg_color":"white","heading":"Designed for Life, Built by Hand","text":"<p>Every piece at Dew's Furniture begins with a commitment to timeless design and structural integrity. Our master artisans blend traditional woodworking techniques with modern sensibilities, ensuring that every joint is secure and every finish is flawless. We don't believe in mass production; we believe in creating heirlooms that age beautifully with your home.<br\/><\/p>"}},"split_block_WafKRD":{"type":"split_block","settings":{"image":"shopify:\/\/shop_images\/craft-hand-woven-cane.jpg","layout":"right","bg_color":"bone","heading":"The Art of Natural Cane","text":"<p>We source only the finest, sustainably harvested natural cane for our signature woven panels. Hand-woven with precision and care, this breathable material adds a touch of organic warmth and texture to our solid wood frames. It’s a painstaking process that demands patience and skill, resulting in furniture that feels both airy and deeply grounded.<\/p>"}}},"block_order":["split_block_eMxiGY","split_block_WafKRD"],"name":"Custom Craft Split","settings":{}},"custom_craft_features_c6kGcC":{"type":"custom-craft-features","blocks":{"feature_JEQDqe":{"type":"feature","settings":{"icon_image":"shopify:\/\/shop_images\/shipping-icon.svg","title":"Fast Shipping","text":"Enjoy quick and reliable delivery, so your handcrafted treasures reach you on time, every time."}},"feature_BkHUVc":{"type":"feature","settings":{"icon_image":"shopify:\/\/shop_images\/return.svg","title":"Easy Returns","text":"Each product is made with the finest materials and artisan craftsmanship for lasting quality and elegance."}},"feature_AEzgAi":{"type":"feature","settings":{"icon_image":"shopify:\/\/shop_images\/secure.svg","title":"Secured Payment","text":"Shop with confidence. We offer safe and encrypted payment options for a smooth shopping experience."}},"feature_CkEAXA":{"type":"feature","settings":{"icon_image":"shopify:\/\/shop_images\/support.svg","title":"24\/7 Support","text":"Our commitment goes beyond purchase — enjoy dedicated support and a lifetime warranty on selected handcrafted pieces."}}},"block_order":["feature_JEQDqe","feature_BkHUVc","feature_AEzgAi","feature_CkEAXA"],"name":"Custom Craft Features","settings":{"bg_color":"white"}},"custom_craft_story_PVCCbT":{"type":"custom-craft-story","name":"Custom Craft Story","settings":{"image":"shopify:\/\/shop_images\/Kiln-dried_solid_timber.png","heading":"The Dew's Difference","text":"<p>What sets us apart isn't just how our furniture looks, but how it's made. We prioritize quality over speed, sourcing ethically and building responsibly.<\/p><ul><li><strong>Kiln-Dried Solid Wood:<\/strong> We use premium Sheesham and Mango wood, carefully kiln-dried to prevent warping and ensure lifelong durability.<\/li><li><strong>Small-Batch Production:<\/strong> Built slowly and honestly in small batches to maintain rigorous quality control on every single piece.<\/li><li><strong>Eco-Conscious Finishes:<\/strong> Protected with natural, non-toxic blends that highlight the wood's authentic grain without harming the environment.<\/li><li><strong>Direct to Your Door:<\/strong> By cutting out the middlemen, we deliver artisanal, handcrafted quality at an honest and accessible price.<\/li><\/ul>"}},"main":{"type":"main-page","disabled":true,"settings":{"padding_top":28,"padding_bottom":28}}},"order":["custom_page_banner_iKUMQL","custom_craft_split_ntwjR6","custom_craft_features_c6kGcC","custom_craft_story_PVCCbT","main"]}
+{
+  "sections": {
+    "banner": {
+      "type": "custom-page-banner",
+      "settings": {
+        "eyebrow": "Our craft",
+        "title": "Nothing here was made in a hurry",
+        "text": "<p>Every frame is cut, joined and finished by hand. The cane is woven panel by panel — no shortcuts, no staples pretending to be joinery. Just honest materials and slow, deliberate work built to be lived with for decades.</p>",
+        "image": "shopify:\/\/shop_images\/craft-hand-woven-cane.jpg",
+        "show_meta": true,
+        "meta_1_text": "Hand-woven cane",
+        "meta_2_text": "Kiln-dried solid timber",
+        "meta_3_text": "40+ hours per piece",
+        "btn_text": "Shop the collection",
+        "btn_link": "shopify:\/\/collections\/all"
+      }
+    },
+    "split": {
+      "type": "custom-craft-split",
+      "blocks": {
+        "split_1": {
+          "type": "split_block",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Finished_and_inspected.png",
+            "layout": "left",
+            "bg_color": "white",
+            "eyebrow": "Our process",
+            "heading": "Designed for life, built by hand",
+            "text": "<p>Every piece at Dew's begins with a commitment to timeless design and structural integrity. Our master artisans blend traditional woodworking with modern sensibilities, so every joint is secure and every finish is flawless.</p><ul><li>Solid Sheesham &amp; mango hardwood frames</li><li>Mortise-and-tenon joinery, not staples</li><li>Hand-sanded to a smooth, silky touch</li></ul>"
+          }
+        },
+        "split_2": {
+          "type": "split_block",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/craft-hand-woven-cane.jpg",
+            "layout": "right",
+            "bg_color": "bone",
+            "eyebrow": "Signature detail",
+            "heading": "The art of natural cane",
+            "text": "<p>We source only the finest, sustainably harvested cane for our woven panels. Hand-woven with precision and patience, this breathable material adds organic warmth and texture to our solid-wood frames.</p><ul><li>Hand-woven panel by panel</li><li>Uniform tension, even weave</li><li>Naturally breathable &amp; lightweight</li></ul>"
+          }
+        }
+      },
+      "block_order": ["split_1", "split_2"]
+    },
+    "craft": {
+      "type": "custom-craft",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Kiln-dried_solid_timber.png",
+            "title": "Kiln-dried solid timber",
+            "text": "Sheesham and mango, dried to a stable moisture content so frames don't warp, split or creak as seasons change."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/craft-hand-woven-cane.jpg",
+            "title": "Hand-woven natural cane",
+            "text": "Tight, uniform rattan webbing woven by artisans who spend decades mastering tension."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Finished_and_inspected.png",
+            "title": "Hand-rubbed finishes",
+            "text": "Natural oils and low-VOC waxes applied by hand to bring out the grain without sealing it under plastic."
+          }
+        }
+      },
+      "block_order": ["step_1", "step_2", "step_3"],
+      "settings": {
+        "eyebrow": "Our craft",
+        "heading": "Nothing here was made in a hurry",
+        "description": "Every frame is cut, joined and finished by hand. The cane is woven panel by panel — no shortcuts, no staples pretending to be joinery.",
+        "badge_number": "40+",
+        "badge_text": "Hours per piece",
+        "btn_text": "Shop the collection",
+        "btn_link": "shopify:\/\/collections\/all"
+      }
+    },
+    "features": {
+      "type": "custom-craft-features",
+      "blocks": {
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "title": "Kiln-dried timber",
+            "text": "Sheesham and mango dried to a stable moisture content so frames never warp or creak."
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "title": "Hand-woven cane",
+            "text": "Tight, uniform rattan webbing woven by artisans who spend decades mastering tension."
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "title": "Mortise & tenon",
+            "text": "Traditional joints, not staples — every corner is built to outlast trends."
+          }
+        },
+        "feature_4": {
+          "type": "feature",
+          "settings": {
+            "title": "Low-VOC finishes",
+            "text": "Natural oils and waxes that bring out the grain without sealing it under plastic."
+          }
+        }
+      },
+      "block_order": ["feature_1", "feature_2", "feature_3", "feature_4"],
+      "settings": {
+        "bg_color": "bone",
+        "eyebrow": "Why it lasts",
+        "heading": "Crafted to endure"
+      }
+    },
+    "story": {
+      "type": "custom-craft-story",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/craft-finished-inspected.jpg",
+        "eyebrow": "The difference",
+        "heading": "The Dew's difference",
+        "text": "<p>What sets us apart isn't just how our furniture looks, but how it's made. We prioritise quality over speed, sourcing ethically and building responsibly.</p><ul><li><strong>Kiln-dried solid wood:</strong> premium Sheesham and mango, carefully dried to prevent warping.</li><li><strong>Small-batch production:</strong> built slowly and honestly in small batches for rigorous quality control.</li><li><strong>Eco-conscious finishes:</strong> natural, non-toxic blends that highlight the authentic grain.</li><li><strong>Direct to your door:</strong> by cutting out middlemen, we deliver artisanal quality at an honest price.</li></ul>"
+      }
+    }
+  },
+  "order": ["banner", "split", "craft", "features", "story"]
+}

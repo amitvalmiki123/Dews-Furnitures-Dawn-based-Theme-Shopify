@@ -1,0 +1,96 @@
+{
+  "sections": {
+    "banner": {
+      "type": "custom-page-banner",
+      "settings": {
+        "eyebrow": "Sustainability",
+        "title": "Built to last. Sourced with care.",
+        "text": "<p>We believe the most sustainable piece of furniture is the one you never have to replace. That's why we build slowly, from responsibly sourced materials, with finishes that are kind to your home and the planet.</p>",
+        "image": "shopify:\/\/shop_images\/Finished_and_inspected.png",
+        "show_meta": true,
+        "meta_1_text": "Responsibly sourced timber",
+        "meta_2_text": "Low-VOC finishes",
+        "meta_3_text": "Plastic-free packaging",
+        "btn_text": "Shop consciously",
+        "btn_link": "shopify:\/\/collections\/all"
+      }
+    },
+    "split": {
+      "type": "custom-craft-split",
+      "blocks": {
+        "split_1": {
+          "type": "split_block",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Kiln-dried_solid_timber.png",
+            "layout": "left",
+            "bg_color": "white",
+            "eyebrow": "Materials",
+            "heading": "Responsibly sourced timber",
+            "text": "<p>Our Sheesham is sourced from managed plantations, and our mango wood is a by-product of fruit farming that would otherwise go to waste. Every board is dried, cut and finished to last a lifetime.</p><ul><li>Farmed, not forest-cleared</li><li>Kiln-dried for durability</li><li>Small-batch, low-waste production</li></ul>"
+          }
+        },
+        "split_2": {
+          "type": "split_block",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/craft-finished-inspected.jpg",
+            "layout": "right",
+            "bg_color": "bone",
+            "eyebrow": "Finishes",
+            "heading": "Low-impact finishes",
+            "text": "<p>We protect our wood with natural oils and low-VOC waxes instead of harsh lacquers. The grain stays visible, the air in your home stays clean, and the finish ages gracefully rather than peeling.</p><ul><li>Natural, non-toxic oils</li><li>Low-VOC, no harsh solvents</li><li>Hand-rubbed to a soft sheen</li></ul>"
+          }
+        }
+      },
+      "block_order": ["split_1", "split_2"]
+    },
+    "features": {
+      "type": "custom-craft-features",
+      "blocks": {
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "title": "Farmed timber",
+            "text": "Mango wood salvaged from fruit orchards and Sheesham from managed plantations."
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "title": "Low-VOC finishes",
+            "text": "Natural oils and waxes — no harsh solvents in your home."
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "title": "Small-batch build",
+            "text": "Made slowly in small batches, cutting waste and overproduction."
+          }
+        },
+        "feature_4": {
+          "type": "feature",
+          "settings": {
+            "title": "Plastic-free packaging",
+            "text": "Recycled cardboard and paper wrap — nothing that lingers in landfill."
+          }
+        }
+      },
+      "block_order": ["feature_1", "feature_2", "feature_3", "feature_4"],
+      "settings": {
+        "bg_color": "white",
+        "eyebrow": "Our pillars",
+        "heading": "Four ways we tread lightly"
+      }
+    },
+    "story": {
+      "type": "custom-craft-story",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/craft-hand-woven-cane.jpg",
+        "eyebrow": "Our promise",
+        "heading": "Our commitments",
+        "text": "<p>Sustainability isn't a badge we bolt on — it's the way we've always worked. These are the promises we make on every single piece.</p><ul><li><strong>Built for decades:</strong> heirloom-quality joinery so you buy once, not twice.</li><li><strong>Repairable by design:</strong> parts that can be re-oiled, re-woven and re-finished.</li><li><strong>Responsible sourcing:</strong> farmed timber and managed cane, never clear-cut.</li><li><strong>Honest materials:</strong> no veneers hiding chipboard, no plastic pretending to be wood.</li></ul>"
+      }
+    }
+  },
+  "order": ["banner", "split", "features", "story"]
+}

@@ -1,3 +1,10 @@
+{{ 'dews-pages.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  Dew's Furniture — premium alternating image + text rows (Our Craft / Materials).
+  Each block = one row: eyebrow + heading + rich text, with image left or right.
+{%- endcomment -%}
+
 <section class="craft-split">
   {%- for block in section.blocks -%}
     <div class="craft-row bg-{{ block.settings.bg_color }} {% if block.settings.layout == 'right' %}image-right{% endif %}" {{ block.shopify_attributes }}>
@@ -5,12 +12,15 @@
         <div class="craft-grid">
           <div class="craft-img">
             {%- if block.settings.image != blank -%}
-              {{ block.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy' }}
+              {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy' }}
             {%- else -%}
               {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
             {%- endif -%}
           </div>
           <div class="craft-content">
+            {%- if block.settings.eyebrow != blank -%}
+              <p class="eyebrow"><i class="dew" aria-hidden="true"></i> {{ block.settings.eyebrow }}</p>
+            {%- endif -%}
             {%- if block.settings.heading != blank -%}
               <h2>{{ block.settings.heading }}</h2>
             {%- endif -%}
@@ -41,28 +51,35 @@
         {
           "type": "select",
           "id": "layout",
-          "label": "Desktop Image Placement",
+          "label": "Desktop image placement",
           "options": [
-            { "value": "left", "label": "Image on Left" },
-            { "value": "right", "label": "Image on Right" }
+            { "value": "left", "label": "Image on left" },
+            { "value": "right", "label": "Image on right" }
           ],
           "default": "left"
         },
         {
           "type": "select",
           "id": "bg_color",
-          "label": "Background Color",
+          "label": "Background color",
           "options": [
-            { "value": "white", "label": "White" },
-            { "value": "bone", "label": "Bone" }
+            { "value": "white", "label": "Paper" },
+            { "value": "bone", "label": "Bone" },
+            { "value": "ink", "label": "Ink (dark)" }
           ],
           "default": "white"
         },
         {
           "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "default": "Our craft"
+        },
+        {
+          "type": "text",
           "id": "heading",
           "label": "Heading",
-          "default": "Our Process"
+          "default": "Designed for life, built by hand"
         },
         {
           "type": "richtext",
@@ -77,8 +94,8 @@
     {
       "name": "Custom Craft Split",
       "blocks": [
-        { "type": "split_block", "settings": { "layout": "left", "bg_color": "bone" } },
-        { "type": "split_block", "settings": { "layout": "right", "bg_color": "white" } }
+        { "type": "split_block", "settings": { "layout": "left", "bg_color": "white" } },
+        { "type": "split_block", "settings": { "layout": "right", "bg_color": "bone" } }
       ]
     }
   ]
