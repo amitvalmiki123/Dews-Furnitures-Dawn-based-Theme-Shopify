@@ -40,7 +40,7 @@
    2. TOOLBAR (sticky: Filters pill + count | sort)
    ============================================================================= */
 .toolbar {
-  position: sticky; top: calc(var(--header-h) + var(--announce-h)); z-index: 40;
+  position: sticky; top: calc(var(--header-h) + var(--announce-h)); z-index: 150;
   display: flex; width: 100%; align-items: center; justify-content: space-between;
   gap: 1rem; flex-wrap: wrap; padding: 0.85rem 0;
   background: none; border-block: 1px solid var(--line);
