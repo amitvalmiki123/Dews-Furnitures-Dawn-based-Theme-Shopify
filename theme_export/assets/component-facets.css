@@ -5,7 +5,7 @@
 /* ==========================================
    1. GLOBAL & DESKTOP LAYOUT
 ========================================== */
-.facets-container {
+.facets-container:not(.facets-container--vertical) {
   display: flex !important;
   align-items: center !important;
   padding: 1.5rem 0 !important;
@@ -42,7 +42,7 @@
   margin: 0 !important;
 }
 
-#FacetsWrapperDesktop {
+.facets__form #FacetsWrapperDesktop {
   display: flex !important;
   align-items: center !important;
   justify-content: flex-end !important;
@@ -56,9 +56,9 @@
 }
 
 /* --- Clean Text Triggers (No Pill Backgrounds) --- */
-.facets__summary,
-.facet-filters__sort,
-.facet-filters__field {
+.facets__form .facets__summary,
+.facets__form .facet-filters__sort,
+.facets__form .facet-filters__field {
   background: transparent !important;
   border: none !important;
   padding: 8px 12px !important;
@@ -73,15 +73,15 @@
   outline: none !important;
 }
 
-.facets__summary:hover,
-.facet-filters__sort:hover,
-.facets__disclosure[open] .facets__summary {
+.facets__form .facets__summary:hover,
+.facets__form .facet-filters__sort:hover,
+.facets__form .facets__disclosure[open] .facets__summary {
   color: #000 !important;
 }
 
-.facets__summary .icon-caret,
-.facet-filters__field .icon-caret,
-.select .icon-caret {
+.facets__form .facets__summary .icon-caret,
+.facets__form .facet-filters__field .icon-caret,
+.facets__form .select .icon-caret {
   position: static !important;
   margin-left: 2px !important;
   width: 10px !important;
@@ -102,7 +102,7 @@
   border: none !important;
 }
 
-.facet-filters__sort {
+.facets__form .facet-filters__sort {
   padding-right: 0 !important; 
 }
 

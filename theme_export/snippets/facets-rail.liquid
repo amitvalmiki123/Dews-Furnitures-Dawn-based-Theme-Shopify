@@ -1,7 +1,12 @@
 {%- comment -%}
   Dew's Furniture — desktop filter rail (collection.html .filters--rail)
-  Renders a sticky accordion of facets (checkboxes / swatches / price range)
-  inside a facet-filters-form (#FacetFiltersForm) so facets.js keeps working.
+  Sticky accordion of facets (checkbox / swatch / price range) inside a
+  facet-filters-form (#FacetFiltersForm) so facets.js keeps working.
+
+  Swatches are shown when Shopify has swatch data (value.swatch) OR when the
+  filter is a colour-like filter (label contains colour/finish/fabric/…), with
+  the dews-color-hex name map as fallback so "Espresso" etc. still render a
+  round colour swatch even when no swatch was configured in Search & Discovery.
 {%- endcomment -%}
 
 {%- liquid
@@ -24,12 +29,25 @@
       <div id="FacetsWrapperDesktop">
         {%- for filter in results.filters -%}
           {%- liquid
+            assign filter_label = filter.label | downcase
             assign has_swatches = false
-            for fv in filter.values
-              if fv.swatch.color != blank or fv.swatch.image != blank
-                assign has_swatches = true
-              endif
-            endfor
+            if filter_label contains 'color'
+              or filter_label contains 'colour'
+              or filter_label contains 'finish'
+              or filter_label contains 'fabric'
+              or filter_label contains 'shade'
+              or filter_label contains 'stain'
+              or filter_label contains 'upholstery'
+              or filter_label contains 'leather'
+              assign has_swatches = true
+            endif
+            if has_swatches == false
+              for fv in filter.values
+                if fv.swatch.color != blank or fv.swatch.image != blank
+                  assign has_swatches = true
+                endif
+              endfor
+            endif
           -%}
           <details
             id="Details-{{ filter.param_name | escape }}-{{ section_id }}"
@@ -49,6 +67,7 @@
                     <div class="swatch-list">
                       {%- for value in filter.values -%}
                         {%- liquid
+                          assign input_id = 'Filter-' | append: filter.param_name | escape | append: '-' | append: forloop.index
                           assign swatch_bg = blank
                           if value.swatch.image
                             assign swatch_bg = 'url(' | append: value.swatch.image | image_url: width: 50 | append: ') center/cover'
@@ -65,29 +84,23 @@
                             assign swatch_bg = 'var(--bone-deep)'
                           endif
                         -%}
-                        <button
+                        <label
                           class="swatch-opt{% if value.active %} is-active{% endif %}"
-                          type="button"
                           style="background: {{ swatch_bg }};"
-                          aria-pressed="{{ value.active }}"
+                          title="{{ value.label | escape }}"
                           aria-label="{{ value.label | escape }}"
-                          onclick="
-                            var i=document.getElementById('Filter-{{ filter.param_name | escape }}-{{ forloop.index }}');
-                            i.checked=!i.checked;
-                            i.dispatchEvent(new Event('input',{bubbles:true}));
-                            i.dispatchEvent(new Event('change',{bubbles:true}));
-                          "
-                        ></button>
-                        <input
-                          type="checkbox"
-                          name="{{ value.param_name }}"
-                          value="{{ value.value }}"
-                          id="Filter-{{ filter.param_name | escape }}-{{ forloop.index }}"
-                          class="js-filter-input"
-                          style="display:none"
-                          {% if value.active %}checked{% endif %}
-                          {% if value.count == 0 and value.active == false %}disabled{% endif %}
                         >
+                          <input
+                            class="swatch-opt__input"
+                            type="checkbox"
+                            name="{{ value.param_name }}"
+                            value="{{ value.value }}"
+                            id="{{ input_id }}"
+                            {% if value.active %}checked{% endif %}
+                            {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                          >
+                          <span class="swatch-opt__ring" aria-hidden="true"></span>
+                        </label>
                       {%- endfor -%}
                     </div>
                   {%- else -%}
@@ -104,8 +117,17 @@
                           -%}
                           <li class="facets__item">
                             <label for="{{ input_id }}" class="check{% if is_disabled %} disabled{% endif %}">
-                              <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" id="{{ input_id }}" {% if value.active %}checked{% endif %} {% if is_disabled %}disabled{% endif %}>
-                              <span>{{- value.label | escape -}}</span>
+                              <input
+                                class="check__input"
+                                type="checkbox"
+                                name="{{ value.param_name }}"
+                                value="{{ value.value }}"
+                                id="{{ input_id }}"
+                                {% if value.active %}checked{% endif %}
+                                {% if is_disabled %}disabled{% endif %}
+                              >
+                              <span class="check__box" aria-hidden="true"></span>
+                              <span class="check__text">{{- value.label | escape -}}</span>
                               <span class="check__count">{{- value.count -}}</span>
                             </label>
                           </li>
