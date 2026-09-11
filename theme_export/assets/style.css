@@ -911,9 +911,10 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 
 .check{ display:flex; align-items:center; gap:.7rem; font-size:.88rem; color:var(--ink-2); cursor:pointer; margin:0; }
 .check input{
-  appearance:none; -webkit-appearance:none;
-  width:18px; height:18px; flex:none;
-  border:1px solid var(--line-soft); border-radius:var(--r-xs); background:var(--paper);
+  appearance:none !important; -webkit-appearance:none !important;
+  width:18px !important; height:18px !important; flex:none;
+  border:1px solid var(--line-soft) !important; border-radius:var(--r-xs) !important;
+  background:var(--paper) !important; margin:0 !important;
   display:grid; place-items:center;
   transition:background .2s var(--ease), border-color .2s var(--ease);
 }
@@ -941,21 +942,16 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 .swatch-opt[aria-pressed="true"]::after{ border-color:var(--ink); }
 
 /* --- price range facet (rail) --- */
-.price-fields{ display:flex; align-items:center; gap:.6rem; }
-.price-fields .field{ position:relative; flex:1; min-width:0; display:flex; align-items:center; }
-.facets__price.price-fields .field__input{
-  width:100% !important; min-width:0; padding:.85rem .8rem .35rem !important;
-  min-height:42px !important; height:42px !important;
+.price-fields{ display:flex; align-items:center; gap:.6rem; padding:0 !important; }
+.price-fields .price-fields__input{
+  width:100% !important; min-width:0 !important; flex:1 !important;
+  padding:.6rem .8rem !important; min-height:42px !important; height:42px !important;
   border:1px solid var(--line) !important; border-radius:var(--r-sm) !important;
   background:var(--paper) !important; font-size:.85rem !important; color:var(--ink) !important;
+  box-shadow:none !important;
 }
-.facets__price.price-fields .field__input:focus{ border-color:var(--ink) !important; outline:none; }
-.price-fields .field__label{
-  position:absolute; top:6px; left:12px; margin:0;
-  font-size:.66rem; text-transform:uppercase; letter-spacing:.04em;
-  color:var(--muted-2); pointer-events:none;
-}
-.price-fields .field-currency{ color:var(--muted-2); font-size:.85rem; flex:none; }
+.price-fields .price-fields__input::placeholder{ color:var(--muted-2); }
+.price-fields .price-fields__input:focus{ border-color:var(--ink) !important; outline:none; box-shadow:none !important; }
 .price-fields span{ color:var(--muted-2); flex:none; }
 
 /* --- active filter chips --- */

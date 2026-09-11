@@ -115,15 +115,36 @@
                   {%- endif -%}
 
                 {%- when 'price_range' -%}
-                  <div class="facets__header">
-                    {%- assign max_price_amount = filter.range_max | money | strip_html | escape -%}
-                    <span class="facets__selected">{{ 'products.facets.max_price' | t: price: max_price_amount }}</span>
-                    <facet-remove>
-                      <a href="{{ filter.url_to_remove }}" class="facets__reset link underlined-link">{{ 'products.facets.reset' | t }}</a>
-                    </facet-remove>
-                  </div>
                   <price-range class="facets__price price-fields">
-                    {% render 'price-facet', filter: filter, id_prefix: 'Filter-', filter_type: filter_type %}
+                    <label class="sr-only" for="Filter-{{ filter.label | escape }}-GTE">{{ 'products.facets.from' | t }}</label>
+                    <input
+                      class="price-fields__input"
+                      name="{{ filter.min_value.param_name }}"
+                      id="Filter-{{ filter.label | escape }}-GTE"
+                      {%- if filter.min_value.value -%} value="{{ filter.min_value.value | money_without_currency }}" {%- endif -%}
+                      type="text"
+                      inputmode="decimal"
+                      placeholder="{{ cart.currency.symbol }}0"
+                      data-pattern="\d| |,|\."
+                      data-min="0"
+                      data-max="{{ filter.range_max | money_without_currency }}"
+                      aria-label="{{ 'products.facets.from' | t }}"
+                    >
+                    <span aria-hidden="true">—</span>
+                    <label class="sr-only" for="Filter-{{ filter.label | escape }}-LTE">{{ 'products.facets.to' | t }}</label>
+                    <input
+                      class="price-fields__input"
+                      name="{{ filter.max_value.param_name }}"
+                      id="Filter-{{ filter.label | escape }}-LTE"
+                      {%- if filter.max_value.value -%} value="{{ filter.max_value.value | money_without_currency }}" {%- endif -%}
+                      type="text"
+                      inputmode="decimal"
+                      placeholder="{{ cart.currency.symbol }}{{ filter.range_max | money_without_currency }}"
+                      data-pattern="\d| |,|\."
+                      data-min="0"
+                      data-max="{{ filter.range_max | money_without_currency }}"
+                      aria-label="{{ 'products.facets.to' | t }}"
+                    >
                   </price-range>
               {%- endcase -%}
             </div>
