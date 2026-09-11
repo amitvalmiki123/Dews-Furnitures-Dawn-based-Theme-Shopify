@@ -1,0 +1,31 @@
+{% comment %}
+  Dew's Furniture — reference-style collection pager (.pager).
+  Must be used inside a {% paginate %} block. Matches /tmp/ref2/collection.html.
+  Usage: {% render 'dews-pagination', paginate: paginate %}
+{% endcomment %}
+
+{%- if paginate.parts.size > 0 -%}
+  <nav class="pager" aria-label="{{ 'general.pagination.label' | t }}">
+    {%- if paginate.previous -%}
+      <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}">
+        <svg width="15" height="15" aria-hidden="true"><use href="#i-chev-l"/></svg>
+      </a>
+    {%- endif -%}
+
+    {%- for part in paginate.parts -%}
+      {%- if part.is_link -%}
+        <a href="{{ part.url }}" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">{{ part.title }}</a>
+      {%- elsif part.title == paginate.current_page -%}
+        <span aria-current="page">{{ part.title }}</span>
+      {%- else -%}
+        <span class="is-gap" aria-hidden="true">…</span>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if paginate.next -%}
+      <a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}">
+        <svg width="15" height="15" aria-hidden="true"><use href="#i-chev-r"/></svg>
+      </a>
+    {%- endif -%}
+  </nav>
+{%- endif -%}

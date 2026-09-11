@@ -3,9 +3,14 @@
     "banner": {
       "type": "main-collection-banner",
       "settings": {
-        "show_eyebrow": true,
-        "eyebrow": "Shop the edit",
-        "show_collection_description": true
+        "eyebrow": "Collection",
+        "show_collection_description": true,
+        "description": "",
+        "image": "",
+        "show_meta": true,
+        "meta_1_text": "Hand-woven cane",
+        "meta_2_text": "Free delivery over $999",
+        "meta_3_text": "30-day returns"
       }
     },
     "product-grid": {

@@ -1,0 +1,135 @@
+{%- comment -%}
+  Dew's Furniture — desktop filter rail (collection.html .filters--rail)
+  Renders a sticky accordion of facets (checkboxes / swatches / price range)
+  inside a facet-filters-form (#FacetFiltersForm) so facets.js keeps working.
+{%- endcomment -%}
+
+{%- liquid
+  if results.url
+    assign results_url = results.url
+  else
+    assign terms = results.terms | escape
+    assign results_url = '?q=' | append: terms
+  endif
+-%}
+
+{%- if enable_filtering and results.filters.size > 0 -%}
+  <facet-filters-form class="facets">
+    <form id="FacetFiltersForm" class="facets__form-vertical">
+      <div class="filters__head">
+        <h2>{{ 'products.facets.filter_button' | t }}</h2>
+        <a class="filters__clear" href="{{ results_url }}" data-clear-filters>{{ 'products.facets.clear_all' | t }}</a>
+      </div>
+
+      <div id="FacetsWrapperDesktop">
+        {%- for filter in results.filters -%}
+          {%- liquid
+            assign has_swatches = false
+            for fv in filter.values
+              if fv.swatch.color != blank or fv.swatch.image != blank
+                assign has_swatches = true
+              endif
+            endfor
+          -%}
+          <details
+            id="Details-{{ filter.param_name | escape }}-{{ section_id }}"
+            class="facet js-filter{% if has_swatches %} facet--swatch{% endif %}"
+            data-index="{{ forloop.index }}"
+            {% if forloop.first or filter.active_values.size > 0 %}open{% endif %}
+          >
+            <summary class="facet__q facets__summary" aria-label="{{ filter.label | escape }}">
+              <span>{{ filter.label | escape }}</span>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </summary>
+
+            <div id="Facet-{{ forloop.index }}-{{ section_id }}" class="facet__panel facets__display-vertical">
+              {%- case filter.type -%}
+                {%- when 'boolean', 'list' -%}
+                  {%- if has_swatches -%}
+                    <div class="swatch-list">
+                      {%- for value in filter.values -%}
+                        {%- liquid
+                          assign swatch_bg = blank
+                          if value.swatch.image
+                            assign swatch_bg = 'url(' | append: value.swatch.image | image_url: width: 50 | append: ') center/cover'
+                          elsif value.swatch.color
+                            assign swatch_bg = 'rgb(' | append: value.swatch.color.rgb | append: ')'
+                          endif
+                          if swatch_bg == blank
+                            capture swatch_bg
+                              render 'dews-color-hex', name: value.label
+                            endcapture
+                            assign swatch_bg = swatch_bg | strip
+                          endif
+                          if swatch_bg == blank
+                            assign swatch_bg = 'var(--bone-deep)'
+                          endif
+                        -%}
+                        <button
+                          class="swatch-opt{% if value.active %} is-active{% endif %}"
+                          type="button"
+                          style="background: {{ swatch_bg }};"
+                          aria-pressed="{{ value.active }}"
+                          aria-label="{{ value.label | escape }}"
+                          onclick="
+                            var i=document.getElementById('Filter-{{ filter.param_name | escape }}-{{ forloop.index }}');
+                            i.checked=!i.checked;
+                            i.dispatchEvent(new Event('input',{bubbles:true}));
+                            i.dispatchEvent(new Event('change',{bubbles:true}));
+                          "
+                        ></button>
+                        <input
+                          type="checkbox"
+                          name="{{ value.param_name }}"
+                          value="{{ value.value }}"
+                          id="Filter-{{ filter.param_name | escape }}-{{ forloop.index }}"
+                          class="js-filter-input"
+                          style="display:none"
+                          {% if value.active %}checked{% endif %}
+                          {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                        >
+                      {%- endfor -%}
+                    </div>
+                  {%- else -%}
+                    <fieldset class="facets-wrap parent-wrap">
+                      <legend class="visually-hidden">{{ filter.label | escape }}</legend>
+                      <ul class="facets__list list-unstyled" role="list">
+                        {%- for value in filter.values -%}
+                          {%- liquid
+                            assign input_id = 'Filter-' | append: filter.param_name | escape | append: '-' | append: forloop.index
+                            assign is_disabled = false
+                            if value.count == 0 and value.active == false
+                              assign is_disabled = true
+                            endif
+                          -%}
+                          <li class="facets__item">
+                            <label for="{{ input_id }}" class="check{% if is_disabled %} disabled{% endif %}">
+                              <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" id="{{ input_id }}" {% if value.active %}checked{% endif %} {% if is_disabled %}disabled{% endif %}>
+                              <span>{{- value.label | escape -}}</span>
+                              <span class="check__count">{{- value.count -}}</span>
+                            </label>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    </fieldset>
+                  {%- endif -%}
+
+                {%- when 'price_range' -%}
+                  <div class="facets__header">
+                    {%- assign max_price_amount = filter.range_max | money | strip_html | escape -%}
+                    <span class="facets__selected">{{ 'products.facets.max_price' | t: price: max_price_amount }}</span>
+                    <facet-remove>
+                      <a href="{{ filter.url_to_remove }}" class="facets__reset link underlined-link">{{ 'products.facets.reset' | t }}</a>
+                    </facet-remove>
+                  </div>
+                  <price-range class="facets__price price-fields">
+                    {% render 'price-facet', filter: filter, id_prefix: 'Filter-', filter_type: filter_type %}
+                  </price-range>
+              {%- endcase -%}
+            </div>
+          </details>
+        {%- endfor -%}
+      </div>
+    </form>
+  </facet-filters-form>
+{%- endif -%}

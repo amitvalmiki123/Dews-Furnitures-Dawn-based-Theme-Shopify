@@ -1,13 +1,12 @@
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-facets.css' | asset_url | stylesheet_tag }}
 
 {%- comment -%}
-  Dew's Furniture — collection product grid
-  Clean toolbar (product count + facets + sort) above a 3-column
-  .grid-products grid of dews-product-card cards. Keeps the facets.js
-  hooks (#FacetFiltersForm, #ProductGridContainer, #ProductCount) so the
-  Shopify Search & Discovery filters (Availability, Price, Category, …)
-  keep working with AJAX updates.
+  Dew's Furniture — collection product grid (collection.html reference)
+  Sticky toolbar (Filters pill + count + sort) above a 2-column "shop" layout:
+  a sticky filter rail (left) and the results grid (right). Filters are powered
+  by Shopify facets (Search & Discovery) — facets.js hooks are preserved.
 {%- endcomment -%}
 
 <collection-component
@@ -17,59 +16,82 @@
   <div class="section collection-page">
     <div class="container">
       {%- paginate collection.products by section.settings.products_per_page -%}
-        {{ 'component-facets.css' | asset_url | stylesheet_tag }}
         <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
 
         {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
-          <aside
-            aria-labelledby="verticalTitle"
-            class="facets-wrapper collection-toolbar{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}"
-            id="main-collection-filters"
-            data-id="{{ section.id }}"
-          >
-            {% render 'facets',
-              results: collection,
-              enable_filtering: section.settings.enable_filtering,
-              enable_sorting: section.settings.enable_sorting,
-              filter_type: 'horizontal',
-              paginate: paginate
-            %}
-          </aside>
+          {% render 'facets',
+            results: collection,
+            enable_filtering: section.settings.enable_filtering,
+            enable_sorting: section.settings.enable_sorting,
+            filter_type: 'vertical',
+            paginate: paginate
+          %}
         {%- endif -%}
 
-        <div
-          class="product-grid-container"
-          id="ProductGridContainer"
-          {% if settings.animations_reveal_on_scroll %}
-            data-cascade
-          {% endif %}
-        >
-          {%- if collection.products.size == 0 -%}
-            <div class="collection collection--empty" id="product-grid" data-id="{{ section.id }}">
-              <div class="loading-overlay gradient"></div>
-              <div class="section-head section-head--center">
-                <div class="section-head__text">
-                  <h2 class="title title--primary">{{ 'sections.collection_template.empty' | t }}</h2>
-                  <p>
-                    {{ 'sections.collection_template.use_fewer_filters_html' | t: link: collection.url, class: 'underlined-link link' }}
-                  </p>
+        <div class="shop">
+          {%- if section.settings.enable_filtering -%}
+            <aside class="filters filters--rail" aria-label="{{ 'products.facets.filter_by_label' | t }}" id="main-collection-filters" data-id="{{ section.id }}">
+              {% render 'facets-rail',
+                results: collection,
+                enable_filtering: section.settings.enable_filtering,
+                filter_type: 'vertical',
+                section_id: section.id
+              %}
+            </aside>
+          {%- endif -%}
+
+          <div class="results" id="ProductGridContainer" {% if settings.animations_reveal_on_scroll %}data-cascade{% endif %}>
+            {%- if collection.products.size == 0 -%}
+              <div class="collection collection--empty" id="product-grid" data-id="{{ section.id }}">
+                <div class="loading-overlay gradient"></div>
+                <div class="empty">
+                  <svg aria-hidden="true"><use href="#i-search"/></svg>
+                  <h3>{{ 'sections.collection_template.empty' | t }}</h3>
+                  <p>{{ 'sections.collection_template.use_fewer_filters_html' | t: link: collection.url, class: 'underlined-link link' }}</p>
                 </div>
               </div>
-            </div>
-          {%- else -%}
-            <div class="collection">
-              <div class="loading-overlay gradient"></div>
-              <div class="grid-products" id="product-grid" data-id="{{ section.id }}">
-                {%- for product in collection.products -%}
-                  {% render 'dews-product-card', product: product, index: forloop.index %}
-                {%- endfor -%}
-              </div>
+            {%- else -%}
+              <div class="collection">
+                <div class="loading-overlay gradient"></div>
 
-              {%- if paginate.pages > 1 -%}
-                {% render 'pagination', paginate: paginate, anchor: '' %}
-              {%- endif -%}
-            </div>
-          {%- endif -%}
+                {%- comment -%} active filter chips {%- endcomment -%}
+                <div class="chips active-facets active-facets-desktop" id="activeChips">
+                  {%- for filter in collection.filters -%}
+                    {%- for value in filter.active_values -%}
+                      <facet-remove>
+                        <a href="{{ value.url_to_remove }}" class="chip">
+                          {{ filter.label }}: {{ value.label }}
+                          <span class="chip__x"><svg aria-hidden="true"><use href="#i-close"/></svg></span>
+                        </a>
+                      </facet-remove>
+                    {%- endfor -%}
+                    {%- if filter.type == 'price_range' -%}
+                      {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+                        <facet-remove>
+                          <a href="{{ filter.url_to_remove }}" class="chip">
+                            {{ filter.label }}:
+                            {%- if filter.min_value.value -%}{{ filter.min_value.value | money_without_currency }}{%- else -%}0{%- endif -%}–
+                            {%- if filter.max_value.value -%}{{ filter.max_value.value | money_without_currency }}{%- else -%}{{ filter.range_max | money_without_currency }}{%- endif -%}
+                            <span class="chip__x"><svg aria-hidden="true"><use href="#i-close"/></svg></span>
+                          </a>
+                        </facet-remove>
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+
+                <div class="grid-products" id="product-grid" data-id="{{ section.id }}">
+                  {%- for product in collection.products -%}
+                    {% render 'dews-product-card', product: product, index: forloop.index %}
+                  {%- endfor -%}
+                </div>
+
+                {%- if paginate.pages > 1 -%}
+                  {% render 'dews-pagination', paginate: paginate %}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
         </div>
       {%- endpaginate -%}
     </div>
@@ -91,10 +113,6 @@
       "default": 12,
       "label": "Products per page",
       "info": "Multiples of 3 keep the 3-column grid balanced."
-    },
-    {
-      "type": "header",
-      "content": "Filtering and sorting"
     },
     {
       "type": "checkbox",
