@@ -21,9 +21,9 @@
   </div>
 </div>
 
-<section class="section section--tight" aria-labelledby="coll-title-{{ section.id }}">
+<section class="section collection-banner" aria-labelledby="coll-title-{{ section.id }}">
   <div class="container">
-    <div class="chero">
+    <div class="chero{% if hero_image == blank %} chero--single{% endif %}">
       <div class="chero__text">
         {%- if section.settings.eyebrow != blank -%}
           <p class="eyebrow"><i class="dew" aria-hidden="true"></i> {{ section.settings.eyebrow }}</p>
@@ -52,7 +52,7 @@
       </div>
 
       {%- if hero_image != blank -%}
-        <div class="chero__media reveal">
+        <div class="chero__media">
           <img
             src="{{ hero_image | image_url: width: 1200 }}"
             alt="{{ hero_image.alt | default: collection.title | escape }}"

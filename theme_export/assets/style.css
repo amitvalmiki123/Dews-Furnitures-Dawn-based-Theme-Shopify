@@ -3,7 +3,7 @@ cart-items { visibility: hidden; opacity: 0; transition: opacity 0.3s ease }
 cart-items.is-empty,
 cart-items.section-padding,
 cart-items:not([hidden]) { visibility: visible; opacity: 1 }
-:root { --paper: #fbfaf8; --bone: #f3efe9; --bone-deep: #e9e3da; --linen: #e4ddd2; --line: #e2dcd3; --line-soft: #eeeae3; --ink: #171310; --ink-2:#2a221c; --ink-3:#4a3f37; --muted: #7c716a; --muted-2:#9a9089; --cane: #d8b489; --cane-soft: #ecd9bf; --walnut: #6b4a33; --red: #e01b22; --red-ink: #b9151b; --red-wash: #fdecec; --font: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --font-accent: "Instrument Serif", Georgia, serif; --t-hero: clamp(2.5rem, 5.2vw, 5rem); --t-display: clamp(2.1rem, 4.4vw, 4.25rem); --t-h2:clamp(1.85rem, 3.3vw, 3.1rem); --t-h3:clamp(0.94rem, 1.5vw, 1.4rem); --t-lead: clamp(1rem, 1.15vw, 1.15rem); --t-body: 1.0313rem; --t-sm: 0.875rem; --t-label: 0.75rem; --container: 1440px; --container-wide: 1760px; --gutter: clamp(1.25rem, 4vw, 4rem); --section-y: clamp(4.5rem, 9vw, 9.5rem); --r-xs: 3px; --r-sm: 6px; --r-md: 12px; --r-lg: 20px; --r-pill: 999px; --shadow-xs: 0 1px 2px rgba(23, 19, 16, 0.05); --shadow-sm: 0 4px 18px rgba(23, 19, 16, 0.06); --shadow-md: 0 14px 40px rgba(23, 19, 16, 0.09); --shadow-lg: 0 28px 70px rgba(23, 19, 16, 0.15); --ease: cubic-bezier(0.22, 0.61, 0.36, 1); --ease-out: cubic-bezier(0.16, 0.84, 0.32, 1); --header-h: 76px }
+:root { --paper: #fbfaf8; --bone: #f3efe9; --bone-deep: #e9e3da; --linen: #e4ddd2; --line: #e2dcd3; --line-soft: #eeeae3; --ink: #171310; --ink-2:#2a221c; --ink-3:#4a3f37; --muted: #7c716a; --muted-2:#9a9089; --cane: #d8b489; --cane-soft: #ecd9bf; --walnut: #6b4a33; --red: #e01b22; --red-ink: #b9151b; --red-wash: #fdecec; --font: "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --font-accent: "Instrument Serif", Georgia, serif; --t-hero: clamp(2.5rem, 5.2vw, 5rem); --t-display: clamp(2.1rem, 4.4vw, 4.25rem); --t-h2:clamp(1.85rem, 3.3vw, 3.1rem); --t-h3:clamp(0.94rem, 1.5vw, 1.4rem); --t-lead: clamp(1rem, 1.15vw, 1.15rem); --t-body: 1.0313rem; --t-sm: 0.875rem; --t-label: 0.75rem; --container: 1440px; --container-wide: 1760px; --gutter: clamp(1.25rem, 4vw, 4rem); --section-y: clamp(4.5rem, 9vw, 9.5rem); --r-xs: 3px; --r-sm: 6px; --r-md: 12px; --r-lg: 20px; --r-pill: 999px; --shadow-xs: 0 1px 2px rgba(23, 19, 16, 0.05); --shadow-sm: 0 4px 18px rgba(23, 19, 16, 0.06); --shadow-md: 0 14px 40px rgba(23, 19, 16, 0.09); --shadow-lg: 0 28px 70px rgba(23, 19, 16, 0.15); --ease: cubic-bezier(0.22, 0.61, 0.36, 1); --ease-out: cubic-bezier(0.16, 0.84, 0.32, 1); --header-h: 76px; --announce-h: 38px }
 *,
 *::before,
 *::after { box-sizing: border-box }
@@ -79,7 +79,7 @@ body h5 { margin: 0; font-family: var(--font) !important; font-weight: 600 !impo
   to { transform: translateX(-50%) }
 }
 .header { position: sticky; top: 0; z-index: 100; background: rgba(251, 250, 248, 0.86); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid transparent; transition: border-color 0.4s var(--ease), background 0.4s var(--ease), box-shadow 0.4s var(--ease) }
-.shopify-section-group-header-group { position: sticky !important; top: 0; z-index: 999 }
+.shopify-section-group-header-group { position: sticky !important; top: 0; z-index: 100 !important }
 .header.is-stuck { border-bottom-color: var(--line); box-shadow: var(--shadow-xs) }
 .header__row { max-width: var(--container-wide); margin-inline: auto; padding-inline: var(--gutter); height: var(--header-h); display: grid; align-items: center; gap: 1.5rem; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) }
 .logo { display: inline-flex; align-items: center; gap: 0.6rem; justify-self: center }
@@ -815,7 +815,10 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 .breadcrumb [aria-current]{ color:var(--ink); font-weight:500; }
 
 /* --- collection hero (.chero) --- */
+.collection-banner{ padding-block:clamp(1.5rem,3vw,2.5rem) clamp(2rem,4vw,3rem) !important; }
 .chero{ display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(2rem,4vw,4rem); align-items:center; }
+.chero--single{ grid-template-columns:minmax(0,1fr); }
+.chero--single .chero__text{ max-width:60ch; }
 .chero h1{ font-size:var(--t-display); margin-top:1rem; line-height:1.02; letter-spacing:-0.03em; }
 .chero__text > p{ margin-top:1.15rem; color:var(--muted); font-size:var(--t-lead); max-width:54ch; }
 .chero__desc{ margin-top:1.15rem; color:var(--muted); font-size:var(--t-lead); max-width:54ch; }
@@ -829,8 +832,8 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 
 /* --- toolbar (sticky) --- */
 .toolbar{
-  position:sticky; top:var(--header-h); z-index:50;
-  display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:calc(var(--header-h) + var(--announce-h)); z-index:40;
+  display:flex; width:100%; align-items:center; justify-content:space-between;
   gap:1rem; flex-wrap:wrap; padding:.85rem 0;
   background:var(--paper); border-block:1px solid var(--line);
 }
@@ -872,7 +875,7 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 .shop{ display:grid; grid-template-columns:262px minmax(0,1fr); gap:clamp(2rem,4vw,3.5rem); align-items:start; }
 
 /* --- filter rail (desktop) --- */
-.filters--rail{ position:sticky; top:calc(var(--header-h) + 4.5rem); }
+.filters--rail{ position:sticky; top:calc(var(--header-h) + var(--announce-h) + 4.5rem); }
 .filters__head{ display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1.4rem; }
 .filters__head h2{ font-size:.95rem; font-weight:600; letter-spacing:.02em; margin:0; }
 .filters__clear{ font-size:.8rem; color:var(--muted); text-decoration:underline; text-underline-offset:3px; }
@@ -885,6 +888,20 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
   font-size:.88rem !important; font-weight:600 !important; color:var(--ink) !important;
   text-align:left !important; background:none !important; border:0 !important;
   padding:0 !important; box-shadow:none !important; list-style:none; cursor:pointer;
+}
+
+/* --- overrides: component-facets.css (loaded later) applies flex/!important
+       rules designed for the old horizontal dropdowns — scope them out of the
+       vertical collection rail so the facets stack as blocks instead of a row --- */
+.facets-container.facets-container--vertical{ display:block !important; padding:0 !important; margin:0 !important; }
+.filters--rail #FacetsWrapperDesktop{ display:block !important; align-items:initial !important; justify-content:initial !important; gap:0 !important; flex-grow:0 !important; }
+.filters--rail .facet__q,
+.filters--rail .facets__summary{
+  display:flex !important; align-items:center !important; justify-content:space-between !important;
+  gap:1rem !important; width:100% !important;
+  font-size:.88rem !important; font-weight:600 !important; color:var(--ink) !important;
+  text-align:left !important; background:none !important; border:0 !important;
+  padding:0 !important; box-shadow:none !important; outline:none !important;
 }
 .facet__q::-webkit-details-marker{ display:none; }
 .facet__q .faq__icon{ width:13px; height:13px; }
@@ -926,13 +943,13 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 /* --- price range facet (rail) --- */
 .price-fields{ display:flex; align-items:center; gap:.6rem; }
 .price-fields .field{ position:relative; flex:1; min-width:0; display:flex; align-items:center; }
-.price-fields .field__input{
+.facets__price.price-fields .field__input{
   width:100% !important; min-width:0; padding:.85rem .8rem .35rem !important;
   min-height:42px !important; height:42px !important;
   border:1px solid var(--line) !important; border-radius:var(--r-sm) !important;
   background:var(--paper) !important; font-size:.85rem !important; color:var(--ink) !important;
 }
-.price-fields .field__input:focus{ border-color:var(--ink) !important; outline:none; }
+.facets__price.price-fields .field__input:focus{ border-color:var(--ink) !important; outline:none; }
 .price-fields .field__label{
   position:absolute; top:6px; left:12px; margin:0;
   font-size:.66rem; text-transform:uppercase; letter-spacing:.04em;
