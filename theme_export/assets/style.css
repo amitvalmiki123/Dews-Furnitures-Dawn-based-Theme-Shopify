@@ -477,12 +477,25 @@ body .product__media .badge--new { background: #fff; color: var(--ink); box-shad
     8. COLLECTION PAGE OVERHAUL (Clean Banner & Layout)
 ========================================================= */
 .shopify-section.section:has(.collection-hero) { padding-top: 0 !important; padding-bottom: 0 !important; }
-.collection-hero { background: var(--bone) !important; border-bottom: 1px solid #eaeaea !important; padding: 4rem 0 !important; }
+.collection-hero { background: var(--bone) !important; border-bottom: 1px solid var(--line-soft) !important; padding: clamp(3rem, 6vw, 5rem) 0 !important; }
 .collection-hero.gradient { background-image: none !important; }
-.collection-hero__inner { align-items: center !important; justify-content: center !important; text-align: center !important; width: 100% !important; }
-.collection-hero .title { font-family: var(--font-heading-family, inherit) !important; font-size: clamp(2.5rem, 5vw, 3.8rem) !important; font-weight: 600 !important; color: #1a1a1a !important; margin-bottom: 0 !important; width: 100% !important; text-transform: capitalize !important; }
+.collection-hero .section-head { margin-bottom: 0 !important; }
+.collection-hero__title { font-size: var(--t-display); font-weight: 600; line-height: 1.02; letter-spacing: -0.03em; color: var(--ink); margin-top: 1.25rem; text-transform: none; }
+.collection-hero__desc { margin-top: 1.25rem; color: var(--muted); font-size: var(--t-lead); line-height: 1.75; max-width: 62ch; }
+.collection-hero__desc p { margin: 0; }
 
-#product-grid,.grid__item,.grid__item article.product,.grid__item .product.reveal { opacity: 1 !important; visibility: visible !important; transform: none !important; animation: none !important; }
+/* Collection page shell: toolbar + grid */
+.collection-page { padding-top: clamp(1.5rem, 3vw, 2.5rem) !important; padding-bottom: var(--section-y) !important; }
+.collection-toolbar { border-bottom: 1px solid var(--line); }
+.collection-page .grid-products { align-items: start; }
+
+/* Keep AJAX-replaced cards visible (facets.js re-renders #ProductGridContainer,
+   so reveal animations would otherwise leave new cards hidden) */
+#product-grid .product,
+.collection-page .grid-products .product,
+.collection-page .grid-products .product.reveal,
+.grid__item article.product,
+.grid__item .product.reveal { opacity: 1 !important; visibility: visible !important; transform: none !important; animation: none !important; }
 .details-section.wrap { padding-top: 3rem !important; }
 body .share-button__button { font-size: 1rem; }
 /* =========================================================
