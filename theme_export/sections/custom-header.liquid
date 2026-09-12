@@ -56,7 +56,13 @@
             </a>
             
             {%- if link.links != blank -%}
-              <div class="mega">
+              {%- assign promo_count = 0 -%}
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'mega_promotion' and block.settings.title == link.title -%}
+                  {%- assign promo_count = promo_count | plus: 1 -%}
+                {%- endif -%}
+              {%- endfor -%}
+              <div class="mega{% if promo_count > 1 %} mega--wide{% endif %}">
                 <!-- Dropdown Links -->
                 {%- for childlink in link.links -%}
                   <div>
@@ -71,25 +77,19 @@
                   </div>
                 {%- endfor -%}
 
-                <!-- Dynamic Mega Menu Promo Block -->
-                {%- assign promo_block = blank -%}
+                <!-- Promo banners -->
                 {%- for block in section.blocks -%}
                   {%- if block.type == 'mega_promotion' and block.settings.title == link.title -%}
-                    {%- assign promo_block = block -%}
-                    {%- break -%}
+                    <a class="mega__promo" href="{{ block.settings.link_url }}">
+                      {%- if block.settings.image != blank -%}
+                        {{ block.settings.image | image_url: width: 400 | image_tag: loading: 'lazy' }}
+                      {%- else -%}
+                        {{ 'collection-1' | placeholder_svg_tag }}
+                      {%- endif -%}
+                      <span>{{ block.settings.heading }}</span>
+                    </a>
                   {%- endif -%}
                 {%- endfor -%}
-
-                {%- if promo_block != blank -%}
-                  <a class="mega__promo" href="{{ promo_block.settings.link_url }}">
-                    {%- if promo_block.settings.image != blank -%}
-                      {{ promo_block.settings.image | image_url: width: 400 | image_tag: loading: 'lazy' }}
-                    {%- else -%}
-                      {{ 'collection-1' | placeholder_svg_tag }}
-                    {%- endif -%}
-                    <span>{{ promo_block.settings.heading }}</span>
-                  </a>
-                {%- endif -%}
               </div>
             {%- endif -%}
           </div>
@@ -121,7 +121,13 @@
             </a>
             
             {%- if link.links != blank -%}
-              <div class="mega">
+              {%- assign promo_count = 0 -%}
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'mega_promotion' and block.settings.title == link.title -%}
+                  {%- assign promo_count = promo_count | plus: 1 -%}
+                {%- endif -%}
+              {%- endfor -%}
+              <div class="mega{% if promo_count > 1 %} mega--wide{% endif %}">
                 <!-- Dropdown Links -->
                 {%- for childlink in link.links -%}
                   <div>
@@ -136,25 +142,19 @@
                   </div>
                 {%- endfor -%}
 
-                 <!-- Dynamic Mega Menu Promo Block -->
-                {%- assign promo_block = blank -%}
+                 <!-- Promo banners -->
                 {%- for block in section.blocks -%}
                   {%- if block.type == 'mega_promotion' and block.settings.title == link.title -%}
-                    {%- assign promo_block = block -%}
-                    {%- break -%}
+                    <a class="mega__promo" href="{{ block.settings.link_url }}">
+                      {%- if block.settings.image != blank -%}
+                        {{ block.settings.image | image_url: width: 400 | image_tag: loading: 'lazy' }}
+                      {%- else -%}
+                        {{ 'collection-2' | placeholder_svg_tag }}
+                      {%- endif -%}
+                      <span>{{ block.settings.heading }}</span>
+                    </a>
                   {%- endif -%}
                 {%- endfor -%}
-
-                {%- if promo_block != blank -%}
-                  <a class="mega__promo" href="{{ promo_block.settings.link_url }}">
-                    {%- if promo_block.settings.image != blank -%}
-                      {{ promo_block.settings.image | image_url: width: 400 | image_tag: loading: 'lazy' }}
-                    {%- else -%}
-                      {{ 'collection-2' | placeholder_svg_tag }}
-                    {%- endif -%}
-                    <span>{{ promo_block.settings.heading }}</span>
-                  </a>
-                {%- endif -%}
               </div>
             {%- endif -%}
           </div>
