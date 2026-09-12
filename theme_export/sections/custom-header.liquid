@@ -74,7 +74,7 @@
                 <!-- Dynamic Mega Menu Promo Block -->
                 {%- assign promo_block = blank -%}
                 {%- for block in section.blocks -%}
-                  {%- if block.type == 'mega_promotion' and block.settings.title == link.title -%}
+                  {%- if block.type == 'mega_promotion' and block.settings.menu_title != blank and block.settings.menu_title | downcase | strip == link.title | downcase | strip -%}
                     {%- assign promo_block = block -%}
                     {%- break -%}
                   {%- endif -%}
@@ -139,7 +139,7 @@
                  <!-- Dynamic Mega Menu Promo Block -->
                 {%- assign promo_block = blank -%}
                 {%- for block in section.blocks -%}
-                  {%- if block.type == 'mega_promotion' and block.settings.title == link.title -%}
+                  {%- if block.type == 'mega_promotion' and block.settings.menu_title != blank and block.settings.menu_title | downcase | strip == link.title | downcase | strip -%}
                     {%- assign promo_block = block -%}
                     {%- break -%}
                   {%- endif -%}
@@ -295,9 +295,9 @@
       "settings": [
         {
           "type": "text",
-          "id": "title",
+          "id": "menu_title",
           "label": "Top-level menu title",
-          "info": "Must match the navigation title exactly (e.g. 'Living Room')."
+          "info": "Must match the navigation title (e.g. 'Living Room'). Case and extra spaces are ignored."
         },
         {
           "type": "image_picker",
@@ -325,13 +325,13 @@
         {
           "type": "mega_promotion",
           "settings": {
-            "title": "Living Room"
+            "menu_title": "Living Room"
           }
         },
         {
           "type": "mega_promotion",
           "settings": {
-            "title": "Bedroom"
+            "menu_title": "Bedroom"
           }
         }
       ]
