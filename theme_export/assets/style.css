@@ -759,6 +759,13 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 .grid-products{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(1.75rem,3vw,2.75rem) clamp(1rem,2vw,1.75rem); }
 @media (max-width:860px){ .grid-products{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media (max-width:480px){ .grid-products{ grid-template-columns:minmax(0,1fr); } }
+/* Collection page sections — remove the extra .section padding-y so there's
+   no doubled gap (wrapper + inner section both carry var(--section-y)). */
+.dews-more-collections { padding-block: 0; }
+.dews-more-collections .section { padding-block: 0; }
+.dews-collection-about { padding-block: 0; }
+.dews-collection-about .section { padding-block: 0; }
+
 /* --- Collection cross-link tiles (More collections) --- */
 .coll-tiles{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(1rem,2vw,1.5rem); }
 .coll-tile{ position:relative; border-radius:var(--r-md); overflow:hidden; aspect-ratio:4/5; display:flex; align-items:flex-end; }
