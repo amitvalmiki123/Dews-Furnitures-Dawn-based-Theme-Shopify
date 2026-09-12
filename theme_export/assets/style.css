@@ -100,8 +100,8 @@ body h5 { margin: 0; font-family: var(--font) !important; font-weight: 600 !impo
 .mega ul { display: grid; gap: 0.7rem }
 .mega ul a { font-size: 0.92rem; color: var(--ink-2); transition: color 0.25s var(--ease), padding-left 0.25s var(--ease) }
 .mega ul a:hover { color: var(--red-ink); padding-left: 5px }
-.mega__promos { display: flex; flex-direction: row; gap: 1.1rem; min-width: 0; }
-.mega__promo { flex: 1 1 0; min-width: 0; position: relative; border-radius: var(--r-sm); overflow: hidden }
+.mega__promos { display: flex; flex-direction: column; gap: 1.1rem; min-width: 0; }
+.mega__promo { position: relative; border-radius: var(--r-sm); overflow: hidden }
 .mega__promo img { width: 100%; height: 200px; object-fit: cover; transition: transform 0.8s var(--ease) }
 .mega__promo:hover img { transform: scale(1.05) }
 .mega__promo span { position: absolute; inset: auto 0 0 0; padding: 1.5rem 1.1rem 0.9rem; background: linear-gradient(transparent, rgba(23, 19, 16, 0.82)); color: #fff; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.05em }
