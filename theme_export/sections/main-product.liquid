@@ -1,27 +1,27 @@
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
   assign product_form_id = 'product-form-' | append: section.id
+  assign dim_primary_material = product.metafields.custom.dim_primary_material.value
+  assign dim_style = product.metafields.custom.dim_style.value
+  assign dim_colour = product.metafields.custom.dim_colour.value
+  assign dim_folding = product.metafields.custom.dim_folding.value
+  assign dim_item_weight = product.metafields.custom.dim_item_weight.value
+  assign dim_weight_limit = product.metafields.custom.dim_weight_limit.value
+  assign dim_type = product.metafields.custom.dim_type.value
+  assign dim_leg_length = product.metafields.custom.dim_leg_length.value
+  assign dim_product_dimension = product.metafields.custom.dim_product_dimension.value
+  assign dim_seating_capacity = product.metafields.custom.dim_seating_capacity.value
   assign dim_three_seater = product.metafields.custom.dim_three_seater.value
   assign dim_armchair = product.metafields.custom.dim_armchair.value
-  assign dim_loveseat = product.metafields.custom.dim_loveseat.value
   assign dim_seat_height = product.metafields.custom.dim_seat_height.value
   assign dim_seat_depth = product.metafields.custom.dim_seat_depth.value
-  assign dim_width = product.metafields.custom.dim_width.value
-  assign dim_depth = product.metafields.custom.dim_depth.value
-  assign dim_height = product.metafields.custom.dim_height.value
   assign dim_frame = product.metafields.custom.dim_frame.value
   assign dim_panels = product.metafields.custom.dim_panels.value
   assign dim_cushion_fill = product.metafields.custom.dim_cushion_fill.value
   assign dim_weight_capacity = product.metafields.custom.dim_weight_capacity.value
   assign dim_assembly = product.metafields.custom.dim_assembly.value
-  assign dim_care = product.metafields.custom.dim_care.value
-  assign dim_finish = product.metafields.custom.dim_finish.value
-  assign dim_folding = product.metafields.custom.dim_folding.value
-  assign dim_colour = product.metafields.custom.dim_colour.value
-  assign dim_style = product.metafields.custom.dim_style.value
-  assign dim_primary_material = product.metafields.custom.dim_primary_material.value
   assign has_dims = false
-  if dim_three_seater != blank or dim_armchair != blank or dim_loveseat != blank or dim_seat_height != blank or dim_seat_depth != blank or dim_width != blank or dim_depth != blank or dim_height != blank or dim_frame != blank or dim_panels != blank or dim_cushion_fill != blank or dim_weight_capacity != blank or dim_assembly != blank or dim_care != blank or dim_finish != blank or dim_folding != blank or dim_colour != blank or dim_style != blank or dim_primary_material != blank
+  if dim_primary_material != blank or dim_style != blank or dim_colour != blank or dim_folding != blank or dim_item_weight != blank or dim_weight_limit != blank or dim_type != blank or dim_leg_length != blank or dim_product_dimension != blank or dim_seating_capacity != blank or dim_three_seater != blank or dim_armchair != blank or dim_seat_height != blank or dim_seat_depth != blank or dim_frame != blank or dim_panels != blank or dim_cushion_fill != blank or dim_weight_capacity != blank or dim_assembly != blank
     assign has_dims = true
   endif
   assign materials = product.metafields.custom.materials_care
@@ -469,14 +469,41 @@
                       <table class="spec">
                         <caption class="sr-only">{{ section.settings.acc_2_title }}</caption>
                         <tbody>
+                          {%- if dim_primary_material != blank -%}
+                            <tr><th scope="row">Primary material</th><td>{{ dim_primary_material }}</td></tr>
+                          {%- endif -%}
+                          {%- if dim_style != blank -%}
+                            <tr><th scope="row">Style</th><td>{{ dim_style }}</td></tr>
+                          {%- endif -%}
+                          {%- if dim_colour != blank -%}
+                            <tr><th scope="row">Colour</th><td>{{ dim_colour }}</td></tr>
+                          {%- endif -%}
+                          {%- if dim_folding != blank -%}
+                            <tr><th scope="row">Folding</th><td>{{ dim_folding }}</td></tr>
+                          {%- endif -%}
+                          {%- if dim_item_weight != blank -%}
+                            <tr><th scope="row">Item weight</th><td>{{ dim_item_weight }}</td></tr>
+                          {%- endif -%}
+                          {%- if dim_weight_limit != blank -%}
+                            <tr><th scope="row">Weight limit</th><td>{{ dim_weight_limit }}</td></tr>
+                          {%- endif -%}
+                          {%- if dim_type != blank -%}
+                            <tr><th scope="row">Type</th><td>{{ dim_type }}</td></tr>
+                          {%- endif -%}
+                          {%- if dim_leg_length != blank -%}
+                            <tr><th scope="row">Leg length</th><td>{{ dim_leg_length }}</td></tr>
+                          {%- endif -%}
+                          {%- if dim_product_dimension != blank -%}
+                            <tr><th scope="row">Product dimension</th><td>{{ dim_product_dimension }}</td></tr>
+                          {%- endif -%}
+                          {%- if dim_seating_capacity != blank -%}
+                            <tr><th scope="row">Seating capacity</th><td>{{ dim_seating_capacity }}</td></tr>
+                          {%- endif -%}
                           {%- if dim_three_seater != blank -%}
                             <tr><th scope="row">Three-seater</th><td>{{ dim_three_seater }}</td></tr>
                           {%- endif -%}
                           {%- if dim_armchair != blank -%}
                             <tr><th scope="row">Armchair (each)</th><td>{{ dim_armchair }}</td></tr>
-                          {%- endif -%}
-                          {%- if dim_loveseat != blank -%}
-                            <tr><th scope="row">Loveseat</th><td>{{ dim_loveseat }}</td></tr>
                           {%- endif -%}
                           {%- if dim_seat_height != blank -%}
                             <tr><th scope="row">Seat height</th><td>{{ dim_seat_height }}</td></tr>
@@ -484,20 +511,8 @@
                           {%- if dim_seat_depth != blank -%}
                             <tr><th scope="row">Seat depth</th><td>{{ dim_seat_depth }}</td></tr>
                           {%- endif -%}
-                          {%- if dim_width != blank -%}
-                            <tr><th scope="row">Width</th><td>{{ dim_width }}</td></tr>
-                          {%- endif -%}
-                          {%- if dim_depth != blank -%}
-                            <tr><th scope="row">Depth</th><td>{{ dim_depth }}</td></tr>
-                          {%- endif -%}
-                          {%- if dim_height != blank -%}
-                            <tr><th scope="row">Height</th><td>{{ dim_height }}</td></tr>
-                          {%- endif -%}
                           {%- if dim_frame != blank -%}
                             <tr><th scope="row">Frame</th><td>{{ dim_frame }}</td></tr>
-                          {%- endif -%}
-                          {%- if dim_primary_material != blank -%}
-                            <tr><th scope="row">Primary material</th><td>{{ dim_primary_material }}</td></tr>
                           {%- endif -%}
                           {%- if dim_panels != blank -%}
                             <tr><th scope="row">Panels</th><td>{{ dim_panels }}</td></tr>
@@ -510,21 +525,6 @@
                           {%- endif -%}
                           {%- if dim_assembly != blank -%}
                             <tr><th scope="row">Assembly</th><td>{{ dim_assembly }}</td></tr>
-                          {%- endif -%}
-                          {%- if dim_care != blank -%}
-                            <tr><th scope="row">Care</th><td>{{ dim_care }}</td></tr>
-                          {%- endif -%}
-                          {%- if dim_finish != blank -%}
-                            <tr><th scope="row">Finish</th><td>{{ dim_finish }}</td></tr>
-                          {%- endif -%}
-                          {%- if dim_folding != blank -%}
-                            <tr><th scope="row">Folding</th><td>{{ dim_folding }}</td></tr>
-                          {%- endif -%}
-                          {%- if dim_colour != blank -%}
-                            <tr><th scope="row">Colour</th><td>{{ dim_colour }}</td></tr>
-                          {%- endif -%}
-                          {%- if dim_style != blank -%}
-                            <tr><th scope="row">Style</th><td>{{ dim_style }}</td></tr>
                           {%- endif -%}
                         </tbody>
                       </table>
@@ -733,7 +733,7 @@
       "id": "acc_2_title",
       "label": "Accordion 2 — title",
       "default": "Dimensions & specifications",
-      "info": "Rows come from custom.dim_* single-line-text metafields (dimensions, frame, panels, cushion fill, weight, assembly, care, finish, folding, colour, style). Only filled values are shown."
+      "info": "Rows come from custom.dim_* single-line-text metafields (primary material, style, colour, folding, item weight, weight limit, type, leg length, product dimension, seating capacity, three-seater, armchair, seat height, seat depth, frame, panels, cushion fill, weight capacity, assembly). Only filled values are shown."
     },
     {
       "type": "text",
