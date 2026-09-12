@@ -1,0 +1,38 @@
+<section class="section" aria-labelledby="about-coll-{{ section.id }}">
+  <div class="container">
+    <div class="seo-copy">
+      {%- if section.settings.heading != blank -%}
+        <h2 id="about-coll-{{ section.id }}">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <div class="seo-copy__body">{{ section.settings.text }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection about",
+  "class": "section dews-collection-about",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "About the cane collection"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Content",
+      "default": "<p>Cane furniture earned its reputation the hard way. Woven rattan has been used in furniture making for well over two centuries because it does something no solid panel can: it carries weight while staying light, and it breathes, so a chair back stays cool to lean against on a warm afternoon.<\/p><p>Every cane panel in this collection is woven by hand and set into a routed groove in the frame — the traditional method.<\/p><h3>Choosing the right piece<\/h3><ul><li><strong>For a small living room<\/strong> — the Heritage 2-Seater or the Dark Cane Bench Sofa.<\/li><li><strong>For a reading corner<\/strong> — the Cane &amp; Rattan Accent Chair.<\/li><li><strong>For a bedroom refresh<\/strong> — the Cane Headboard pairs with an existing base.<\/li><li><strong>For storage that isn't bulky<\/strong> — the cane-front sideboards.<\/li><\/ul><h3>Caring for cane<\/h3><p>Cane wants humidity. In a very dry room it can become brittle over years, so keep pieces away from a radiator or a direct heating vent.<\/p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection about"
+    }
+  ]
+}
+{% endschema %}

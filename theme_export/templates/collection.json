@@ -20,10 +20,60 @@
         "enable_filtering": true,
         "enable_sorting": true
       }
+    },
+    "more-collections": {
+      "type": "custom-more-collections",
+      "blocks": {
+        "tile_living": {
+          "type": "collection_tile",
+          "settings": {
+            "title": "Living Room"
+          }
+        },
+        "tile_bedroom": {
+          "type": "collection_tile",
+          "settings": {
+            "title": "Bedroom"
+          }
+        },
+        "tile_dining": {
+          "type": "collection_tile",
+          "settings": {
+            "title": "Dining Room"
+          }
+        },
+        "tile_storage": {
+          "type": "collection_tile",
+          "settings": {
+            "title": "Storage"
+          }
+        }
+      },
+      "block_order": [
+        "tile_living",
+        "tile_bedroom",
+        "tile_dining",
+        "tile_storage"
+      ],
+      "settings": {
+        "eyebrow": "Keep exploring",
+        "heading": "More collections",
+        "link_text": "All rooms",
+        "link_url": ""
+      }
+    },
+    "collection-about": {
+      "type": "custom-collection-about",
+      "settings": {
+        "heading": "About the cane collection",
+        "text": "<p>Cane furniture earned its reputation the hard way. Woven rattan has been used in furniture making for well over two centuries because it does something no solid panel can: it carries weight while staying light, and it breathes, so a chair back stays cool to lean against on a warm afternoon.</p><p>Every cane panel in this collection is woven by hand and set into a routed groove in the frame — the traditional method. It is slower and more expensive than gluing a sheet of machine-woven webbing onto the surface, and it is the difference between a panel that lasts decades and one that lifts at the edges within a year.</p><h3>Choosing the right piece</h3><ul><li><strong>For a small living room</strong> — the Heritage 2-Seater or the Dark Cane Bench Sofa. Both sit low with open frames, so they take up far less visual space than their footprint suggests.</li><li><strong>For a reading corner</strong> — the Cane &amp; Rattan Accent Chair. Compact enough for a landing or bedroom nook, with a deep linen seat.</li><li><strong>For a bedroom refresh</strong> — the Cane Headboard pairs with an existing base, which is the cheapest way to change the character of a room.</li><li><strong>For storage that isn't bulky</strong> — the cane-front sideboards. The woven doors keep the piece from reading as a solid block against the wall.</li></ul><h3>Caring for cane</h3><p>Cane wants humidity. In a very dry room it can become brittle over years, so keep pieces away from a radiator or a direct heating vent. Dust with a dry brush and, if a panel starts to slacken slightly in summer, it will usually tighten again on its own as the air cools.</p>"
+      }
     }
   },
   "order": [
     "banner",
-    "product-grid"
+    "product-grid",
+    "more-collections",
+    "collection-about"
   ]
 }

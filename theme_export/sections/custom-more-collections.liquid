@@ -1,0 +1,111 @@
+<section class="section section--bone" aria-labelledby="more-coll-{{ section.id }}">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow"><i class="dew" aria-hidden="true"></i> {{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 id="more-coll-{{ section.id }}">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.link_url != blank -%}
+        <a class="link-arrow" href="{{ section.settings.link_url }}">{{ section.settings.link_text }} <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      {%- endif -%}
+    </div>
+
+    <div class="coll-tiles">
+      {%- for block in section.blocks -%}
+        {%- assign tile_image = block.settings.image -%}
+        {%- if tile_image == blank and block.settings.collection != blank -%}
+          {%- assign tile_image = block.settings.collection.featured_image -%}
+        {%- endif -%}
+        {%- assign tile_url = '#' -%}
+        {%- assign tile_title = block.settings.title -%}
+        {%- if block.settings.collection != blank -%}
+          {%- assign tile_url = block.settings.collection.url -%}
+          {%- if tile_title == blank -%}
+            {%- assign tile_title = block.settings.collection.title -%}
+          {%- endif -%}
+        {%- endif -%}
+        <a class="coll-tile" href="{{ tile_url }}" {{ block.shopify_attributes }}>
+          {%- if tile_image != blank -%}
+            {{ tile_image | image_url: width: 500 | image_tag: loading: 'lazy', alt: tile_title | escape }}
+          {%- else -%}
+            {{ 'collection-' | append: forloop.index | placeholder_svg_tag }}
+          {%- endif -%}
+          <span>{{ tile_title }}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "More collections",
+  "class": "section dews-more-collections",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Keep exploring"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "More collections"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text",
+      "default": "All rooms"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_tile",
+      "name": "Collection tile",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "info": "Falls back to the collection title if left blank."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Falls back to the collection featured image if left blank."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "More collections",
+      "blocks": [
+        { "type": "collection_tile", "settings": { "title": "Living Room" } },
+        { "type": "collection_tile", "settings": { "title": "Bedroom" } },
+        { "type": "collection_tile", "settings": { "title": "Dining Room" } },
+        { "type": "collection_tile", "settings": { "title": "Storage" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

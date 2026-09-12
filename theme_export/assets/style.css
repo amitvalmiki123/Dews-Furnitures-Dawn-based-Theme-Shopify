@@ -759,6 +759,28 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 .grid-products{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(1.75rem,3vw,2.75rem) clamp(1rem,2vw,1.75rem); }
 @media (max-width:860px){ .grid-products{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media (max-width:480px){ .grid-products{ grid-template-columns:minmax(0,1fr); } }
+/* --- Collection cross-link tiles (More collections) --- */
+.coll-tiles{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(1rem,2vw,1.5rem); }
+.coll-tile{ position:relative; border-radius:var(--r-md); overflow:hidden; aspect-ratio:4/5; display:flex; align-items:flex-end; }
+.coll-tile img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform 1.1s var(--ease); }
+.coll-tile:hover img{ transform:scale(1.06); }
+.coll-tile::after{ content:''; position:absolute; inset:0; background:linear-gradient(transparent 45%,rgba(23,19,16,.78)); }
+.coll-tile span{
+  position:relative; z-index:2; padding:1.25rem; color:#fff;
+  font-size:.95rem; font-weight:600; letter-spacing:-.01em;
+}
+@media (max-width:860px){ .coll-tiles{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:480px){ .coll-tiles{ grid-template-columns:minmax(0,1fr); } }
+
+/* --- Collection SEO copy (About the collection) --- */
+.seo-copy{ max-width:76ch; }
+.seo-copy h2{ font-size:var(--t-h2); }
+.seo-copy h3{ font-size:1.12rem; margin-top:2.25rem; }
+.seo-copy p{ margin-top:1rem; color:var(--muted); line-height:1.85; }
+.seo-copy ul{ margin-top:1.1rem; display:grid; gap:.65rem; list-style:none; padding:0; }
+.seo-copy li{ display:flex; gap:.75rem; color:var(--muted); line-height:1.7; }
+.seo-copy li::before{ content:''; flex:none; width:5px; height:5px; margin-top:.62rem; background:var(--red); transform:rotate(45deg); }
+
 /* --- breadcrumb (page head) — shared with PDP --- */
 .page-head{ padding-block:clamp(1.25rem,2.5vw,2rem) 0; }
 .breadcrumb{ display:flex; flex-wrap:wrap; align-items:center; gap:.55rem; font-size:.8rem; color:var(--muted); list-style:none; margin:0; padding:0; }
