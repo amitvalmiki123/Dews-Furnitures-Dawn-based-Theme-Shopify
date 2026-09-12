@@ -1,0 +1,27 @@
+{
+  "sections": {
+    "banner": {
+      "type": "custom-page-banner",
+      "settings": {
+        "eyebrow": "Support",
+        "title": "Track your order",
+        "text": "<p>Enter your order number and email or phone number below to see the live status of your delivery.</p>",
+        "image": "",
+        "show_meta": true,
+        "meta_1_text": "Live tracking",
+        "meta_2_text": "1500+ carriers",
+        "meta_3_text": "24/7 support",
+        "btn_text": "",
+        "btn_link": ""
+      }
+    },
+    "content": {
+      "type": "custom-page-content",
+      "settings": {}
+    }
+  },
+  "order": [
+    "banner",
+    "content"
+  ]
+}

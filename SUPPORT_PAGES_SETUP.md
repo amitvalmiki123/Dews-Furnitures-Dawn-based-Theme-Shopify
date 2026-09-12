@@ -234,10 +234,39 @@ Isme ye items add karo (Theme is `col_3_menu: "footer"` handle padh raha hai):
 
 ---
 
-## CATEGORY 2 — Normal pages (Shipping & Delivery, Care Guide)
+## CATEGORY 2 — FAQs & Care Guide pages (templates ready ✅)
 
-Ye **Admin → Online Store → Pages** me bante hain, template `page` select karte ho.
-(Content drafts next step me dunga — pehle Category 1 complete karo.)
+Dono ke templates theme me add ho gaye hain. Ab sirf admin me page banana hai:
+
+### FAQs page
+
+**Admin → Online Store → Pages → Add page**
+- Title: `FAQs`
+- Template: `faq` (right-side "Theme template" dropdown me dikhega)
+- Content: khali chhod do (section hi content deta hai)
+- Save
+
+URL banega: `/pages/faqs`
+
+### Care Guide page
+
+**Admin → Online Store → Pages → Add page**
+- Title: `Care Guide`
+- Template: `care-guide`
+- Content: khali chhod do
+- Save
+
+URL banega: `/pages/care-guide`
+
+### Footer "Support" menu me links add karo
+
+| Menu item name | Link (URL) |
+|---|---|
+| FAQs | `/pages/faqs` |
+| Care Guide | `/pages/care-guide` |
+
+> Dono pages ke questions/answers theme editor me editable hain:
+> **Customize → (page select karo) → FAQ section → blocks**.
 
 ## CATEGORY 3 — Track Your Order
 

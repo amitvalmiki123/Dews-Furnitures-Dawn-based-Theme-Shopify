@@ -773,3 +773,12 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 .breadcrumb a:hover{ color:var(--red-ink); }
 .breadcrumb [aria-current]{ color:var(--ink); font-weight:500; }
 
+/* --- Page content section (Track order / app forms) — centered card --- */
+.dews-page-content { padding-top: 0; }
+.page-content-wrap { max-width: 720px; margin: 0 auto; }
+.page-content-rte { max-width: 100% !important; }
+.page-content-rte form,
+.page-content-rte .tracking-form,
+.page-content-rte > div { width: 100%; }
+
+
