@@ -120,8 +120,8 @@
         {%- endif -%}
 
         <p class="toolbar__count" role="status">
-          <span id="ProductCount" data-product-count="{{ results.products_count | default: results.results_count }}" data-total-count="{{ results.all_products_count | default: results.products_count | default: results.results_count }}">
-            <b>{{ results.products_count }}</b> of {{ results.all_products_count }} products
+          <span id="ProductCount" data-product-count="{{ results.products_count | default: results.results_count }}" data-total-count="{{ results.all_products_count | default: results.results_count | default: results.products_count }}">
+            <b>{{ results.products_count | default: results.results_count }}</b> of {{ results.all_products_count | default: results.results_count }} products
           </span>
         </p>
       </div>
