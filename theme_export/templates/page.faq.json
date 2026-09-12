@@ -1,0 +1,106 @@
+{
+  "sections": {
+    "banner": {
+      "type": "custom-page-banner",
+      "settings": {
+        "eyebrow": "Support",
+        "title": "Frequently asked questions",
+        "text": "<p>Delivery, care, returns and everything in between — the answers to the questions our customers ask most.</p>",
+        "image": "",
+        "show_meta": false,
+        "meta_1_text": "",
+        "meta_2_text": "",
+        "meta_3_text": "",
+        "btn_text": "",
+        "btn_link": ""
+      }
+    },
+    "faq": {
+      "type": "custom-faq",
+      "blocks": {
+        "q_delivery": {
+          "type": "question",
+          "settings": {
+            "question": "How does white-glove delivery work?",
+            "answer": "Our delivery partners call you 24 hours in advance to schedule a 2-hour window. They bring the pieces inside, place them in the room, assemble anything requiring tools, and take all packaging away with them."
+          }
+        },
+        "q_time": {
+          "type": "question",
+          "settings": {
+            "question": "How long does delivery take?",
+            "answer": "In-stock pieces dispatch within 3–7 business days. Handcrafted and small-batch pieces show their lead time on the product page. You'll receive tracking details by email once your order is on its way."
+          }
+        },
+        "q_clean_cane": {
+          "type": "question",
+          "settings": {
+            "question": "How should I clean and maintain the cane webbing?",
+            "answer": "Dust with a soft, dry cloth. Twice a year, wipe it lightly with a damp cloth and mild soap to keep the natural rattan fibres supple. Avoid soaking, and keep cane away from radiators and direct heating vents."
+          }
+        },
+        "q_wood": {
+          "type": "question",
+          "settings": {
+            "question": "How do I care for the solid wood frame?",
+            "answer": "Wipe with a soft, dry cloth. Use coasters to avoid water rings, and keep furniture out of prolonged direct sunlight to prevent the finish from fading unevenly."
+          }
+        },
+        "q_custom": {
+          "type": "question",
+          "settings": {
+            "question": "Do you make custom sizes or finishes?",
+            "answer": "Because our batches are small and handcrafted, we keep our catalogue fixed. However, if you're outfitting an entire room, reach out to our studio team for bespoke options."
+          }
+        },
+        "q_returns": {
+          "type": "question",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "You have 30 days from delivery to return a piece for a full refund or exchange, provided it's in its original condition. Custom or made-to-order pieces are non-refundable unless faulty."
+          }
+        },
+        "q_assembly": {
+          "type": "question",
+          "settings": {
+            "question": "Does the furniture require assembly?",
+            "answer": "Most pieces arrive fully assembled. Where legs need attaching, our white-glove team does it on delivery — a two-person job with tools included, so you never lift a screwdriver."
+          }
+        },
+        "q_warranty": {
+          "type": "question",
+          "settings": {
+            "question": "What warranty do you offer?",
+            "answer": "Every piece carries a 1-year structural warranty against manufacturing defects. This covers frames and joinery — not normal wear and tear or accidental damage."
+          }
+        },
+        "q_track": {
+          "type": "question",
+          "settings": {
+            "question": "How do I track my order?",
+            "answer": "Once your order ships, we'll email you a tracking link. You can also check order status any time using the Track Your Order page."
+          }
+        }
+      },
+      "block_order": [
+        "q_delivery",
+        "q_time",
+        "q_clean_cane",
+        "q_wood",
+        "q_custom",
+        "q_returns",
+        "q_assembly",
+        "q_warranty",
+        "q_track"
+      ],
+      "settings": {
+        "eyebrow": "Support",
+        "heading": "Answers to common questions"
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "faq"
+  ]
+}

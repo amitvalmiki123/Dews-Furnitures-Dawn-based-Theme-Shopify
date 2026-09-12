@@ -1,0 +1,98 @@
+{
+  "sections": {
+    "banner": {
+      "type": "custom-page-banner",
+      "settings": {
+        "eyebrow": "Care guide",
+        "title": "Keep it beautiful for decades",
+        "text": "<p>Solid wood and natural cane age beautifully when cared for properly. These simple habits will keep your furniture looking its best for years to come.</p>",
+        "image": "",
+        "show_meta": false,
+        "meta_1_text": "",
+        "meta_2_text": "",
+        "meta_3_text": "",
+        "btn_text": "",
+        "btn_link": ""
+      }
+    },
+    "faq": {
+      "type": "custom-faq",
+      "blocks": {
+        "c_cane": {
+          "type": "question",
+          "settings": {
+            "question": "Cleaning natural cane webbing",
+            "answer": "Dust regularly with a soft, dry brush or cloth to stop grit settling into the weave. Twice a year, wipe with a barely-damp cloth and mild soap, then dry immediately. Never soak cane — it can slacken when wet."
+          }
+        },
+        "c_wood": {
+          "type": "question",
+          "settings": {
+            "question": "Caring for the solid wood frame",
+            "answer": "Wipe with a soft, dry cloth. For deeper cleaning, use a lightly damp cloth and dry straight away. Use coasters and placemats to avoid water rings and heat marks."
+          }
+        },
+        "c_finish": {
+          "type": "question",
+          "settings": {
+            "question": "Maintaining the finish",
+            "answer": "Our frames are finished with natural, low-VOC oils and waxes. Once or twice a year, apply a thin coat of natural furniture oil or beeswax along the grain, then buff with a soft cloth to restore lustre."
+          }
+        },
+        "c_cushions": {
+          "type": "question",
+          "settings": {
+            "question": "Caring for linen and bouclé cushions",
+            "answer": "Most of our cushion covers are removable and machine-washable on a gentle, cold cycle — check the care label first. Air-dry flat to avoid shrinkage, and fluff cushions regularly to keep their shape."
+          }
+        },
+        "c_sun": {
+          "type": "question",
+          "settings": {
+            "question": "Protecting from sun and heat",
+            "answer": "Keep furniture out of prolonged direct sunlight, which can fade wood and dry out cane. Avoid placing pieces directly against radiators, heaters or air-conditioning vents."
+          }
+        },
+        "c_spills": {
+          "type": "question",
+          "settings": {
+            "question": "Handling spills and stains",
+            "answer": "Blot spills immediately with a clean, absorbent cloth — don't rub. For cushions, spot-clean with a mild detergent. For wood, dry the area promptly to prevent water marks."
+          }
+        },
+        "c_scratches": {
+          "type": "question",
+          "settings": {
+            "question": "Fixing scratches and marks",
+            "answer": "Light scratches on wood can often be buffed out with furniture wax. Deeper marks may need a touch of matching wood oil. For cane, a slack panel usually tightens again on its own as the air cools."
+          }
+        },
+        "c_humidity": {
+          "type": "question",
+          "settings": {
+            "question": "Cane and humidity",
+            "answer": "Cane likes a little humidity. In a very dry room it can become brittle over years, so avoid radiators and heating vents. In summer, if a panel slackens slightly, it will usually tighten again as the air cools."
+          }
+        }
+      },
+      "block_order": [
+        "c_cane",
+        "c_wood",
+        "c_finish",
+        "c_cushions",
+        "c_sun",
+        "c_spills",
+        "c_scratches",
+        "c_humidity"
+      ],
+      "settings": {
+        "eyebrow": "Care guide",
+        "heading": "Caring for your furniture"
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "faq"
+  ]
+}
