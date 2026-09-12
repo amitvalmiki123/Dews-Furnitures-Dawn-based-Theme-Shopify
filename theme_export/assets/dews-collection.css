@@ -212,9 +212,13 @@ span.mobile-facets__open-label.button-label {
 .coll-tile::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 45%, rgba(23, 19, 16, 0.78)); }
 .coll-tile span { position: relative; z-index: 2; padding: 1.25rem; color: #fff; font-size: 0.95rem; font-weight: 600; letter-spacing: -0.01em; }
 
-.seo-copy { max-width: 76ch; }
+.seo-copy { max-width: none; }
 .seo-copy h2 { font-size: var(--t-h2); }
+.seo-copy h3 { font-size: 1.12rem; margin-top: 2.25rem; }
 .seo-copy p { margin-top: 1rem; color: var(--muted); line-height: 1.85; }
+.seo-copy ul { margin-top: 1.1rem; display: grid; gap: 0.75rem; list-style: none; padding: 0; }
+.seo-copy li { position: relative; padding-left: 1.5rem; color: var(--muted); line-height: 1.7; }
+.seo-copy li::before { content: ''; position: absolute; left: 0.1rem; top: 0.62rem; width: 5px; height: 5px; background: var(--red); transform: rotate(45deg); }
 
 /* =============================================================================
    8. RESPONSIVE
