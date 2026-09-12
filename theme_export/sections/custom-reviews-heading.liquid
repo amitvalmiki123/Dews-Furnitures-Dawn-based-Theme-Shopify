@@ -1,6 +1,6 @@
 <section class="section" aria-labelledby="rev-title-{{ section.id }}">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head{% if section.settings.alignment == 'center' %} section-head--center{% endif %}">
       <div class="section-head__text">
         <p class="eyebrow"><i class="dew" aria-hidden="true"></i> {{ section.settings.eyebrow }}</p>
         <h2 id="rev-title-{{ section.id }}">{{ section.settings.heading }}</h2>
@@ -34,6 +34,16 @@
       "type": "textarea",
       "id": "description",
       "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Text alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ]
     }
   ],
   "presets": [

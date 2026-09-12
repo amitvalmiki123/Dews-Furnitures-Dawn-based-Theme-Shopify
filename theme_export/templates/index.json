@@ -431,7 +431,7 @@
             "arrows_color": "#000000",
             "transition_speed": 4,
             "header_text": "",
-            "show_average_rating": false,
+            "show_average_rating": true,
             "rating_display": "default"
           }
         }
@@ -525,7 +525,8 @@
       "settings": {
         "eyebrow": "Customer reviews",
         "heading": "What owners say",
-        "description": ""
+        "description": "",
+        "alignment": "center"
       }
     }
   },
