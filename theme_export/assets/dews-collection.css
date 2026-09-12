@@ -288,3 +288,53 @@ span.mobile-facets__open-label.button-label {
     padding: 0.8rem 1.6rem !important;
   }
 }
+
+/* =============================================================================
+   10. SEARCH PAGE (collection-style layout)
+   ============================================================================= */
+.search-page__form { margin-top: 2rem; max-width: 34rem; }
+.search-page__search { margin: 0; }
+.search-page__field {
+  display: flex; align-items: center; gap: 0.75rem;
+  background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-pill);
+  padding: 0.35rem 0.35rem 0.35rem 1.15rem; min-height: 58px;
+  transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+.search-page__field:focus-within { border-color: var(--ink); box-shadow: var(--shadow-sm); }
+.search-page__field > svg { width: 19px; height: 19px; color: var(--muted); flex: none; }
+.search-page__input {
+  flex: 1; min-width: 0; border: 0; background: none; outline: none;
+  font-size: 1rem; color: var(--ink); height: 100%;
+}
+.search-page__input::placeholder { color: var(--muted-2); }
+.search-page__reset {
+  display: grid; place-items: center; width: 36px; height: 36px; flex: none;
+  border: 0; background: none; color: var(--muted); cursor: pointer; border-radius: var(--r-pill);
+}
+.search-page__reset svg { width: 16px; height: 16px; }
+.search-page__reset:hover { background: var(--bone); color: var(--ink); }
+.search-page__submit {
+  flex: none; min-height: 46px; padding: 0 1.6rem;
+  background: var(--ink); color: #fff; border: 0; border-radius: var(--r-pill);
+  font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  transition: background 0.25s var(--ease);
+}
+.search-page__submit:hover { background: var(--red); }
+
+.search-page__page-card {
+  display: flex; flex-direction: column; gap: 0.75rem; align-items: flex-start;
+  padding: 1.5rem; border: 1px solid var(--line); border-radius: var(--r-md);
+  background: var(--paper); transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease);
+}
+.search-page__page-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.search-page__page-card h3 { margin: 0; font-size: 1rem; font-weight: 600; color: var(--ink); }
+.search-page__page-badge {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); background: var(--bone); padding: 0.3rem 0.7rem; border-radius: var(--r-pill);
+}
+
+@media (max-width: 640px) {
+  .search-page__field { flex-wrap: wrap; border-radius: var(--r-md); padding: 0.6rem; }
+  .search-page__input { width: 100%; }
+  .search-page__submit { width: 100%; }
+}
