@@ -432,7 +432,8 @@
             "transition_speed": 4,
             "header_text": "",
             "show_average_rating": true,
-            "rating_display": "default"
+            "rating_display": "default",
+            "include_margins": false
           }
         }
       },

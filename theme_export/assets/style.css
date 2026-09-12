@@ -51,6 +51,16 @@ body h5 { margin: 0; font-family: var(--font) !important; font-weight: 600 !impo
 .section--ink .section-head p { color: #b9afa6 }
 .section-head--center { flex-direction: column; align-items: center; text-align: center }
 .section-head--center .section-head__text { text-align: center }
+
+/* Reviews heading section — sits flush against the Judge.me app section below.
+   Zero out the double .section padding (wrapper + inner section) and the
+   section-head bottom margin so the gap matches index.html. */
+.dews-reviews-heading { padding-block: 0; }
+.dews-reviews-heading .section { padding-block: 0; }
+.dews-reviews-heading .section-head { margin-bottom: 0; }
+
+/* Judge.me reviews app section — remove wrapper top/bottom padding */
+[id$="__1788325876b6967a8d"] { padding-block: 0; }
 .btn { --btn-bg: var(--ink); --btn-fg: #fff; --btn-bd: var(--ink); display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 1rem 1.9rem; min-height: 52px; background: var(--btn-bg); color: var(--btn-fg); border: 1px solid var(--btn-bd); border-radius: var(--r-pill); font-size: var(--t-sm); font-weight: 600; letter-spacing: 0.04em; text-align: center; position: relative; overflow: hidden; transition: background 0.35s var(--ease), color 0.35s var(--ease), border-color 0.35s var(--ease), transform 0.35s var(--ease) }
 .btn:hover { transform: translateY(-2px) }
 .btn:active { transform: translateY(0) }
