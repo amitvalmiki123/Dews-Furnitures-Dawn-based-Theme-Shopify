@@ -58,7 +58,7 @@
             {%- if link.links != blank -%}
               {%- assign promo_count = 0 -%}
               {%- for block in section.blocks -%}
-                {%- if block.type == 'mega_promotion' and block.settings.menu_title != blank and block.settings.menu_title | downcase | strip == link.title | downcase | strip -%}
+                {%- if block.type == 'mega_promotion' and block.settings.title != blank and block.settings.title | downcase | strip == link.title | downcase | strip -%}
                   {%- assign promo_count = promo_count | plus: 1 -%}
                 {%- endif -%}
               {%- endfor -%}
@@ -79,7 +79,7 @@
 
                 <!-- Promo banners (direct grid children) -->
                 {%- for block in section.blocks -%}
-                  {%- if block.type == 'mega_promotion' and block.settings.menu_title != blank and block.settings.menu_title | downcase | strip == link.title | downcase | strip -%}
+                  {%- if block.type == 'mega_promotion' and block.settings.title != blank and block.settings.title | downcase | strip == link.title | downcase | strip -%}
                     <a class="mega__promo" href="{{ block.settings.link_url }}">
                       {%- if block.settings.image != blank -%}
                         {{ block.settings.image | image_url: width: 400 | image_tag: loading: 'lazy' }}
@@ -123,7 +123,7 @@
             {%- if link.links != blank -%}
               {%- assign promo_count = 0 -%}
               {%- for block in section.blocks -%}
-                {%- if block.type == 'mega_promotion' and block.settings.menu_title != blank and block.settings.menu_title | downcase | strip == link.title | downcase | strip -%}
+                {%- if block.type == 'mega_promotion' and block.settings.title != blank and block.settings.title | downcase | strip == link.title | downcase | strip -%}
                   {%- assign promo_count = promo_count | plus: 1 -%}
                 {%- endif -%}
               {%- endfor -%}
@@ -144,7 +144,7 @@
 
                 <!-- Promo banners (direct grid children) -->
                 {%- for block in section.blocks -%}
-                  {%- if block.type == 'mega_promotion' and block.settings.menu_title != blank and block.settings.menu_title | downcase | strip == link.title | downcase | strip -%}
+                  {%- if block.type == 'mega_promotion' and block.settings.title != blank and block.settings.title | downcase | strip == link.title | downcase | strip -%}
                     <a class="mega__promo" href="{{ block.settings.link_url }}">
                       {%- if block.settings.image != blank -%}
                         {{ block.settings.image | image_url: width: 400 | image_tag: loading: 'lazy' }}
@@ -295,7 +295,7 @@
       "settings": [
         {
           "type": "text",
-          "id": "menu_title",
+          "id": "title",
           "label": "Top-level menu title",
           "info": "Must match the navigation title (e.g. 'Living Room'). Case and extra spaces are ignored."
         },
@@ -325,13 +325,13 @@
         {
           "type": "mega_promotion",
           "settings": {
-            "menu_title": "Living Room"
+            "title": "Living Room"
           }
         },
         {
           "type": "mega_promotion",
           "settings": {
-            "menu_title": "Bedroom"
+            "title": "Bedroom"
           }
         }
       ]
