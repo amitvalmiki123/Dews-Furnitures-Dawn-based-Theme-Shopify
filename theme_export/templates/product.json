@@ -62,12 +62,61 @@
         "heading": "Pick up where you left off",
         "products_to_show": 3
       }
+    },
+    "judgeme-reviews": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_cards_carousel_XrA4PH": {
+          "type": "shopify://apps/judge-me-reviews/blocks/cards_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "show_sample_reviews": false,
+            "reviews_selection": "all",
+            "products": [],
+            "filter_pinned": false,
+            "filter_featured": false,
+            "filter_custom_tags": "",
+            "star_rating": "all",
+            "show_review_media": true,
+            "display_order": "most_recent",
+            "no_image_fallback": "review_text_only",
+            "max_reviews": 20,
+            "review_length": "medium",
+            "text_size": "medium",
+            "image_ratio": "0.75",
+            "reviews_shown": 3,
+            "show_reviewer_name": true,
+            "show_product_name": true,
+            "hide_arrows_mobile": true,
+            "arrows_position": "sides",
+            "max_width": 1100,
+            "corner_styling": "soft",
+            "header_text_color": "#000000",
+            "text_color": "#000000",
+            "card_color": "#f9f9f9",
+            "stars_color": "#801717",
+            "arrows_color": "#000000",
+            "transition_speed": 4,
+            "header_text": "",
+            "show_average_rating": true,
+            "rating_display": "default",
+            "include_margins": false
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_cards_carousel_XrA4PH"
+      ],
+      "custom_css": [],
+      "settings": {
+        "include_margins": true
+      }
     }
   },
   "order": [
     "main",
     "complete-the-look",
     "reviews-heading",
+    "judgeme-reviews",
     "related-products",
     "recently-viewed"
   ]
