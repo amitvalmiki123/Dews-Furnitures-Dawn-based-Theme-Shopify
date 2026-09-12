@@ -773,7 +773,7 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 @media (max-width:480px){ .coll-tiles{ grid-template-columns:minmax(0,1fr); } }
 
 /* --- Collection SEO copy (About the collection) --- */
-.seo-copy{ max-width:76ch; }
+.seo-copy{ max-width:none; }
 .seo-copy h2{ font-size:var(--t-h2); }
 .seo-copy h3{ font-size:1.12rem; margin-top:2.25rem; }
 .seo-copy p{ margin-top:1rem; color:var(--muted); line-height:1.85; }
