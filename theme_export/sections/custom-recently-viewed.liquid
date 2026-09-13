@@ -51,29 +51,7 @@
     var max = {{ section.settings.products_to_show | default: 3 }};
     list = list.slice(0, max);
 
-    track.innerHTML = list.map(function (p) {
-      var price = '<span class="price">' + escapeHtml(p.price) + '</span>';
-      var was = p.compare_at_price ? '<span class="price--was">' + escapeHtml(p.compare_at_price) + '</span>' : '';
-      var hover = p.image2
-        ? '<img class="img-hover" src="' + escapeHtml(p.image2) + '" alt="" width="600" height="600" loading="lazy" decoding="async" aria-hidden="true">'
-        : '';
-      return (
-        '<article class="product reveal is-in">' +
-          '<div class="product__media">' +
-            '<a href="' + escapeHtml(p.url) + '" aria-label="' + escapeHtml(p.title) + '">' +
-              '<img class="img-base" src="' + escapeHtml(p.image) + '" alt="' + escapeHtml(p.title) + '" width="600" height="600" loading="lazy" decoding="async">' +
-              hover +
-            '</a>' +
-          '</div>' +
-          '<div class="product__info">' +
-            '<h3><a href="' + escapeHtml(p.url) + '">' + escapeHtml(p.title) + '</a></h3>' +
-            '<p class="price-row">' + price + was + '</p>' +
-          '</div>' +
-        '</article>'
-      );
-    }).join('');
-
-    // Wire the carousel (arrows + progress bar) — self-contained like related-products
+    /* ---------------- Rail wiring (arrows + progress bar) ---------------- */
     var bar = rail.querySelector('[data-rail-bar]');
     var prev = rail.querySelector('[data-rail-prev]');
     var next = rail.querySelector('[data-rail-next]');
@@ -93,7 +71,62 @@
     if (next) next.addEventListener('click', function () { track.scrollBy({ left: page(), behavior: 'smooth' }); });
     track.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
-    update();
+
+    /* ---------------- Card markup (matches dews-product-card) ---------------- */
+    var cardHTML = function (p) {
+      var price = '<span class="price">' + escapeHtml(p.price) + '</span>';
+      var was = p.compare_at_price ? '<span class="price--was">' + escapeHtml(p.compare_at_price) + '</span>' : '';
+      var hover = p.image2
+        ? '<img class="img-hover" src="' + escapeHtml(p.image2) + '" alt="" width="600" height="600" loading="lazy" decoding="async" aria-hidden="true">'
+        : '';
+      var rating = p.id
+        ? '<div class="product__rating" style="margin-bottom:0; min-height:20px;"><div class="jdgm-widget jdgm-preview-badge" data-id="' + escapeHtml(p.id) + '"></div></div>'
+        : '';
+      return (
+        '<article class="product reveal is-in">' +
+          '<div class="product__media">' +
+            '<a href="' + escapeHtml(p.url) + '" aria-label="' + escapeHtml(p.title) + '">' +
+              '<img class="img-base" src="' + escapeHtml(p.image) + '" alt="' + escapeHtml(p.title) + '" width="600" height="600" loading="lazy" decoding="async">' +
+              hover +
+            '</a>' +
+          '</div>' +
+          '<div class="product__info">' +
+            rating +
+            '<h3><a href="' + escapeHtml(p.url) + '">' + escapeHtml(p.title) + '</a></h3>' +
+            '<p class="price-row">' + price + was + '</p>' +
+          '</div>' +
+        '</article>'
+      );
+    };
+
+    var render = function () {
+      track.innerHTML = list.map(cardHTML).join('');
+      update();
+      // Re-trigger Judge.me preview badges for the freshly injected cards.
+      if (window.judgeme && typeof window.judgeme.badge === 'function') {
+        try { window.judgeme.badge(); window.judgeme.customizeBadges(); } catch (e) {}
+      }
+    };
+
+    // Fast first paint from localStorage (may lack image2 / id on older entries).
+    render();
+
+    // Enrich with full product data (secondary image + id) via the .js endpoint,
+    // so older localStorage entries saved before image2/id existed still work.
+    var enrich = list.map(function (p) {
+      if (!p.handle) return Promise.resolve();
+      return fetch('/products/' + encodeURIComponent(p.handle) + '.js')
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (full) {
+          if (!full) return;
+          if (full.id) p.id = full.id;
+          if (full.images && full.images[1]) p.image2 = full.images[1];
+          if (!p.image) p.image = full.featured_image;
+        })
+        .catch(function () { /* offline / deleted product — keep localStorage data */ });
+    });
+
+    Promise.all(enrich).then(render);
   })();
 </script>
 
