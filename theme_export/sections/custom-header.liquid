@@ -62,7 +62,8 @@
                   {%- assign promo_count = promo_count | plus: 1 -%}
                 {%- endif -%}
               {%- endfor -%}
-              <div class="mega{% if promo_count > 1 %} mega--wide{% endif %}">
+              {%- assign mega_cols = link.links.size | plus: promo_count -%}
+              <div class="mega{% if mega_cols > 3 %} mega--wide{% endif %}">
                 <!-- Dropdown Links -->
                 {%- for childlink in link.links -%}
                   <div>
@@ -127,7 +128,8 @@
                   {%- assign promo_count = promo_count | plus: 1 -%}
                 {%- endif -%}
               {%- endfor -%}
-              <div class="mega{% if promo_count > 1 %} mega--wide{% endif %}">
+              {%- assign mega_cols = link.links.size | plus: promo_count -%}
+              <div class="mega{% if mega_cols > 3 %} mega--wide{% endif %}">
                 <!-- Dropdown Links -->
                 {%- for childlink in link.links -%}
                   <div>
