@@ -311,6 +311,9 @@ body .product__media .badge--new { background: #fff; color: var(--ink); box-shad
 .look__foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem }
 .look__count { font-size: 0.8rem; color: var(--muted-2) }
 .arrivals { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1fr); gap: clamp(1rem, 2vw, 1.75rem); align-items: start }
+.arrivals > .product,
+.arrivals .product__info,
+.arrivals .product__info h3 { min-width: 0 }
 .arrivals__feature .product__media { aspect-ratio: 4/5 }
 .arrivals__stack { display: grid; gap: clamp(1rem, 2vw, 1.75rem) }
 .promo { position: relative; border-radius: var(--r-lg); overflow: hidden; display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; background: var(--ink); color: #fff }
