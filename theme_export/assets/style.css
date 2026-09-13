@@ -48,6 +48,7 @@ body h5 { margin: 0; font-family: var(--font) !important; font-weight: 600 !impo
 .section-head__text { max-width: 46ch }
 .section-head h2 { font-size: var(--t-h2); margin-top: 1rem }
 .section-head p { margin-top: 1.1rem; color: var(--muted); font-size: var(--t-lead) }
+.section-head .eyebrow { font-size: var(--t-label) }
 .section--ink .section-head p { color: #b9afa6 }
 .section-head--center { flex-direction: column; align-items: center; text-align: center }
 .section-head--center .section-head__text { text-align: center }
@@ -679,6 +680,7 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
   .rooms__name { font-size: 1.35rem }
   .rooms__meta { display: none }
   .hide-sm { display: none }
+  .dews-header .actions .wishlist-hero-header-icon { display: none; }
   .header__row { gap: 0.5rem }
   .icon-btn { width: 38px; height: 38px }
   .icon-btn svg { width: 23px; height: auto }
