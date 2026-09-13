@@ -1,0 +1,152 @@
+{
+  "sections": {
+    "banner": {
+      "type": "custom-page-banner",
+      "settings": {
+        "eyebrow": "Support",
+        "title": "How can we help?",
+        "text": "<p>Everything you need to make the most of your Dew's furniture — from delivery and care to returns and tracking your order.</p>",
+        "image": "",
+        "show_meta": true,
+        "meta_1_text": "Fast replies",
+        "meta_2_text": "Track any order",
+        "meta_3_text": "30-day returns",
+        "btn_text": "",
+        "btn_link": ""
+      }
+    },
+    "help_grid": {
+      "type": "custom-help-grid",
+      "blocks": {
+        "topic_faq": {
+          "type": "topic",
+          "settings": {
+            "icon": "info",
+            "title": "Frequently asked questions",
+            "text": "Delivery, returns, care and everything in between — the answers our customers ask for most.",
+            "link": "/pages/faqs",
+            "link_text": "Read more"
+          }
+        },
+        "topic_care": {
+          "type": "topic",
+          "settings": {
+            "icon": "leaf",
+            "title": "Care guide",
+            "text": "Simple habits to keep solid wood and natural cane looking beautiful for decades.",
+            "link": "/pages/care-guide",
+            "link_text": "Read more"
+          }
+        },
+        "topic_track": {
+          "type": "topic",
+          "settings": {
+            "icon": "truck",
+            "title": "Track your order",
+            "text": "Enter your order number to see the live status of your delivery.",
+            "link": "/pages/order-status",
+            "link_text": "Track order"
+          }
+        },
+        "topic_returns": {
+          "type": "topic",
+          "settings": {
+            "icon": "rotate",
+            "title": "Delivery & returns",
+            "text": "Shipping times, white-glove delivery and our 30-day at-home trial.",
+            "link": "/policies/refund-policy",
+            "link_text": "Read policy"
+          }
+        },
+        "topic_contact": {
+          "type": "topic",
+          "settings": {
+            "icon": "mail",
+            "title": "Contact us",
+            "text": "Talk to our studio team about orders, bespoke pieces or anything else.",
+            "link": "/pages/contact",
+            "link_text": "Get in touch"
+          }
+        },
+        "topic_materials": {
+          "type": "topic",
+          "settings": {
+            "icon": "hammer",
+            "title": "Materials & craft",
+            "text": "Learn what we build with — genuine sheesham, mango wood and natural cane.",
+            "link": "/pages/materials",
+            "link_text": "Explore"
+          }
+        }
+      },
+      "block_order": [
+        "topic_faq",
+        "topic_care",
+        "topic_track",
+        "topic_returns",
+        "topic_contact",
+        "topic_materials"
+      ],
+      "settings": {
+        "eyebrow": "Support",
+        "heading": "Choose a topic",
+        "cta_heading": "Still need a hand?",
+        "cta_text": "Our studio team replies within one business day — send us a note and we'll sort it out.",
+        "cta_btn_text": "Contact us",
+        "cta_btn_link": "/pages/contact"
+      }
+    },
+    "trust": {
+      "type": "custom-trust-grid",
+      "blocks": {
+        "p_delivery": {
+          "type": "promise",
+          "settings": {
+            "icon": "truck",
+            "title": "White-glove delivery",
+            "text": "Brought into your room of choice, unpacked, inspected and fully assembled by our team."
+          }
+        },
+        "p_warranty": {
+          "type": "promise",
+          "settings": {
+            "icon": "shield",
+            "title": "1-year structural warranty",
+            "text": "If a joint wobbles or timber splits under normal use, we collect it and fix it on our dime."
+          }
+        },
+        "p_returns": {
+          "type": "promise",
+          "settings": {
+            "icon": "rotate",
+            "title": "30-day trial at home",
+            "text": "Live with the piece. If the scale or tone isn't quite right, we'll arrange the return."
+          }
+        },
+        "p_solid": {
+          "type": "promise",
+          "settings": {
+            "icon": "hammer",
+            "title": "Solid wood, no veneers",
+            "text": "Genuine sheesham and mango frames through and through. No compressed particle board."
+          }
+        }
+      },
+      "block_order": [
+        "p_delivery",
+        "p_warranty",
+        "p_returns",
+        "p_solid"
+      ],
+      "settings": {
+        "eyebrow": "The Dew's promise",
+        "heading": "Help that goes the extra mile"
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "help_grid",
+    "trust"
+  ]
+}

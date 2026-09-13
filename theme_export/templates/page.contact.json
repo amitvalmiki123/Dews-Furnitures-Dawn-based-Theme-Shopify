@@ -1,25 +1,51 @@
 {
   "sections": {
-    "main": {
-      "type": "main-page",
+    "banner": {
+      "type": "custom-page-banner",
       "settings": {
-        "padding_top": 36,
-        "padding_bottom": 36
+        "eyebrow": "Contact",
+        "title": "Let's talk",
+        "text": "<p>Questions about an order, a bespoke piece or just want to say hello? We'd love to hear from you.</p>",
+        "image": "",
+        "show_meta": true,
+        "meta_1_text": "Replies in 1 day",
+        "meta_2_text": "Bespoke queries",
+        "meta_3_text": "Real humans",
+        "btn_text": "",
+        "btn_link": ""
       }
     },
-    "form": {
-      "type": "contact-form",
+    "contact_form": {
+      "type": "custom-contact-form",
       "settings": {
-        "heading": "",
-        "heading_size": "h1",
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "eyebrow": "Contact",
+        "heading": "We're here to help",
+        "text": "Questions about an order, a bespoke piece or just want to say hello? We'd love to hear from you.",
+        "email": "hello@dewsfurniture.com",
+        "phone": "+91 98765 43210",
+        "address": "Jaipur, Rajasthan, India",
+        "hours": "Mon–Sat, 9am–7pm IST",
+        "form_heading": "Send us a message",
+        "form_text": "We reply within one business day.",
+        "name_label": "Name",
+        "name_placeholder": "Your full name",
+        "email_label": "Email",
+        "email_placeholder": "you@example.com",
+        "phone_label": "Phone (optional)",
+        "phone_placeholder": "Your phone number",
+        "order_label": "Order number (optional)",
+        "order_placeholder": "e.g. #1042",
+        "message_label": "Message",
+        "message_placeholder": "How can we help?",
+        "submit_label": "Send message",
+        "success_message": "Thanks for reaching out! Your message has been sent — we'll get back to you within one business day.",
+        "error_message": "Please check the highlighted fields and try again.",
+        "fineprint": "We'll only use your details to reply to your enquiry."
       }
     }
   },
   "order": [
-    "main",
-    "form"
+    "banner",
+    "contact_form"
   ]
 }

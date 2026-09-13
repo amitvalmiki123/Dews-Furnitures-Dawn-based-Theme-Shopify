@@ -1,0 +1,233 @@
+<style>
+  .help-grid { padding-block: clamp(2.5rem, 5vw, 4rem); background: var(--paper); }
+  .help-grid__items { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.5rem); }
+  .help-card {
+    display: flex; flex-direction: column; gap: 0.8rem;
+    padding: clamp(1.5rem, 2.5vw, 2.25rem);
+    border: 1px solid var(--line); border-radius: var(--r-md); background: #fff;
+    transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.35s var(--ease);
+  }
+  .help-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--line-soft); }
+  .help-card__icon {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--bone); color: var(--ink-3);
+    display: grid; place-items: center; flex: none;
+  }
+  .help-card__icon svg { width: 21px; height: 21px; }
+  .help-card h3 { font-size: 1.08rem; font-weight: 600; letter-spacing: -0.01em; margin: 0; color: var(--ink); }
+  .help-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; margin: 0; flex: 1; }
+  .help-card .link-arrow { margin-top: 0.35rem; font-size: 0.82rem; }
+  .help-cta { margin-top: clamp(2rem, 4vw, 3rem); border-radius: var(--r-lg); overflow: hidden; background: var(--ink); color: #fff; padding: clamp(2.25rem, 4vw, 3.5rem); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; }
+  .help-cta h2 { color: #fff; font-size: clamp(1.5rem, 2.6vw, 2.25rem); margin: 0; letter-spacing: -0.02em; }
+  .help-cta p { color: #b9afa6; margin: 0.6rem 0 0; max-width: 52ch; font-size: var(--t-lead); line-height: 1.7; }
+  .help-cta .btn { flex: none; }
+  @media (max-width: 900px) { .help-grid__items { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .help-grid__items { grid-template-columns: minmax(0, 1fr); } .help-cta { flex-direction: column; align-items: flex-start; } }
+</style>
+
+<section class="section help-grid" aria-labelledby="help-grid-title-{{ section.id }}">
+  <div class="container">
+    <div class="section-head section-head--center">
+      <div class="section-head__text">
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> {{ section.settings.eyebrow }}</p>
+        <h2 id="help-grid-title-{{ section.id }}">{{ section.settings.heading }}</h2>
+      </div>
+    </div>
+
+    <div class="help-grid__items">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'topic' -%}
+          <a
+            class="help-card"
+            href="{{ block.settings.link }}"
+            {% if block.settings.link contains 'http' %}target="_blank" rel="noopener"{% endif %}
+            {{ block.shopify_attributes }}
+          >
+            <span class="help-card__icon">
+              <svg aria-hidden="true"><use href="#i-{{ block.settings.icon }}"/></svg>
+            </span>
+            <h3>{{ block.settings.title }}</h3>
+            <p>{{ block.settings.text }}</p>
+            <span class="link-arrow">{{ block.settings.link_text }} <svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.cta_heading != blank -%}
+      <div class="help-cta">
+        <div>
+          <h2>{{ section.settings.cta_heading }}</h2>
+          {%- if section.settings.cta_text != blank -%}
+            <p>{{ section.settings.cta_text }}</p>
+          {%- endif -%}
+        </div>
+        {%- if section.settings.cta_btn_text != blank and section.settings.cta_btn_link != blank -%}
+          <a class="btn btn--light" href="{{ section.settings.cta_btn_link }}">{{ section.settings.cta_btn_text }} <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Help topics grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Support"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "How can we help?"
+    },
+    {
+      "type": "header",
+      "content": "Call-to-action band"
+    },
+    {
+      "type": "text",
+      "id": "cta_heading",
+      "label": "CTA heading",
+      "default": "Still need a hand?"
+    },
+    {
+      "type": "textarea",
+      "id": "cta_text",
+      "label": "CTA text",
+      "default": "Our studio team replies within one business day — send us a note and we'll sort it out."
+    },
+    {
+      "type": "text",
+      "id": "cta_btn_text",
+      "label": "CTA button text",
+      "default": "Contact us"
+    },
+    {
+      "type": "url",
+      "id": "cta_btn_link",
+      "label": "CTA button link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "topic",
+      "name": "Help topic",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "info", "label": "Info" },
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "truck", "label": "Truck" },
+            { "value": "rotate", "label": "Rotate (Returns)" },
+            { "value": "mail", "label": "Mail" },
+            { "value": "hammer", "label": "Hammer" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "ruler", "label": "Ruler" },
+            { "value": "clock", "label": "Clock" }
+          ],
+          "default": "info"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Frequently asked questions"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Delivery, returns, care and everything in between."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text",
+          "default": "Read more"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Help topics grid",
+      "blocks": [
+        {
+          "type": "topic",
+          "settings": {
+            "icon": "info",
+            "title": "Frequently asked questions",
+            "text": "Delivery, returns, care and everything in between — the answers our customers ask for most.",
+            "link": "/pages/faqs",
+            "link_text": "Read more"
+          }
+        },
+        {
+          "type": "topic",
+          "settings": {
+            "icon": "leaf",
+            "title": "Care guide",
+            "text": "Simple habits to keep solid wood and natural cane looking beautiful for decades.",
+            "link": "/pages/care-guide",
+            "link_text": "Read more"
+          }
+        },
+        {
+          "type": "topic",
+          "settings": {
+            "icon": "truck",
+            "title": "Track your order",
+            "text": "Enter your order number to see the live status of your delivery.",
+            "link": "/pages/order-status",
+            "link_text": "Track order"
+          }
+        },
+        {
+          "type": "topic",
+          "settings": {
+            "icon": "rotate",
+            "title": "Delivery & returns",
+            "text": "Shipping times, white-glove delivery and our 30-day at-home trial.",
+            "link": "/policies/refund-policy",
+            "link_text": "Read policy"
+          }
+        },
+        {
+          "type": "topic",
+          "settings": {
+            "icon": "mail",
+            "title": "Contact us",
+            "text": "Talk to our studio team about orders, bespoke pieces or anything else.",
+            "link": "/pages/contact",
+            "link_text": "Get in touch"
+          }
+        },
+        {
+          "type": "topic",
+          "settings": {
+            "icon": "hammer",
+            "title": "Materials & craft",
+            "text": "Learn what we build with — genuine sheesham, mango wood and natural cane.",
+            "link": "/pages/materials",
+            "link_text": "Explore"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,342 @@
+<style>
+  .contact-page { padding-block: clamp(2.5rem, 5vw, 4rem); background: var(--paper); }
+  .contact-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(2rem, 4vw, 4rem); align-items: start; }
+  .contact-info .eyebrow { margin-bottom: 1.1rem; }
+  .contact-info h2 { font-size: var(--t-h2); letter-spacing: -0.02em; line-height: 1.05; margin: 0; color: var(--ink); }
+  .contact-info > p { margin-top: 1.15rem; color: var(--muted); font-size: var(--t-lead); line-height: 1.75; max-width: 46ch; }
+  .contact-info__list { margin-top: 2rem; display: grid; gap: 1.35rem; }
+  .contact-info__list a,
+  .contact-info__list .contact-info__row { display: flex; align-items: flex-start; gap: 0.9rem; color: var(--ink-2); text-decoration: none; }
+  .contact-info__row .ci-icon {
+    width: 42px; height: 42px; border-radius: 50%; background: var(--bone);
+    display: grid; place-items: center; flex: none; color: var(--ink-3);
+  }
+  .contact-info__row .ci-icon svg { width: 18px; height: 18px; }
+  .contact-info__row .ci-label { display: block; font-size: var(--t-label); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted-2); margin-bottom: 0.2rem; }
+  .contact-info__row .ci-value { font-size: 0.95rem; line-height: 1.5; }
+  a.contact-info__row:hover .ci-value { color: var(--red-ink); }
+
+  .contact-form-card {
+    background: #fff; border: 1px solid var(--line); border-radius: var(--r-md);
+    padding: clamp(1.5rem, 3vw, 2.5rem); box-shadow: var(--shadow-sm);
+  }
+  .contact-form-card h3 { font-size: 1.25rem; font-weight: 600; margin: 0 0 0.35rem; color: var(--ink); }
+  .contact-form-card > p { color: var(--muted); font-size: 0.9rem; margin: 0 0 1.5rem; }
+  .contact-field { margin-bottom: 1.15rem; }
+  .contact-field label { display: block; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; color: var(--ink-2); margin-bottom: 0.45rem; }
+  .contact-field label .req { color: var(--red-ink); }
+  .contact-field input,
+  .contact-field textarea {
+    width: 100%; padding: 0.95rem 1.15rem; background: var(--paper);
+    border: 1px solid var(--line); border-radius: var(--r-sm);
+    font: inherit; font-size: 0.95rem; color: var(--ink);
+    transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+    box-sizing: border-box;
+  }
+  .contact-field input:focus,
+  .contact-field textarea:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgba(23, 19, 16, 0.06); }
+  .contact-field input::placeholder,
+  .contact-field textarea::placeholder { color: var(--muted-2); }
+  .contact-field textarea { resize: vertical; min-height: 140px; }
+  .contact-field--err input,
+  .contact-field--err textarea { border-color: var(--red-ink); }
+  .contact-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; }
+  .contact-submit { display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem; }
+  .contact-submit .btn { flex: none; }
+  .contact-submit .fineprint { margin: 0; }
+  .contact-msg { padding: 1rem 1.15rem; border-radius: var(--r-sm); font-size: 0.9rem; margin-bottom: 1.25rem; line-height: 1.55; }
+  .contact-msg.is-ok { background: #eef7f0; color: #1f7a4d; border: 1px solid #cfe6d6; }
+  .contact-msg.is-err { background: var(--red-wash); color: var(--red-ink); border: 1px solid #f3c6c8; }
+  @media (max-width: 900px) { .contact-grid { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 560px) { .contact-row { grid-template-columns: minmax(0, 1fr); } }
+</style>
+
+<section class="section contact-page" aria-labelledby="contact-title-{{ section.id }}">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> {{ section.settings.eyebrow }}</p>
+        <h2 id="contact-title-{{ section.id }}">{{ section.settings.heading }}</h2>
+        {%- if section.settings.text != blank -%}
+          <p>{{ section.settings.text }}</p>
+        {%- endif -%}
+
+        <div class="contact-info__list">
+          {%- if section.settings.email != blank -%}
+            <a class="contact-info__row" href="mailto:{{ section.settings.email }}">
+              <span class="ci-icon"><svg aria-hidden="true"><use href="#i-mail"/></svg></span>
+              <span><span class="ci-label">Email</span><span class="ci-value">{{ section.settings.email }}</span></span>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.phone != blank -%}
+            <a class="contact-info__row" href="tel:{{ section.settings.phone | remove: ' ' | remove: '-' | remove: '(' | remove: ')' }}">
+              <span class="ci-icon"><svg aria-hidden="true"><use href="#i-phone"/></svg></span>
+              <span><span class="ci-label">Phone</span><span class="ci-value">{{ section.settings.phone }}</span></span>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.address != blank -%}
+            <div class="contact-info__row">
+              <span class="ci-icon"><svg aria-hidden="true"><use href="#i-pin"/></svg></span>
+              <span><span class="ci-label">Studio</span><span class="ci-value">{{ section.settings.address }}</span></span>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.hours != blank -%}
+            <div class="contact-info__row">
+              <span class="ci-icon"><svg aria-hidden="true"><use href="#i-clock"/></svg></span>
+              <span><span class="ci-label">Hours</span><span class="ci-value">{{ section.settings.hours }}</span></span>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="contact-form-card">
+        <h3>{{ section.settings.form_heading }}</h3>
+        {%- if section.settings.form_text != blank -%}
+          <p>{{ section.settings.form_text }}</p>
+        {%- endif -%}
+
+        {%- form 'contact', id: 'DewsContactForm', class: 'contact-form' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="contact-msg is-ok" role="status" tabindex="-1" autofocus>
+              {{ section.settings.success_message }}
+            </div>
+          {%- elsif form.errors -%}
+            <div class="contact-msg is-err" role="alert" tabindex="-1" autofocus>
+              {{ section.settings.error_message }}
+            </div>
+          {%- endif -%}
+
+          <div class="contact-row">
+            <div class="contact-field">
+              <label for="DewsContactName">{{ section.settings.name_label }} <span class="req">*</span></label>
+              <input
+                type="text"
+                id="DewsContactName"
+                name="contact[name]"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                placeholder="{{ section.settings.name_placeholder }}"
+                autocomplete="name"
+                required
+              >
+            </div>
+            <div class="contact-field">
+              <label for="DewsContactEmail">{{ section.settings.email_label }} <span class="req">*</span></label>
+              <input
+                type="email"
+                id="DewsContactEmail"
+                name="contact[email]"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                placeholder="{{ section.settings.email_placeholder }}"
+                autocomplete="email"
+                autocorrect="off"
+                autocapitalize="off"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="contact-row">
+            <div class="contact-field">
+              <label for="DewsContactPhone">{{ section.settings.phone_label }}</label>
+              <input
+                type="tel"
+                id="DewsContactPhone"
+                name="contact[Phone]"
+                value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                placeholder="{{ section.settings.phone_placeholder }}"
+                autocomplete="tel"
+                pattern="[0-9+\-() ]*"
+              >
+            </div>
+            <div class="contact-field">
+              <label for="DewsContactOrder">{{ section.settings.order_label }}</label>
+              <input
+                type="text"
+                id="DewsContactOrder"
+                name="contact[Order number]"
+                value="{{ form.order_number }}"
+                placeholder="{{ section.settings.order_placeholder }}"
+              >
+            </div>
+          </div>
+
+          <div class="contact-field">
+            <label for="DewsContactMessage">{{ section.settings.message_label }} <span class="req">*</span></label>
+            <textarea
+              id="DewsContactMessage"
+              name="contact[body]"
+              placeholder="{{ section.settings.message_placeholder }}"
+              required
+            >{{- form.body -}}</textarea>
+          </div>
+
+          <div class="contact-submit">
+            <button type="submit" class="btn">{{ section.settings.submit_label }} <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+            <p class="fineprint">{{ section.settings.fineprint }}</p>
+          </div>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact form (custom)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Contact"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Let's talk"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Intro text",
+      "default": "Questions about an order, a bespoke piece or just want to say hello? We'd love to hear from you."
+    },
+    {
+      "type": "header",
+      "content": "Contact details"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "hello@dewsfurniture.com"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone",
+      "default": "+91 98765 43210"
+    },
+    {
+      "type": "text",
+      "id": "address",
+      "label": "Address",
+      "default": "Jaipur, Rajasthan, India"
+    },
+    {
+      "type": "text",
+      "id": "hours",
+      "label": "Hours",
+      "default": "Mon–Sat, 9am–7pm IST"
+    },
+    {
+      "type": "header",
+      "content": "Form"
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "Form heading",
+      "default": "Send us a message"
+    },
+    {
+      "type": "textarea",
+      "id": "form_text",
+      "label": "Form subtext",
+      "default": "We reply within one business day."
+    },
+    {
+      "type": "text",
+      "id": "name_label",
+      "label": "Name label",
+      "default": "Name"
+    },
+    {
+      "type": "text",
+      "id": "name_placeholder",
+      "label": "Name placeholder",
+      "default": "Your full name"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email label",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "you@example.com"
+    },
+    {
+      "type": "text",
+      "id": "phone_label",
+      "label": "Phone label",
+      "default": "Phone (optional)"
+    },
+    {
+      "type": "text",
+      "id": "phone_placeholder",
+      "label": "Phone placeholder",
+      "default": "Your phone number"
+    },
+    {
+      "type": "text",
+      "id": "order_label",
+      "label": "Order number label",
+      "default": "Order number (optional)"
+    },
+    {
+      "type": "text",
+      "id": "order_placeholder",
+      "label": "Order number placeholder",
+      "default": "e.g. #1042"
+    },
+    {
+      "type": "text",
+      "id": "message_label",
+      "label": "Message label",
+      "default": "Message"
+    },
+    {
+      "type": "text",
+      "id": "message_placeholder",
+      "label": "Message placeholder",
+      "default": "How can we help?"
+    },
+    {
+      "type": "text",
+      "id": "submit_label",
+      "label": "Submit button label",
+      "default": "Send message"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thanks for reaching out! Your message has been sent — we'll get back to you within one business day."
+    },
+    {
+      "type": "text",
+      "id": "error_message",
+      "label": "Error message",
+      "default": "Please check the highlighted fields and try again."
+    },
+    {
+      "type": "text",
+      "id": "fineprint",
+      "label": "Fine print",
+      "default": "We'll only use your details to reply to your enquiry."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact form (custom)"
+    }
+  ]
+}
+{% endschema %}
