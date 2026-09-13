@@ -243,7 +243,7 @@
    ========================================================================== */
 @media (max-width:900px){
   .pdp{ grid-template-columns:minmax(0,1fr); }
-  .gallery{ position:static; padding-left:0; }
+  .gallery{ position:static; padding-left:0; display:flex; flex-direction:column; }
   .gallery__thumbs{
     position:static; width:auto; top:auto; bottom:auto; left:auto;
     flex-direction:row; overflow-x:auto; overflow-y:hidden; order:2;
@@ -253,6 +253,7 @@
   }
   .gallery__thumbs::-webkit-scrollbar{ display:none; }
   .gallery__thumb{ width:72px; }
+  .gallery__main{ order:1; }
 }
 @media (max-width:480px){
   .pdp__trust{ grid-template-columns:minmax(0,1fr); }
