@@ -7,8 +7,21 @@ class FacetFiltersForm extends HTMLElement {
       this.onSubmitHandler(event);
     }, 800);
 
-    const facetForm = this.querySelector('form');
-    facetForm.addEventListener('input', this.debouncedOnSubmit.bind(this));
+    // Bind to the host element (not the inner <form>) so the listener survives
+    // the `.sorting` innerHTML swap that renderAdditionalElements performs after
+    // every render. Otherwise the re-created sort select loses its handler and
+    // repeat sort changes stop working.
+    this.addEventListener('input', (event) => {
+      if (event.target.matches('select[name="sort_by"]')) return;
+      this.debouncedOnSubmit(event);
+    });
+
+    // Sort applies immediately on change (no debounce).
+    this.addEventListener('change', (event) => {
+      if (event.target.matches('select[name="sort_by"]')) {
+        this.onSubmitHandler(event);
+      }
+    });
 
     const facetWrapper = this.querySelector('#FacetsWrapperDesktop');
     if (facetWrapper) facetWrapper.addEventListener('keyup', onKeyUpEscape);
