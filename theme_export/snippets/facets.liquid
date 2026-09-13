@@ -35,6 +35,10 @@
               </summary>
               <facet-filters-form>
                 <form id="FacetFiltersFormMobile" class="mobile-facets">
+                  {%- if results.terms -%}
+                    <input type="hidden" name="q" value="{{ results.terms | escape }}">
+                    <input name="options[prefix]" type="hidden" value="last">
+                  {%- endif -%}
                   <div class="mobile-facets__inner gradient">
                     <div class="mobile-facets__header">
                       <h2 class="mobile-facets__heading">{{ 'products.facets.filter_button' | t }}</h2>
@@ -130,6 +134,10 @@
         {%- if enable_sorting -%}
           <facet-filters-form class="facet-filters sorting caption">
             <form id="FacetSortForm">
+              {%- if results.terms -%}
+                <input type="hidden" name="q" value="{{ results.terms | escape }}">
+                <input name="options[prefix]" type="hidden" value="last">
+              {%- endif -%}
               <label class="sr-only" for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
               <div class="select facet-filters__sort">
                 <select name="sort_by" class="select__select" id="SortBy" aria-describedby="a11y-refresh-page-message">
