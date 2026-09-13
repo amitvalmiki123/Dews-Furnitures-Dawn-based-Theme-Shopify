@@ -672,7 +672,7 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 }
 
 @media (max-width:576px) {
-  .rail { --rail-per-view: 1.28 }
+  .rail { --rail-per-view: 2 }
   .promise { grid-template-columns: 1fr }
   .craft__media { grid-template-columns: 1fr 1fr }
   .craft__shot--main { grid-column: 1/-1; grid-row: auto; aspect-ratio: 16/10 }
@@ -698,7 +698,7 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 
 @media (max-width:400px) {
   :root { --gutter: 1.1rem }
-  .rail { --rail-per-view: 1.14 }
+  .rail { --rail-per-view: 2 }
   .hero__ctas { flex-direction: column; align-items: stretch }
   .hero__ctas .btn { width: 100% }
   .countdown { gap: 1.1rem }
@@ -734,9 +734,22 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 .product__tools .wishlist-hero-custom-button button:hover svg,
 .product__tools .wishlist-hero-custom-button button:hover svg * { fill: #fff !important; stroke: #fff !important; }
 
-/* Touch devices have no hover — keep wishlist/quickview reachable */
+/* Touch devices have no hover — keep the card image clean, show only badges.
+   Quick view / wishlist / quick add stay hidden so the product image is clear. */
 @media (hover: none) {
-  .product .product__tools { opacity: 1; transform: none }
+  .product .product__tools,
+  .product .product__add { display: none !important; }
+}
+@media (max-width: 749px) {
+  .product .product__tools,
+  .product .product__add { display: none !important; }
+  body .product__media .badge {
+    font-size: 0.56rem;
+    letter-spacing: 0.06em;
+    padding: 0.28rem 0.55rem;
+    top: 0.6rem;
+    left: 0.6rem;
+  }
 }
 
 /* --- Header: match .icon-btn --- */
@@ -758,7 +771,7 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 /* --- Complete the look / Recently viewed product grids (design reference) --- */
 .grid-products{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(1.75rem,3vw,2.75rem) clamp(1rem,2vw,1.75rem); }
 @media (max-width:860px){ .grid-products{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
-@media (max-width:480px){ .grid-products{ grid-template-columns:minmax(0,1fr); } }
+@media (max-width:480px){ .grid-products{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(0.75rem,2vw,1rem); } }
 /* Collection page sections — remove the extra outer .section padding-y so there's
    no doubled gap above/below. The inner .section keeps its normal padding. */
 .dews-more-collections { padding-block: 0; }
