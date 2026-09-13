@@ -787,6 +787,7 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 .dews-recently-viewed { padding-block: 0; }
 .dews-recently-viewed .rail { --rail-per-view: 3; }
 .dews-related-wrapper { padding-block: 0; }
+[id$="__contact_form"] { padding-block: 0; }
 @media (max-width: 990px) { .dews-recently-viewed .rail { --rail-per-view: 2; } }
 
 /* --- breadcrumb (page head) — shared with PDP --- */
