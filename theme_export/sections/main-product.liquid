@@ -591,6 +591,10 @@
     if product.featured_image != blank
       assign rv_image = product.featured_image | image_url: width: 800
     endif
+    assign rv_image2 = blank
+    if product.images[1] != blank
+      assign rv_image2 = product.images[1] | image_url: width: 800
+    endif
     assign rv_compare = blank
     if product.compare_at_price > product.price
       assign rv_compare = product.compare_at_price | money
@@ -602,6 +606,7 @@
       "title": {{ product.title | json }},
       "url": {{ product.url | json }},
       "image": {{ rv_image | json }},
+      "image2": {{ rv_image2 | json }},
       "price": {{ product.price | money | json }},
       "compare_at_price": {{ rv_compare | json }}
     }

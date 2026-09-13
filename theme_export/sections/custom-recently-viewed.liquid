@@ -9,15 +9,25 @@
       </div>
     </div>
 
-    <div class="grid-products" data-recently-viewed></div>
+    <div class="rail" data-rail data-recently-viewed>
+      <div class="rail__track" data-rail-track data-recently-viewed-track></div>
+      <div class="rail__foot">
+        <div class="rail__progress"><span class="rail__bar" data-rail-bar></span></div>
+        <div class="rail__nav">
+          <button class="rail__btn" data-rail-prev aria-label="Previous products"><svg aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+          <button class="rail__btn" data-rail-next aria-label="Next products"><svg aria-hidden="true"><use href="#i-chev-r"/></svg></button>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 <script>
   (function () {
     var section = document.querySelector('[data-recently-viewed-section]');
-    var root = document.querySelector('[data-recently-viewed]');
-    if (!section || !root) return;
+    var rail = document.querySelector('[data-recently-viewed]');
+    var track = document.querySelector('[data-recently-viewed-track]');
+    if (!section || !rail || !track) return;
 
     var escapeHtml = function (str) {
       return String(str == null ? '' : str).replace(/[&<>"']/g, function (c) {
@@ -41,14 +51,18 @@
     var max = {{ section.settings.products_to_show | default: 3 }};
     list = list.slice(0, max);
 
-    root.innerHTML = list.map(function (p) {
+    track.innerHTML = list.map(function (p) {
       var price = '<span class="price">' + escapeHtml(p.price) + '</span>';
       var was = p.compare_at_price ? '<span class="price--was">' + escapeHtml(p.compare_at_price) + '</span>' : '';
+      var hover = p.image2
+        ? '<img class="img-hover" src="' + escapeHtml(p.image2) + '" alt="" width="600" height="600" loading="lazy" decoding="async" aria-hidden="true">'
+        : '';
       return (
         '<article class="product reveal is-in">' +
           '<div class="product__media">' +
             '<a href="' + escapeHtml(p.url) + '" aria-label="' + escapeHtml(p.title) + '">' +
               '<img class="img-base" src="' + escapeHtml(p.image) + '" alt="' + escapeHtml(p.title) + '" width="600" height="600" loading="lazy" decoding="async">' +
+              hover +
             '</a>' +
           '</div>' +
           '<div class="product__info">' +
@@ -58,6 +72,28 @@
         '</article>'
       );
     }).join('');
+
+    // Wire the carousel (arrows + progress bar) — self-contained like related-products
+    var bar = rail.querySelector('[data-rail-bar]');
+    var prev = rail.querySelector('[data-rail-prev]');
+    var next = rail.querySelector('[data-rail-next]');
+    var page = function () { return Math.max(track.clientWidth * 0.8, 240); };
+    var update = function () {
+      var m = track.scrollWidth - track.clientWidth;
+      if (bar) {
+        var visible = track.clientWidth / track.scrollWidth;
+        var ratio = m > 0 ? track.scrollLeft / m : 0;
+        bar.style.width = Math.max(visible * 100, 12) + '%';
+        bar.style.transform = 'translateX(' + (ratio * ((1 / Math.max(visible, 0.12)) - 1) * 100) + '%)';
+      }
+      if (prev) prev.disabled = track.scrollLeft <= 2;
+      if (next) next.disabled = track.scrollLeft >= m - 2;
+    };
+    if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -page(), behavior: 'smooth' }); });
+    if (next) next.addEventListener('click', function () { track.scrollBy({ left: page(), behavior: 'smooth' }); });
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
   })();
 </script>
 

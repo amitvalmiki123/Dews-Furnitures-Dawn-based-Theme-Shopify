@@ -680,7 +680,8 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
   .rooms__name { font-size: 1.35rem }
   .rooms__meta { display: none }
   .hide-sm { display: none }
-  .dews-header .actions .wishlist-hero-header-icon { display: none; }
+  .dews-header .actions .wishlist-hero-header-icon,
+  .dews-header .site-header__icon.wishlist-hero-header-icon { display: none !important; }
   .header__row { gap: 0.5rem }
   .icon-btn { width: 38px; height: 38px }
   .icon-btn svg { width: 23px; height: auto }
@@ -778,6 +779,10 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
    no doubled gap above/below. The inner .section keeps its normal padding. */
 .dews-more-collections { padding-block: 0; }
 .dews-collection-about { padding-block: 0; }
+.dews-recently-viewed { padding-block: 0; }
+.dews-recently-viewed .rail { --rail-per-view: 3; }
+.dews-related-wrapper { padding-block: 0; }
+@media (max-width: 990px) { .dews-recently-viewed .rail { --rail-per-view: 2; } }
 
 /* --- breadcrumb (page head) — shared with PDP --- */
 .page-head{ padding-block:clamp(1.25rem,2.5vw,2rem) 0; }
