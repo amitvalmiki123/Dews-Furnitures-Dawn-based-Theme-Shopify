@@ -310,7 +310,7 @@ body .product__media .badge--new { background: #fff; color: var(--ink); box-shad
 .look__items a:hover .look__item-price { color: var(--red-ink) }
 .look__foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem }
 .look__count { font-size: 0.8rem; color: var(--muted-2) }
-.arrivals { display: grid; grid-template-columns: 1.35fr 1fr 1fr; gap: clamp(1rem, 2vw, 1.75rem); align-items: start }
+.arrivals { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1fr); gap: clamp(1rem, 2vw, 1.75rem); align-items: start }
 .arrivals__feature .product__media { aspect-ratio: 4/5 }
 .arrivals__stack { display: grid; gap: clamp(1rem, 2vw, 1.75rem) }
 .promo { position: relative; border-radius: var(--r-lg); overflow: hidden; display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; background: var(--ink); color: #fff }
@@ -611,7 +611,7 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
   .craft { grid-template-columns: 1fr }
   .craft__media { grid-template-columns: 2fr 1fr }
   .craft__shot--main { grid-column: 1; grid-row: span 2; aspect-ratio: auto }
-  .arrivals { grid-template-columns: 1fr 1fr }
+  .arrivals { grid-template-columns: repeat(2, minmax(0, 1fr)) }
   .arrivals__feature { grid-column: 1/-1 }
   .arrivals__feature .product__media { aspect-ratio: 16/10 }
   .promo { grid-template-columns: 1fr }
