@@ -42,6 +42,10 @@
           t.classList.toggle('is-active', on);
           t.setAttribute('aria-selected', String(on));
         });
+        // Keep the selected thumbnail visible inside the scrollable rail
+        if (thumb.scrollIntoView) {
+          thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
         main.classList.remove('is-zoomed');
         img.style.transformOrigin = 'center';
       });
