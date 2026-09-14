@@ -31,6 +31,16 @@
   }
 </style>
 
+{%- liquid
+  assign header_logo = section.settings.logo
+  if header_logo == blank
+    assign header_logo = settings.logo
+    assign header_logo_width = settings.logo_width
+  else
+    assign header_logo_width = section.settings.logo_width
+  endif
+-%}
+
 <!-- HEADER -->
 <header class="dews-header" id="header">
   <div class="header__row">
@@ -100,8 +110,8 @@
 
     <!-- LOGO -->
     <a class="logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
-      {%- if section.settings.logo != blank -%}
-        <img class="logo__mark" src="{{ section.settings.logo | image_url: width: section.settings.logo_width }}" alt="{{ shop.name }}" width="{{ section.settings.logo_width }}" height="auto" aria-hidden="true">
+      {%- if header_logo != blank -%}
+        <img class="logo__mark" src="{{ header_logo | image_url: width: header_logo_width }}" alt="{{ shop.name }}" width="{{ header_logo_width }}" height="auto" aria-hidden="true">
       {%- endif -%}
       {%- if section.settings.show_wordmark -%}
         <span class="logo__word">{{ section.settings.wordmark_text | default: shop.name }}</span>
@@ -194,8 +204,8 @@
 <aside class="site-mobile-drawer" id="drawer" aria-label="Mobile menu">
   <div class="drawer__head">
     <span class="logo">
-      {%- if section.settings.logo != blank -%}
-        <img class="logo__mark" src="{{ section.settings.logo | image_url: width: 24 }}" alt="" width="24" height="24" aria-hidden="true">
+      {%- if header_logo != blank -%}
+        <img class="logo__mark" src="{{ header_logo | image_url: width: 24 }}" alt="" width="24" height="24" aria-hidden="true">
       {%- endif -%}
       {%- if section.settings.show_wordmark -%}
          <span class="logo__word">{{ section.settings.wordmark_text | default: shop.name }}</span>
