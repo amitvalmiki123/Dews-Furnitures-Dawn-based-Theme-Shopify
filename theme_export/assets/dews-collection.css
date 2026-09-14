@@ -295,6 +295,7 @@ span.mobile-facets__open-label.button-label {
 .search-page__form { margin-top: 2rem; max-width: 34rem; }
 .search-page__search { margin: 0; }
 .search-page__field {
+  position: relative;
   display: flex; align-items: center; gap: 0.75rem;
   background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-pill);
   padding: 0.35rem 0.35rem 0.35rem 1.15rem; min-height: 58px;
