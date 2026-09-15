@@ -127,6 +127,13 @@
                 height="900"
                 fetchpriority="high"
               >
+              {%- comment -%} Discount tag on the main image — only when the
+                 product is actually reduced, so nothing shows at full price. {%- endcomment -%}
+              {%- if product.compare_at_price > product.price -%}
+                {%- assign save_pct = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+                <span class="gallery__tag">{{ save_pct }}% OFF</span>
+              {%- endif -%}
+
               <span class="gallery__hint">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8.5v5M8.5 11h5" stroke-linecap="round"/></svg>
                 Click to zoom

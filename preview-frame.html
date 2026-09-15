@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dew's Furnitures — fixes preview</title>
 
-<!-- real theme CSS -->
+<!-- real theme CSS (same load order as the live theme) -->
 <link rel="stylesheet" href="theme_export/assets/dews-tokens.css">
 <link rel="stylesheet" href="theme_export/assets/style.css">
 <link rel="stylesheet" href="theme_export/assets/component-dews-product.css">
@@ -17,28 +17,25 @@
   .pv-h { font-size: 1.05rem; font-weight: 600; color: var(--ink); margin-bottom: .35rem }
   .pv-sub { font-size: .84rem; color: var(--muted); margin-bottom: 1.4rem; line-height: 1.65 }
 
+  /* header (mirrors custom-header.liquid: hamburger · logo · actions) */
   .dews-header { position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--line); background: var(--paper) }
-  .dews-header .container { display: flex; align-items: center; justify-content: space-between;
-                            min-height: var(--header-h); gap: 1rem }
-  .dews-header .brand { font-family: var(--font-accent); font-size: 1.3rem; color: var(--ink) }
-  .dews-header .actions { display: flex; align-items: center; gap: .25rem }
+  .dews-header .container { max-width: none; padding-inline: 10px }
+  .dews-header .header__row { display: flex; align-items: center; gap: 1.5rem; height: var(--header-h) }
+  .dews-header .logo { display: inline-flex; align-items: center; gap: .6rem; font-family: var(--font-accent); font-size: 1.25rem; color: var(--ink) }
+  .dews-header .actions { display: flex; align-items: center }
   .dews-header .actions a { position: relative }
   .icon-btn { width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center;
-              border-radius: var(--r-pill); color: var(--ink-2) }
+              border-radius: var(--r-pill); color: var(--ink-2); background: none; border: 0; cursor: pointer }
   .icon-btn svg { width: 19px; height: 19px }
 
-  /* mock Judge.me stars */
   .jdgm-preview-badge { display: inline-flex; align-items: center; gap: .35rem; font-size: .78rem; color: var(--muted-2) }
   .jdgm-star { color: #e01b22; letter-spacing: 1px }
 
-  /* product card bits the preview needs */
   .product__media { position: relative }
-  .product__tools { position: absolute; right: .6rem; top: .6rem; display: grid; gap: .4rem; opacity: 0;
-                    transition: opacity .3s var(--ease) }
+  .product__tools { position: absolute; right: .6rem; top: .6rem; display: grid; gap: .4rem; opacity: 0; transition: opacity .3s var(--ease) }
   .product:hover .product__tools { opacity: 1 }
   .tool-btn { width: 38px; height: 38px; display: grid; place-items: center; border-radius: var(--r-pill);
               background: rgba(251,250,248,.95); border: 1px solid var(--line); color: var(--ink-2); cursor: pointer }
-  .tool-btn:hover { background: var(--ink); color: #fff }
   .tool-btn svg { width: 17px; height: 17px }
   .product__add { display: block; width: 100%; margin-top: .6rem; padding: .7rem; border-radius: var(--r-pill);
                   background: var(--ink); color: #fff; font-size: .8rem; font-weight: 600; border: 0; cursor: pointer }
@@ -48,90 +45,84 @@
               z-index: 5000; padding: .8rem 1.4rem; border-radius: var(--r-pill); background: var(--ink);
               color: #fff; font-size: .85rem; font-weight: 600; transition: transform .35s var(--ease) }
   .pv-toast.is-on { transform: translateX(-50%) translateY(0) }
-
   .pv-note { border: 1px dashed var(--line); border-radius: var(--r-sm); background: var(--bone);
              padding: .9rem 1rem; font-size: .8rem; color: var(--muted); line-height: 1.7 }
 </style>
 </head>
 <body>
 
-<!-- ================= HEADER ================= -->
+<!-- ================= HEADER · (3) icon spacing ================= -->
 <header class="dews-header">
   <div class="container">
-    <a class="brand" href="#">Dew's Furnitures</a>
-    <nav class="nav nav--end">
-      <div class="actions">
-        <a class="icon-btn" href="#" aria-label="Account">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
-        </a>
-        <a class="site-header__icon header__icon link link--text focus-inset wishlist-hero-header-icon"
-           href="#" aria-label="Open Wishlist">
-          <svg class="wlh-svg-Icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
-               style="width:1em;font-size:22px">
-            <path d="M12 20.5S3.5 15 3.5 9.2A4.7 4.7 0 0 1 12 6.6a4.7 4.7 0 0 1 8.5 2.6c0 5.8-8.5 11.3-8.5 11.3z"/>
-          </svg>
-          <span class="wishlisthero-header-count">3</span>
-        </a>
-        <a class="icon-btn" href="#" aria-label="Cart">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="width:20px;height:20px">
-            <path d="M4 7h16l-1.4 12.2a1.5 1.5 0 0 1-1.5 1.3H6.9a1.5 1.5 0 0 1-1.5-1.3z"/><path d="M9 7V5.5a3 3 0 0 1 6 0V7"/>
-          </svg>
-          <span class="cart-count">2</span>
-        </a>
-      </div>
-    </nav>
+    <div class="header__row">
+      <button class="icon-btn hamburger" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round"/></svg>
+      </button>
+
+      <a class="logo" href="#">
+        <span class="logo__word" style="letter-spacing:.02em;text-transform:uppercase;font-family:var(--font);font-weight:700;font-size:1.06rem">Dew's Furnitures</span>
+      </a>
+
+      <nav class="nav nav--end">
+        <div class="actions">
+          <button class="icon-btn" aria-label="Search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.2-3.2"/></svg>
+          </button>
+          <a class="icon-btn" href="#" aria-label="Account">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+          </a>
+          <a class="site-header__icon header__icon link link--text focus-inset wishlist-hero-header-icon"
+             href="#" aria-label="Open Wishlist">
+            <svg class="wlh-svg-Icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="width:1em;font-size:22px">
+              <path d="M12 20.5S3.5 15 3.5 9.2A4.7 4.7 0 0 1 12 6.6a4.7 4.7 0 0 1 8.5 2.6c0 5.8-8.5 11.3-8.5 11.3z"/>
+            </svg>
+            <span class="wishlisthero-header-count">3</span>
+          </a>
+          <a class="icon-btn" href="#" aria-label="Cart">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="width:20px;height:20px">
+              <path d="M4 7h16l-1.4 12.2a1.5 1.5 0 0 1-1.5 1.3H6.9a1.5 1.5 0 0 1-1.5-1.3z"/><path d="M9 7V5.5a3 3 0 0 1 6 0V7"/>
+            </svg>
+            <span class="cart-count">2</span>
+          </a>
+        </div>
+      </nav>
+    </div>
   </div>
 </header>
 
-<!-- ================= (1) ACCORDION ================= -->
-<section class="pv-section">
-  <p class="pv-h">1 · PDP accordion — heading jagah pe rehta hai</p>
-  <p class="pv-sub">
-    Niche <b>"Dimensions &amp; specifications"</b> dabayein. Pehle page neeche scroll ho jata tha
-    (kyunki upar wala accordion band hone se height kam ho jati thi). Ab
-    <b>heading wahin tiki rahegi</b> aur content neeche ki taraf khulega.
-  </p>
+<!-- ================= (2) PDP gallery + discount tag ================= -->
+<section class="section section--tight">
+  <div class="container">
+    <p class="pv-h" style="margin-bottom:.35rem">2 · PDP main image — “45% OFF” tag</p>
+    <p class="pv-sub">Tag sirf tab dikhega jab product discounted ho (<code>compare_at_price &gt; price</code>). Top-right corner.</p>
 
-  <div class="faq faq--flush" style="max-width:760px">
-    <div class="faq__item is-open">
-      <h2><button class="faq__q" type="button" aria-expanded="true">Description <span class="faq__icon" aria-hidden="true"></span></button></h2>
-      <div class="faq__a"><div class="acc-body">
-        <p>Kiln-dried hardwood frame, feather-wrapped foam and a washed linen blend. Deep seats, low arms, and a silhouette that stays quiet in the room. Made by hand in small batches — no two pieces are identical.</p>
-        <p>Every sofa is bench-made to order, so the timber grain and the weave settle slightly differently each time. That is the point.</p>
-      </div></div>
-    </div>
+    <div class="gallery" id="gallery">
+      <div class="gallery__thumbs" role="tablist" aria-label="Product images">
+        <button class="gallery__thumb is-active"><img alt="" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect width='200' height='200' fill='%23e9e3da'/><rect x='35' y='95' width='130' height='55' rx='10' fill='%23c9a882'/></svg>"></button>
+        <button class="gallery__thumb"><img alt="" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect width='200' height='200' fill='%23e4ddd2'/><rect x='45' y='60' width='110' height='90' rx='10' fill='%23a8825e'/></svg>"></button>
+        <button class="gallery__thumb"><img alt="" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect width='200' height='200' fill='%23efe9e1'/><circle cx='100' cy='100' r='48' fill='%23d8b489'/></svg>"></button>
+      </div>
 
-    <div class="faq__item">
-      <h2><button class="faq__q" type="button" aria-expanded="false">Dimensions &amp; specifications <span class="faq__icon" aria-hidden="true"></span></button></h2>
-      <div class="faq__a"><div class="acc-body">
-        <table class="spec"><tbody>
-          <tr><th scope="row">Primary material</th><td>Solid ash &amp; engineered hardwood</td></tr>
-          <tr><th scope="row">Style</th><td>Mid-century modern</td></tr>
-          <tr><th scope="row">Colour</th><td>Washed linen</td></tr>
-          <tr><th scope="row">Item weight</th><td>48 kg</td></tr>
-          <tr><th scope="row">Product dimension</th><td>218 × 92 × 78 cm</td></tr>
-          <tr><th scope="row">Seating capacity</th><td>3 seater</td></tr>
-          <tr><th scope="row">Seat height</th><td>43 cm</td></tr>
-          <tr><th scope="row">Frame</th><td>Kiln-dried hardwood</td></tr>
-        </tbody></table>
-      </div></div>
-    </div>
-
-    <div class="faq__item">
-      <h2><button class="faq__q" type="button" aria-expanded="false">Shipping &amp; returns <span class="faq__icon" aria-hidden="true"></span></button></h2>
-      <div class="faq__a"><div class="acc-body">
-        <p>Free delivery across India in 3–4 weeks. 30-day returns on unused pieces in original packaging.</p>
-      </div></div>
+      <div class="gallery__main" id="galleryMain">
+        <img id="galleryImg" alt="Haven 3-seater sofa" width="900" height="900"
+             src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='900' height='900'><rect width='900' height='900' fill='%23e9e3da'/><rect x='150' y='430' width='600' height='240' rx='34' fill='%23c9a882'/><rect x='195' y='360' width='510' height='110' rx='26' fill='%23b08e68'/></svg>">
+        <span class="gallery__tag">45% OFF</span>
+        <span class="gallery__hint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8.5v5M8.5 11h5" stroke-linecap="round"/></svg>
+          Click to zoom
+        </span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ================= (2) BREADCRUMB ================= -->
-<section class="pv-section">
-  <p class="pv-h">2 · Breadcrumb — dot pehli line ke saath</p>
+<!-- ================= (1) BREADCRUMB ================= -->
+<section class="pv-section" style="padding-block:30px">
+  <p class="pv-h">1 · Breadcrumb — dot pehli line ke saath</p>
   <p class="pv-sub">
-    Mobile width (390/430) par crumb wrap hota hai. Pehle dot <b>block ke beech</b> mein lagta tha;
-    ab wo <b>pehli line ke saath align</b> hota hai. Desktop par koi farq nahi padta.
+    Dono CSS files (<code>style.css</code> + <code>component-dews-product.css</code>) ab same hain —
+    pehle <code>component-dews-product.css</code> baad mein load hokar <code>align-items:center</code>
+    force karti thi. Mobile width par dekhein: dot ab pehli line ke saath.
   </p>
   <nav aria-label="Breadcrumb">
     <ol class="breadcrumb">
@@ -143,15 +134,61 @@
   </nav>
 </section>
 
-<!-- ================= (3) YOU MAY ALSO LIKE ================= -->
-<section class="pv-section">
-  <p class="pv-h">3 · “You may also like” — quick view + quick add</p>
-  <p class="pv-sub">
-    Ye cards <b>async</b> aate hain (<code>&lt;product-recommendations&gt;</code>), isliye unpe listener attach hi
-    nahi hote the. Ab dono <b>delegated</b> (document-level) hain. Neeche cards <b>1.2 second baad</b> inject honge —
-    phir bhi eye icon se popup khulega aur Quick add se cart drawer khulega.
-  </p>
+<!-- ================= (4) SECTION SPACING ================= -->
+<section class="section section--bone">
+  <div class="container">
+    <p class="pv-h">4 · Section spacing (mobile)</p>
+    <p class="pv-sub">
+      Ye dono blocks real <code>.section</code> hain — mobile/tablet par upar-niche
+      <b>30px</b> gap (desktop par <code>--section-y</code>). Eyebrow ka top margin bhi 0 hai,
+      warna 30px + margin se gap double ho jata.
+    </p>
+  </div>
+</section>
 
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Craft &amp; materials</p>
+        <h2>Built to outlast a trend cycle</h2>
+        <p>Doosra paragraph (description) apni jagah rakhta hai — sirf eyebrow ka top margin 0 hua hai.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ACCORDION ================= -->
+<section class="pv-section" style="padding-block:30px">
+  <p class="pv-h">PDP accordion — heading jagah pe rehta hai</p>
+  <p class="pv-sub">Niche <b>“Dimensions &amp; specifications”</b> dabayein — heading wahin tiki rahegi.</p>
+
+  <div class="faq faq--flush" style="max-width:760px">
+    <div class="faq__item is-open">
+      <h2><button class="faq__q" type="button" aria-expanded="true">Description <span class="faq__icon" aria-hidden="true"></span></button></h2>
+      <div class="faq__a"><div class="acc-body">
+        <p>Kiln-dried hardwood frame, feather-wrapped foam and a washed linen blend. Deep seats, low arms, and a silhouette that stays quiet in the room.</p>
+        <p>Every sofa is bench-made to order, so the timber grain and the weave settle slightly differently each time.</p>
+      </div></div>
+    </div>
+    <div class="faq__item">
+      <h2><button class="faq__q" type="button" aria-expanded="false">Dimensions &amp; specifications <span class="faq__icon" aria-hidden="true"></span></button></h2>
+      <div class="faq__a"><div class="acc-body">
+        <table class="spec"><tbody>
+          <tr><th scope="row">Primary material</th><td>Solid ash &amp; engineered hardwood</td></tr>
+          <tr><th scope="row">Colour</th><td>Washed linen</td></tr>
+          <tr><th scope="row">Item weight</th><td>48 kg</td></tr>
+          <tr><th scope="row">Product dimension</th><td>218 × 92 × 78 cm</td></tr>
+        </tbody></table>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= YOU MAY ALSO LIKE ================= -->
+<section class="pv-section" style="padding-block:30px">
+  <p class="pv-h">“You may also like” — delegated quick view / quick add</p>
+  <p class="pv-sub">Cards <b>1.2 sec baad</b> async inject honge — phir bhi eye icon se popup aur Quick add se drawer khulega.</p>
   <div class="rail" style="--rail-per-view:3">
     <div class="rail__track" id="pvTrack" style="padding-bottom:.5rem">
       <p class="pv-note" style="flex:0 0 auto;width:100%">Loading recommendations…</p>
@@ -159,16 +196,7 @@
   </div>
 </section>
 
-<!-- ================= CART DRAWER ================= -->
-<section class="pv-section">
-  <p class="pv-h">Cart drawer</p>
-  <p class="pv-sub">Compact “Cart” heading (1.25rem) + chhota close icon (1.05rem).</p>
-  <button id="openDrawer" style="display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.4rem;border:0;border-radius:var(--r-pill);background:var(--ink);color:#fff;font:inherit;font-size:.84rem;font-weight:600;cursor:pointer">
-    Open cart drawer
-  </button>
-</section>
-
-<div style="height:60vh"></div>
+<div style="height:40vh"></div>
 
 <!-- quick view modal -->
 <div class="modal" id="quickview" hidden>
@@ -206,17 +234,13 @@
         <table class="cart-items"><tbody>
           <tr class="cart-item">
             <td class="cart-item__media"><img class="cart-item__image" width="120" height="120" alt="" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect width='200' height='200' fill='%23e9e3da'/><rect x='35' y='95' width='130' height='55' rx='10' fill='%23c9a882'/></svg>"></td>
-            <td class="cart-item__details">
-              <a href="#" style="font-weight:600;color:var(--ink);font-size:.9rem">Haven 3-Seater Sofa</a>
-              <div style="margin-top:.4rem;font-weight:600;font-size:.9rem">₹84,900</div>
-            </td>
+            <td class="cart-item__details"><a href="#" style="font-weight:600;color:var(--ink);font-size:.9rem">Haven 3-Seater Sofa</a>
+              <div style="margin-top:.4rem;font-weight:600;font-size:.9rem">₹84,900</div></td>
           </tr>
         </tbody></table>
       </div></cart-drawer-items>
       <div class="drawer__footer">
-        <div style="display:flex;justify-content:space-between;font-weight:600;margin-bottom:1rem;color:var(--ink)">
-          <span>Subtotal</span><span>₹84,900</span>
-        </div>
+        <div style="display:flex;justify-content:space-between;font-weight:600;margin-bottom:1rem;color:var(--ink)"><span>Subtotal</span><span>₹84,900</span></div>
         <button type="button" style="width:100%;border-radius:30px;padding:14px;background:#1a1a1a;color:#fff;font-weight:600;border:0;cursor:pointer">Check out</button>
       </div>
     </div>
@@ -229,35 +253,28 @@
 (function () {
   var $ = function (s, c) { return (c || document).querySelector(s); };
 
-  /* ---------- (1) accordion — same logic as the theme, with the pin ---------- */
+  /* ---------- accordion, with the pin (same logic as the theme) ---------- */
   var items = Array.prototype.slice.call(document.querySelectorAll('.faq__item'));
-
   var setOpen = function (item, state) {
-    var panel = $('.faq__a', item);
-    var btn   = $('.faq__q', item);
+    var panel = $('.faq__a', item), btn = $('.faq__q', item);
     item.classList.toggle('is-open', state);
     if (btn)   btn.setAttribute('aria-expanded', String(state));
     if (panel) panel.style.maxHeight = state ? panel.scrollHeight + 'px' : '0px';
   };
-
   items.forEach(function (item) {
     var btn = $('.faq__q', item);
     if (!btn) return;
     if (item.classList.contains('is-open')) setOpen(item, true);
-
     btn.addEventListener('click', function () {
       var willOpen = !item.classList.contains('is-open');
       var before = item.getBoundingClientRect().top;
-
       items.forEach(function (other) { setOpen(other, false); });
       setOpen(item, willOpen);
-
       var started = Date.now();
       var pin = function () {
         var delta = item.getBoundingClientRect().top - before;
         if (Math.abs(delta) > 0.5) {
-          var html = document.documentElement;
-          var prev = html.style.scrollBehavior;
+          var html = document.documentElement, prev = html.style.scrollBehavior;
           html.style.scrollBehavior = 'auto';
           window.scrollBy(0, delta);
           html.style.scrollBehavior = prev;
@@ -271,33 +288,24 @@
     items.forEach(function (i) { if (i.classList.contains('is-open')) setOpen(i, true); });
   });
 
-  /* ---------- quick view (delegated, like the theme) ---------- */
-  var modal = $('#quickview'), img = $('#qvImg'), name = $('#qvName'),
-      price = $('#qvPrice'), was = $('#qvWas'), desc = $('#qvDesc'),
-      rating = $('#qvRating'), close = $('#qvClose');
-
+  /* ---------- quick view (delegated) ---------- */
+  var modal = $('#quickview'), img = $('#qvImg'), name = $('#qvName'), price = $('#qvPrice'),
+      was = $('#qvWas'), desc = $('#qvDesc'), rating = $('#qvRating'), close = $('#qvClose');
   var setModal = function (state) {
     modal.classList.toggle('is-open', state);
     modal.hidden = !state;
     document.body.style.overflow = state ? 'hidden' : '';
   };
-
   document.addEventListener('click', function (e) {
     var btn = e.target && e.target.closest ? e.target.closest('[data-quickview]') : null;
     if (!btn) return;
-
     if (img)   { img.src = btn.dataset.img || ''; img.alt = btn.dataset.name || ''; }
     if (name)  name.textContent  = btn.dataset.name || '';
     if (price) price.textContent = btn.dataset.price || '';
     if (was)   { was.textContent = btn.dataset.was || ''; was.style.display = btn.dataset.was ? '' : 'none'; }
     if (desc)  desc.textContent  = btn.dataset.desc || '';
-
     var card = btn.closest('.product');
-    if (card) {
-      var pLink = card.querySelector('h3 a'), qvLink = $('#qvLink');
-      if (pLink && qvLink) qvLink.href = pLink.href;
-    }
-
+    if (card) { var pLink = card.querySelector('h3 a'), qvLink = $('#qvLink'); if (pLink && qvLink) qvLink.href = pLink.href; }
     if (rating) {
       var pid = btn.dataset.id || '';
       rating.innerHTML = '';
@@ -313,12 +321,11 @@
     }
     setModal(true);
   });
-
   if (close) close.addEventListener('click', function () { setModal(false); });
   modal.addEventListener('click', function (e) { if (e.target === modal) setModal(false); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setModal(false); });
 
-  /* ---------- quick add (delegated, like the theme) ---------- */
+  /* ---------- quick add (delegated) ---------- */
   var toast = $('#pvToast');
   document.addEventListener('submit', function (e) {
     var form = e.target && e.target.closest ? e.target.closest('form[action="/cart/add"]') : null;
@@ -327,9 +334,7 @@
     var btn = form.querySelector('button[type="submit"]');
     if (!btn) return;
     var original = btn.textContent;
-    btn.textContent = 'Adding…';
-    btn.disabled = true;
-
+    btn.textContent = 'Adding…'; btn.disabled = true;
     setTimeout(function () {
       btn.textContent = 'Added! ✓';
       if (toast) { toast.classList.add('is-on'); setTimeout(function () { toast.classList.remove('is-on'); }, 1800); }
@@ -340,52 +345,39 @@
 
   /* ---------- cart drawer ---------- */
   var drawer = $('#pvCartDrawer');
-  $('#openDrawer').addEventListener('click', function () { drawer.classList.add('active'); });
   $('#pvDrawerClose').addEventListener('click', function () { drawer.classList.remove('active'); });
   $('#CartDrawer-Overlay').addEventListener('click', function () { drawer.classList.remove('active'); });
 
-  /* ---------- (3) async "You may also like" cards ---------- */
+  /* ---------- async "You may also like" ---------- */
   var PRODUCTS = [
-    { id: '201', name: 'Aria Lounge Chair',  price: '₹32,400',  was: '',         stars: '★★★★☆ 4.6 (64)',
-      img: "%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Crect width='600' height='600' fill='%23e4ddd2'/%3E%3Crect x='170' y='210' width='260' height='280' rx='20' fill='%23a8825e'/%3E%3C/svg%3E",
-      desc: 'A sculpted lounge chair in solid ash with a hand-woven cane back.' },
-    { id: '202', name: 'Monarch Walnut Bed', price: '₹1,12,000', was: '₹1,29,000', stars: '★★★★★ 5.0 (37)',
-      img: "%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Crect width='600' height='600' fill='%23efe9e1'/%3E%3Crect x='120' y='300' width='360' height='190' rx='16' fill='%236b4a33'/%3E%3C/svg%3E",
-      desc: 'Solid walnut with a gently curved headboard and a slatted base.' },
-    { id: '203', name: 'Cove Side Table',    price: '₹18,700',   was: '',         stars: '★★★★☆ 4.4 (21)',
-      img: "%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Crect width='600' height='600' fill='%23e9e3da'/%3E%3Ccircle cx='300' cy='300' r='150' fill='%23d8b489'/%3E%3C/svg%3E",
-      desc: 'A small round table in solid oak, turned by hand.' }
+    { id:'201', name:'Aria Lounge Chair', price:'₹32,400', was:'', stars:'★★★★☆ 4.6 (64)',
+      img:"%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Crect width='600' height='600' fill='%23e4ddd2'/%3E%3Crect x='170' y='210' width='260' height='280' rx='20' fill='%23a8825e'/%3E%3C/svg%3E",
+      desc:'A sculpted lounge chair in solid ash with a hand-woven cane back.' },
+    { id:'202', name:'Monarch Walnut Bed', price:'₹1,12,000', was:'₹1,29,000', stars:'★★★★★ 5.0 (37)',
+      img:"%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Crect width='600' height='600' fill='%23efe9e1'/%3E%3Crect x='120' y='300' width='360' height='190' rx='16' fill='%236b4a33'/%3E%3C/svg%3E",
+      desc:'Solid walnut with a gently curved headboard and a slatted base.' },
+    { id:'203', name:'Cove Side Table', price:'₹18,700', was:'', stars:'★★★★☆ 4.4 (21)',
+      img:"%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Crect width='600' height='600' fill='%23e9e3da'/%3E%3Ccircle cx='300' cy='300' r='150' fill='%23d8b489'/%3E%3C/svg%3E",
+      desc:'A small round table in solid oak, turned by hand.' }
   ];
-
   var cardHTML = function (p) {
-    return '' +
-      '<article class="product" style="flex:0 0 auto;width:260px">' +
-        '<div class="product__media">' +
-          '<a href="#"><img class="img-base" src="data:image/svg+xml;utf8,' + p.img + '" alt="" width="600" height="600" style="width:100%;aspect-ratio:1/1;object-fit:cover"></a>' +
-          '<div class="product__tools">' +
-            '<button class="tool-btn" data-quickview data-id="' + p.id + '" data-name="' + p.name + '"' +
-              ' data-price="' + p.price + '" data-was="' + p.was + '"' +
-              ' data-img="data:image/svg+xml;utf8,' + p.img + '" data-desc="' + p.desc + '"' +
-              ' aria-label="Quick view: ' + p.name + '">' +
-              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg>' +
-            '</button>' +
-          '</div>' +
-          '<form method="post" action="/cart/add"><button type="submit" class="product__add">Quick add</button></form>' +
-        '</div>' +
-        '<div class="product__info">' +
-          '<div class="product__rating" style="margin-bottom:0;min-height:20px">' +
-            '<div class="jdgm-widget jdgm-preview-badge" data-id="' + p.id + '"><span class="jdgm-star">' + p.stars.split(' ')[0] + '</span> ' + p.stars.split(' ').slice(1).join(' ') + '</div>' +
-          '</div>' +
-          '<h3><a href="#">' + p.name + '</a></h3>' +
-          '<p class="price-row"><span class="price">' + p.price + '</span>' + (p.was ? ' <span class="price--was">' + p.was + '</span>' : '') + '</p>' +
-        '</div>' +
-      '</article>';
+    var s = p.stars.split(' ');
+    return '<article class="product" style="flex:0 0 auto;width:260px">' +
+      '<div class="product__media">' +
+        '<a href="#"><img class="img-base" src="data:image/svg+xml;utf8,' + p.img + '" alt="" width="600" height="600" style="width:100%;aspect-ratio:1/1;object-fit:cover"></a>' +
+        '<div class="product__tools"><button class="tool-btn" data-quickview data-id="' + p.id + '" data-name="' + p.name + '"' +
+          ' data-price="' + p.price + '" data-was="' + p.was + '" data-img="data:image/svg+xml;utf8,' + p.img + '"' +
+          ' data-desc="' + p.desc + '" aria-label="Quick view: ' + p.name + '">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/></svg></button></div>' +
+        '<form method="post" action="/cart/add"><button type="submit" class="product__add">Quick add</button></form>' +
+      '</div>' +
+      '<div class="product__info">' +
+        '<div class="product__rating" style="margin-bottom:0;min-height:20px"><div class="jdgm-widget jdgm-preview-badge" data-id="' + p.id + '"><span class="jdgm-star">' + s[0] + '</span> ' + s.slice(1).join(' ') + '</div></div>' +
+        '<h3><a href="#">' + p.name + '</a></h3>' +
+        '<p class="price-row"><span class="price">' + p.price + '</span>' + (p.was ? ' <span class="price--was">' + p.was + '</span>' : '') + '</p>' +
+      '</div></article>';
   };
-
-  var track = $('#pvTrack');
-  setTimeout(function () {
-    track.innerHTML = PRODUCTS.map(cardHTML).join('');
-  }, 1200);
+  setTimeout(function () { $('#pvTrack').innerHTML = PRODUCTS.map(cardHTML).join(''); }, 1200);
 })();
 </script>
 </body>

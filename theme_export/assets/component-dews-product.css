@@ -11,9 +11,17 @@
 
 /* --- breadcrumb / page head --- */
 .page-head{ padding-block:clamp(1.25rem,2.5vw,2rem) 0; }
-.breadcrumb{ display:flex; flex-wrap:wrap; align-items:center; gap:.55rem; font-size:.8rem; color:var(--muted); }
-.breadcrumb li{ display:inline-flex; align-items:center; gap:.55rem; }
-.breadcrumb li + li::before{ content:''; width:3px; height:3px; border-radius:50%; background:var(--muted-2); flex:none; }
+/* NOTE: this file is loaded from main-product.liquid, i.e. AFTER style.css,
+   so any rule here wins over the duplicate in style.css. Keep the two
+   breadcrumb blocks identical or the dot alignment silently breaks. */
+.breadcrumb{ display:flex; flex-wrap:wrap; align-items:center; gap:.55rem; font-size:.8rem; color:var(--muted); list-style:none; margin:0; padding:0; }
+/* flex-start (not center) so the dot sits on the FIRST line when a crumb wraps */
+.breadcrumb li{ display:inline-flex; align-items:flex-start; gap:.55rem; }
+.breadcrumb li + li::before{
+  content:''; width:3px; height:3px; border-radius:50%; background:var(--muted-2); flex:none;
+  margin-top: calc(0.85em - 1.5px);  /* half of the 1.7 line-height, less half the dot */
+  margin-top: calc(0.5lh - 1.5px);   /* exact, where the lh unit is supported */
+}
 .breadcrumb a:hover{ color:var(--red-ink); }
 .breadcrumb [aria-current]{ color:var(--ink); font-weight:500; }
 
@@ -57,6 +65,17 @@
 }
 .gallery__main.is-zoomed .gallery__hint{ opacity:0; }
 .gallery__hint svg{ width:13px; height:13px; }
+
+/* Discount tag on the main PDP image — top-right corner.
+   Mirrors the .product__media .badge--sale treatment used on the cards. */
+.gallery__tag{
+  position:absolute; top:1rem; right:1rem; z-index:3;
+  padding:.4rem .8rem; border-radius:var(--r-pill);
+  background:var(--red); color:#fff;
+  font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  box-shadow:var(--shadow-sm); line-height:1; white-space:nowrap;
+  pointer-events:none;
+}
 
 /* --- info column (media sticks on the left instead) --- */
 .pdp__info h1{ font-size:clamp(1.65rem,2.7vw,2.5rem); margin-top:.8rem; }
