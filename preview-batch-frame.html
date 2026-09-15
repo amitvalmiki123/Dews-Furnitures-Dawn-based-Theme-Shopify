@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Batch frame</title>
+
+<!-- real theme load order (layout/theme.liquid 281-290 + section stylesheets) -->
+<link rel="stylesheet" href="theme_export/assets/dews-tokens.css">
+<link rel="stylesheet" href="theme_export/assets/style.css">
+<link rel="stylesheet" href="theme_export/assets/base.css">
+<link rel="stylesheet" href="theme_export/assets/component-cart-items.css">
+<link rel="stylesheet" href="theme_export/assets/component-cart-drawer.css">
+<link rel="stylesheet" href="theme_export/assets/component-cart.css">
+<link rel="stylesheet" href="theme_export/assets/component-totals.css">
+<link rel="stylesheet" href="theme_export/assets/component-facets.css">
+<link rel="stylesheet" href="theme_export/assets/dews-collection.css">
+
+<style>
+  body { margin: 0; background: var(--paper, #fbfaf8); }
+  .pv-tag { font: 600 .68rem/1 system-ui, sans-serif; letter-spacing: .1em;
+            text-transform: uppercase; color: #8a8177; margin: 0 0 .6rem; }
+  .pv-block { padding: 1.25rem 0; border-bottom: 1px dashed #e2dcd3; }
+  .pv-block:last-child { border-bottom: 0; }
+</style>
+</head>
+<body class="template-index">
+
+<div class="pv-block">
+  <p class="pv-tag">(1) Wishlist badge &mdash; width:fit-content</p>
+  <header class="dews-header">
+    <div class="header__row">
+      <button class="hamburger" type="button" aria-label="Menu">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M3 7h18M3 12h18M3 17h18" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <a class="logo" href="#"><span class="logo__word">Dews</span></a>
+      <div class="actions">
+        <a class="icon-btn" href="#" aria-label="Search">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7">
+            <circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5" stroke-linecap="round"/>
+          </svg>
+        </a>
+        <a class="icon-btn" href="#" aria-label="Account">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7">
+            <circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0" stroke-linecap="round"/>
+          </svg>
+        </a>
+        <span class="wishlist-hero-header-icon">
+          <a class="icon-btn" href="#" aria-label="Wishlist">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7">
+              <path d="M12 20s-7-4.5-7-9.5A4 4 0 0 1 12 7a4 4 0 0 1 7 3.5c0 5-7 9.5-7 9.5z" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <span class="wishlist-hero-header-count">12</span>
+        </span>
+        <a class="icon-btn" href="#" aria-label="Cart">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7">
+            <path d="M4 7h16l-1.4 12H5.4L4 7z" stroke-linejoin="round"/>
+            <path d="M9 7V5.5a3 3 0 0 1 6 0V7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
+</div>
+
+<div class="pv-block">
+  <p class="pv-tag">(7) Mobile typography + section rhythm</p>
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__text">
+          <span class="eyebrow">New arrivals</span>
+          <h2>Handcrafted for slow living</h2>
+          <p>Solid wood furniture made in small batches, finished by hand and built
+             to outlast trends. Every piece carries the grain it grew with.</p>
+        </div>
+      </div>
+      <div class="grid-products">
+        <div><img src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect width='400' height='500' fill='%23d9c9b2'/%3E%3C/svg%3E" style="width:100%;border-radius:6px" alt=""><p style="font-size:.875rem;margin:.6rem 0 0">Oak Dining Chair</p></div>
+        <div><img src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect width='400' height='500' fill='%23c9bda8'/%3E%3C/svg%3E" style="width:100%;border-radius:6px" alt=""><p style="font-size:.875rem;margin:.6rem 0 0">Sheesham Table</p></div>
+        <div><img src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect width='400' height='500' fill='%23bfae95'/%3E%3C/svg%3E" style="width:100%;border-radius:6px" alt=""><p style="font-size:.875rem;margin:.6rem 0 0">Rattan Stool</p></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="pv-block">
+  <p class="pv-tag">(5) +/&minus; icons &mdash; equal 16px, identical box</p>
+  <div class="faq faq--flush">
+    <div class="faq__item">
+      <h2><button class="faq__q" type="button">What wood do you use? <span class="faq__icon"></span></button></h2>
+      <div class="faq__a"><div class="acc-body"><p>Seasoned solid wood &mdash; sheesham, oak and teak.</p></div></div>
+    </div>
+    <div class="faq__item is-open">
+      <h2><button class="faq__q" type="button">How long is delivery? <span class="faq__icon"></span></button></h2>
+      <div class="faq__a"><div class="acc-body"><p>Usually 5&ndash;9 business days across metro cities.</p></div></div>
+    </div>
+  </div>
+
+  <!-- collection rail style (was 13px, now forced to 16px) -->
+  <div class="facet" style="margin-top:1.25rem;max-width:420px">
+    <details open>
+      <summary class="facet__q">Finish <span class="faq__icon"></span></summary>
+      <div class="facet__panel"><label><input type="checkbox"> Walnut</label></div>
+    </details>
+  </div>
+</div>
+
+<div class="pv-block">
+  <p class="pv-tag">(2) Cart drawer &mdash; totals, checkout hover, mobile row</p>
+  <div class="pv-drawer-host" style="position:relative;height:520px;border:1px solid #e2dcd3;border-radius:12px;overflow:hidden">
+    <cart-drawer class="drawer active" style="position:absolute;inset:0">
+      <div id="CartDrawer" class="cart-drawer">
+        <div id="CartDrawer-Overlay" class="cart-drawer__overlay" style="display:none"></div>
+        <div class="drawer__inner" style="transform:translateX(0)">
+          <div class="drawer__header">
+            <h2 class="drawer__heading">Cart</h2>
+            <button class="drawer__close" type="button" aria-label="Close">
+              <span class="svg-wrapper"><svg viewBox="0 0 18 18" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 2 L16 16 M16 2 L2 16" stroke-linecap="round"/></svg></span>
+            </button>
+          </div>
+          <cart-drawer-items>
+            <div class="drawer__contents">
+              <table class="cart-items">
+                <tbody>
+                  <tr class="cart-item">
+                    <td class="cart-item__media">
+                      <img class="cart-item__image" width="150" height="150" alt=""
+                        src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Crect width='300' height='300' fill='%23d9c9b2'/%3E%3C/svg%3E">
+                    </td>
+                    <td class="cart-item__details">
+                      <div class="cart-item__title">
+                        <a href="#" class="cart-item__name h4 break">Oak Solid Wood Dining Chair</a>
+                      </div>
+                      <div class="cart-item__discounted-prices">
+                        <s class="cart-item__old-price product-option">₹14,999</s>
+                        <strong class="cart-item__final-price product-option">₹9,499</strong>
+                      </div>
+                      <dl><div class="product-option"><dt>Finish:</dt><dd>Walnut</dd></div></dl>
+                    </td>
+                    <td class="cart-item__totals right">
+                      <div class="cart-item__price-wrapper"><span class="price">₹9,499</span></div>
+                    </td>
+                  </tr>
+                  <tr class="cart-item">
+                    <td class="cart-item__media">
+                      <img class="cart-item__image" width="150" height="150" alt=""
+                        src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Crect width='300' height='300' fill='%23c9bda8'/%3E%3C/svg%3E">
+                    </td>
+                    <td class="cart-item__details">
+                      <div class="cart-item__title">
+                        <a href="#" class="cart-item__name h4 break">Sheesham Coffee Table</a>
+                      </div>
+                      <div class="product-option">₹18,500</div>
+                      <dl><div class="product-option"><dt>Finish:</dt><dd>Honey</dd></div></dl>
+                    </td>
+                    <td class="cart-item__totals right">
+                      <div class="cart-item__price-wrapper"><span class="price">₹18,500</span></div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </cart-drawer-items>
+          <div class="drawer__footer">
+            <div class="cart-drawer__footer">
+              <details><summary>Add a note to your order</summary></details>
+              <div class="totals" role="status">
+                <h2 class="totals__total">Estimated total</h2>
+                <p class="totals__total-value">₹28,000</p>
+              </div>
+              <button class="cart__checkout-button button" name="checkout">Check out</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </cart-drawer>
+  </div>
+</div>
+
+<div class="pv-block">
+  <p class="pv-tag">(4) Footer &mdash; padding-top 30px on mobile</p>
+  <footer class="footer">
+    <div class="page-width">
+      <div class="footer__grid">
+        <div class="footer__brand"><h3>Dews</h3><p>Solid wood furniture, made to last.</p></div>
+        <div><h3>Shop</h3><p style="margin:0">Chairs</p><p style="margin:0">Tables</p></div>
+        <div><h3>Help</h3><p style="margin:0">Shipping</p><p style="margin:0">Returns</p></div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  document.querySelectorAll('.faq__q').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var item = btn.closest('.faq__item');
+      var wasOpen = item.classList.contains('is-open');
+      document.querySelectorAll('.faq__item').forEach(function (i) {
+        i.classList.remove('is-open');
+        i.querySelector('.faq__a').style.maxHeight = null;
+      });
+      if (!wasOpen) {
+        item.classList.add('is-open');
+        var a = item.querySelector('.faq__a');
+        a.style.maxHeight = a.scrollHeight + 'px';
+      }
+    });
+  });
+  var open = document.querySelector('.faq__item.is-open .faq__a');
+  if (open) open.style.maxHeight = open.scrollHeight + 'px';
+</script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Batch 8 preview — Dew's Furniture</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         background: #efebe4; color: #1a1a1a; }
+  .wrap { max-width: 1400px; margin: 0 auto; padding: 1.5rem; }
+  h1 { font-size: 1.05rem; margin: 0 0 .2rem; }
+  .sub { margin: 0 0 1rem; color: #6f675f; font-size: .82rem; }
+  .tools { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+  .tools button { font: inherit; font-size: .8rem; padding: .5rem 1rem; border-radius: 999px;
+                  border: 1px solid #cfc7bc; background: #fff; cursor: pointer; }
+  .tools button[aria-pressed="true"] { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+  .stage { display: flex; justify-content: center; }
+  .frame-holder { background: #fff; border-radius: 16px; box-shadow: 0 18px 50px rgba(23,19,16,.14);
+                  overflow: hidden; transition: width .25s ease; }
+  iframe { display: block; width: 100%; height: 860px; border: 0; }
+  .note { margin-top: 1.25rem; background: #fff; border: 1px solid #ded7cc; border-radius: 12px;
+          padding: 1rem 1.15rem; font-size: .82rem; line-height: 1.65; color: #444; }
+  .note h2 { font-size: .9rem; margin: 0 0 .5rem; color: #1a1a1a; }
+  .note ul { margin: 0; padding-left: 1.1rem; }
+  .note li { margin-bottom: .3rem; }
+  code { background: #f3efe8; padding: .1rem .35rem; border-radius: 4px; font-size: .78rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Batch 8 &mdash; cart drawer, icons, filter drawer, footer, mobile type</h1>
+  <p class="sub">Width buttons resize the iframe, so the theme's real media queries fire.</p>
+
+  <div class="tools">
+    <button data-w="390"  aria-pressed="true">390 &middot; phone</button>
+    <button data-w="430"  aria-pressed="false">430</button>
+    <button data-w="768"  aria-pressed="false">768 &middot; tablet</button>
+    <button data-w="1280" aria-pressed="false">1280 &middot; desktop</button>
+  </div>
+
+  <div class="stage">
+    <div class="frame-holder" id="holder" style="width:390px; max-width:100%">
+      <iframe id="f" src="preview-batch-frame.html" title="Preview"></iframe>
+    </div>
+  </div>
+
+  <div class="note">
+    <h2>Kya change hua</h2>
+    <ul>
+      <li><b>(1)</b> Wishlist badge &mdash; <code>width:fit-content; left:auto</code> (stretch band ho raha tha).</li>
+      <li><b>(2)</b> <code>.cart__note</code>, <code>.drawer__footer summary</code>, checkout hover <code>var(--cane)</code>,
+          totals <b>1.8rem &rarr; 1.1rem</b> (mobile 1rem), aur drawer row ka 2-column grid.</li>
+      <li><b>(3)</b> Reviews background ab <b>sirf homepage</b> par &mdash; <code>body.template-index</code> se scope kiya,
+          taaki PDP par na lage. Naye theme IDs add kiye, purane <b>delete nahi</b> kiye.</li>
+      <li><b>(4)</b> Footer <code>padding-top: 30px</code> mobile par.</li>
+      <li><b>(5)</b> <code>+</code>/<code>&minus;</code> sab jagah <b>16px</b> (collection rail 13px tha &mdash; yahi mismatch tha).</li>
+      <li><b>(6)</b> Filter drawer <code>z-index: 300</code> (header ke upar) &mdash; ab X visible rahega.</li>
+      <li><b>(7)</b> Mobile par type tokens ki <b>clamp floors</b> kam kiye &mdash; headings aur lead text automatic chhote.</li>
+    </ul>
+    <p style="margin:.75rem 0 0;color:#777">
+      Note: <code>body class="template-index"</code> maine <code>layout/theme.liquid</code> mein add kiya hai
+      &mdash; isi se homepage vs PDP farq possible hua.
+    </p>
+  </div>
+</div>
+
+<script>
+  var holder = document.getElementById('holder');
+  var f = document.getElementById('f');
+  document.querySelectorAll('.tools button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.tools button').forEach(function (o) { o.setAttribute('aria-pressed', 'false'); });
+      b.setAttribute('aria-pressed', 'true');
+      holder.style.width = Math.min(parseInt(b.dataset.w, 10), window.innerWidth - 48) + 'px';
+      f.src = f.src;   // reload so media queries re-evaluate cleanly
+    });
+  });
+</script>
+</body>
+</html>
