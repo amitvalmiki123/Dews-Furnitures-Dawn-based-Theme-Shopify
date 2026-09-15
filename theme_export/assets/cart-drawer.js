@@ -93,7 +93,17 @@ class CartDrawer extends HTMLElement {
     // The theme only ever REMOVED this class (and from .drawer__inner, not the
     // host), so after emptying the cart the freshly rendered markup kept BOTH
     // the empty-state close button and the normal header one — two X icons.
-    this.classList.toggle('is-empty', !(parsedState.item_count > 0));
+    // Guard: /cart/add.js answers with the LINE ITEM, which has no item_count,
+    // so only sync when the count is actually present — otherwise adding from
+    // the PDP would mark a full cart as empty. When it is absent fall back to
+    // the markup itself: if the freshly rendered drawer has no empty-state
+    // block, drop the flag, otherwise a stale is-empty hides the header and
+    // leaves the drawer with no close button at all.
+    if (typeof parsedState.item_count === 'number') {
+      this.classList.toggle('is-empty', parsedState.item_count === 0);
+    } else if (!this.querySelector('.drawer__inner-empty')) {
+      this.classList.remove('is-empty');
+    }
 
     setTimeout(() => {
       this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));

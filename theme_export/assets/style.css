@@ -1101,7 +1101,10 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
         an AJAX removal the fresh markup contains BOTH close buttons.
    The :has() form is JS-independent — it keys off the empty-state markup
    itself, so it works no matter how the drawer was re-rendered. */
-cart-drawer.is-empty .drawer__header,
+/* NOTE: deliberately two separate rules, not one comma-separated list. An
+   invalid selector inside a selector list invalidates the WHOLE rule, so if a
+   browser does not support :has() the is-empty rule must still survive. */
+cart-drawer.is-empty .drawer__header { display: none !important; }
 cart-drawer:has(.drawer__inner-empty) .drawer__header { display: none !important; }
 
 cart-drawer.is-empty .drawer__inner-empty {
