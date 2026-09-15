@@ -69,8 +69,20 @@ body h5 { margin: 0; font-family: var(--font) !important; font-weight: 600 !impo
 section#shopify-section-template--28471031693493__reviews-heading { padding-block-start: 4.5rem; background-color: var(--bone); }
 section#shopify-section-template--28471390666933__reviews-heading { background-color: var(--bone); padding-top: 4.3rem; }
 
-/* Judge.me reviews app section — remove wrapper top/bottom padding */
-[id$="__1788325876b6967a8d"] {
+/* Same look, but NOT tied to one store's numeric theme ID.
+   Shopify's section IDs contain the theme id (template--<theme_id>__…), so an
+   id rule copied from one store silently stops matching on any other store /
+   duplicated theme. `dews-reviews-heading` comes from the section schema, so
+   this works everywhere. The id rules above are left exactly as they were. */
+section.dews-reviews-heading { background-color: var(--bone); padding-block-start: 4.3rem; }
+
+/* Judge.me reviews app section — remove wrapper top/bottom padding.
+   Two selector forms: Shopify renders the section id either as
+   shopify-section-template--<theme_id>__<id>  (inside a section group)
+   or as shopify-section-<id> (plain json-template section), depending on
+   the store / theme copy — so cover both. */
+[id$="__1788325876b6967a8d"],
+[id$="-1788325876b6967a8d"] {
     padding-block-end: 2.5rem;
     background: var(--bone);
     padding-top: 0;
