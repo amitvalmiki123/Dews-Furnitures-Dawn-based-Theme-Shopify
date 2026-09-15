@@ -1318,11 +1318,11 @@ cart-drawer .jm-text[data-v-6d928e9f] { font-size: 1rem !important; line-height:
    on the tokens: lower the floors and let the middle value breathe. */
 @media (max-width: 989px) {
   :root {
-    --t-hero: clamp(2rem, 8.5vw, 2.8rem);
-    --t-display: clamp(1.7rem, 6.8vw, 2.35rem);
-    --t-h2: clamp(1.3rem, 5.6vw, 1.85rem);
+    --t-hero: clamp(2.2rem, 8.5vw, 3rem);
+    --t-display: clamp(1.85rem, 6.8vw, 2.5rem);
+    --t-h2: clamp(1.55rem, 6.2vw, 2.1rem);
     --t-h3: clamp(0.95rem, 3.6vw, 1.15rem);
-    --t-lead: clamp(0.88rem, 3.8vw, 1rem);
+    --t-lead: clamp(0.95rem, 3.8vw, 1.05rem);
     --t-body: 0.95rem;
     --section-y: 30px;
   }
