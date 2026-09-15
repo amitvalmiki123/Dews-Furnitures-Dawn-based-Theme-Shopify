@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dew's Furniture — Help & Contact preview</title>
+<style>
+:root { --paper:#fbfaf8; --bone:#f3efe9; --bone-deep:#e9e3da; --line:#e2dcd3; --line-soft:#eeeae3; --ink:#171310; --ink-2:#2a221c; --ink-3:#4a3f37; --muted:#7c716a; --muted-2:#9a9089; --cane:#d8b489; --red:#e01b22; --red-ink:#b9151b; --red-wash:#fdecec; --font:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; --t-display:clamp(2.1rem,4.4vw,4.25rem); --t-h2:clamp(1.85rem,3.3vw,3.1rem); --t-lead:clamp(1rem,1.15vw,1.15rem); --t-sm:0.875rem; --t-label:0.75rem; --container:1440px; --gutter:clamp(1.25rem,4vw,4rem); --section-y:clamp(4.5rem,9vw,9.5rem); --r-sm:6px; --r-md:12px; --r-lg:20px; --r-pill:999px; --shadow-sm:0 4px 18px rgba(23,19,16,0.06); --shadow-md:0 14px 40px rgba(23,19,16,0.09); --ease:cubic-bezier(0.22,0.61,0.36,1) }
+* { box-sizing: border-box }
+body { margin:0; font-family:var(--font); background:var(--paper); color:var(--ink); -webkit-font-smoothing:antialiased }
+img { display:block }
+/* ---- preview switcher ---- */
+.switch { position:sticky; top:0; z-index:50; display:flex; gap:.6rem; justify-content:center; padding:.8rem; background:var(--ink); box-shadow:var(--shadow-md) }
+.switch button { cursor:pointer; font:inherit; font-size:.85rem; font-weight:600; letter-spacing:.03em; padding:.6rem 1.4rem; border-radius:var(--r-pill); border:1px solid rgba(255,255,255,.25); background:transparent; color:#cbbfb4; transition:.25s }
+.switch button.active { background:var(--paper); color:var(--ink); border-color:var(--paper) }
+.page { display:none }
+.page.active { display:block }
+/* ---- shared ---- */
+.container { width:100%; max-width:var(--container); margin-inline:auto; padding-inline:var(--gutter) }
+.section { padding-block:var(--section-y) }
+.section-head { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:2.5rem }
+.section-head--center { justify-content:center; text-align:center }
+.eyebrow { display:inline-flex; align-items:center; gap:.65rem; font-size:var(--t-label); font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--muted) }
+.dew { display:inline-block; width:7px; height:7px; flex:none; background:var(--red); transform:rotate(45deg) }
+.section-head h2 { font-size:var(--t-h2); margin:1rem 0 0; letter-spacing:-.02em }
+.btn { --btn-bg:var(--ink); --btn-fg:#fff; --btn-bd:var(--ink); display:inline-flex; align-items:center; justify-content:center; gap:.6rem; padding:1rem 1.9rem; min-height:52px; background:var(--btn-bg); color:var(--btn-fg); border:1px solid var(--btn-bd); border-radius:var(--r-pill); font-size:var(--t-sm); font-weight:600; letter-spacing:.04em; text-align:center; cursor:pointer; transition:.35s var(--ease) }
+.btn:hover { transform:translateY(-2px) }
+.btn svg { width:16px; height:16px }
+.btn--light { --btn-bg:#fff; --btn-fg:var(--ink); --btn-bd:#fff }
+.btn--light:hover { --btn-bg:var(--cane); --btn-bd:var(--cane) }
+.link-arrow { display:inline-flex; align-items:center; gap:.55rem; font-size:.82rem; font-weight:600; letter-spacing:.04em; color:var(--ink); text-decoration:none }
+.link-arrow svg { width:15px; height:15px }
+/* breadcrumb */
+.page-head { padding-block:clamp(1.25rem,2.5vw,2rem) 0 }
+.breadcrumb { display:flex; flex-wrap:wrap; align-items:center; gap:.55rem; font-size:.8rem; color:var(--muted); list-style:none; margin:0; padding:0 }
+.breadcrumb li { display:inline-flex; align-items:center; gap:.55rem }
+.breadcrumb li + li::before { content:''; width:3px; height:3px; border-radius:50%; background:var(--muted-2); flex:none }
+.breadcrumb a { color:var(--muted); text-decoration:none }
+.breadcrumb a:hover { color:var(--red-ink) }
+.breadcrumb [aria-current] { color:var(--ink); font-weight:500 }
+/* banner / phero */
+.collection-banner-section { padding:0 !important; margin:0 !important }
+.collection-banner { padding-block:clamp(1.5rem,3vw,2.5rem) clamp(2rem,4vw,3rem) }
+.phero { display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(2rem,4vw,4rem); align-items:center }
+.phero--single { grid-template-columns:minmax(0,1fr) }
+.phero--single .phero__text { max-width:62ch }
+.phero__text .eyebrow { margin-bottom:1.1rem }
+.phero h1 { font-size:var(--t-display); line-height:1.02; letter-spacing:-.03em; margin:0 }
+.phero__desc { margin-top:1.15rem; color:var(--muted); font-size:var(--t-lead); line-height:1.75; max-width:54ch }
+.phero__desc p { margin:0 }
+.phero__meta { display:flex; flex-wrap:wrap; gap:1.75rem; margin-top:1.75rem; font-size:var(--t-sm); color:var(--muted) }
+.phero__meta div { display:inline-flex; align-items:center; gap:.5rem }
+.phero__meta svg { width:17px; height:17px; color:var(--ink-3); flex:none }
+.phero__media { border-radius:var(--r-md); overflow:hidden; aspect-ratio:16/10; background:var(--bone); background-image:linear-gradient(135deg,var(--bone),var(--bone-deep)) }
+/* help grid */
+.help-grid { padding-block:clamp(2.5rem,5vw,4rem) }
+.help-grid__items { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(1rem,2vw,1.5rem) }
+.help-card { display:flex; flex-direction:column; gap:.8rem; padding:clamp(1.5rem,2.5vw,2.25rem); border:1px solid var(--line); border-radius:var(--r-md); background:#fff; text-decoration:none; color:inherit; transition:transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease) }
+.help-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-md); border-color:var(--line-soft) }
+.help-card__icon { width:46px; height:46px; border-radius:50%; background:var(--bone); color:var(--ink-3); display:grid; place-items:center; flex:none }
+.help-card__icon svg { width:21px; height:21px }
+.help-card h3 { font-size:1.08rem; font-weight:600; letter-spacing:-.01em; margin:0; color:var(--ink) }
+.help-card p { font-size:.9rem; color:var(--muted); line-height:1.65; margin:0; flex:1 }
+.help-card .link-arrow { margin-top:.35rem }
+.help-cta { margin-top:clamp(2rem,4vw,3rem); border-radius:var(--r-lg); overflow:hidden; background:var(--ink); color:#fff; padding:clamp(2.25rem,4vw,3.5rem); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1.5rem }
+.help-cta h2 { color:#fff; font-size:clamp(1.5rem,2.6vw,2.25rem); margin:0; letter-spacing:-.02em }
+.help-cta p { color:#b9afa6; margin:.6rem 0 0; max-width:52ch; font-size:var(--t-lead); line-height:1.7 }
+.help-cta .btn { flex:none; text-decoration:none }
+/* promise / trust grid */
+.promise { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--r-md); overflow:hidden }
+.promise__item { background:var(--paper); padding:clamp(1.75rem,3vw,2.5rem); transition:background .4s var(--ease) }
+.promise__item:hover { background:var(--bone) }
+.promise__icon { width:40px; height:40px; color:var(--ink); margin-bottom:1.35rem }
+.promise__icon svg { width:100%; height:100% }
+.promise__item h3 { font-size:1.02rem; font-weight:600; margin:0 0 .55rem }
+.promise__item p { font-size:.9rem; color:var(--muted); line-height:1.65; margin:0 }
+/* contact */
+.contact-page { padding-block:clamp(2.5rem,5vw,4rem) }
+.contact-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:clamp(2rem,4vw,4rem); align-items:start }
+.contact-info .eyebrow { margin-bottom:1.1rem }
+.contact-info h2 { font-size:var(--t-h2); letter-spacing:-.02em; line-height:1.05; margin:0 }
+.contact-info > p { margin:1.15rem 0 0; color:var(--muted); font-size:var(--t-lead); line-height:1.75; max-width:46ch }
+.contact-info__list { margin-top:2rem; display:grid; gap:1.35rem }
+.contact-info__row { display:flex; align-items:flex-start; gap:.9rem; color:var(--ink-2); text-decoration:none }
+.ci-icon { width:42px; height:42px; border-radius:50%; background:var(--bone); display:grid; place-items:center; flex:none; color:var(--ink-3) }
+.ci-icon svg { width:18px; height:18px }
+.ci-label { display:block; font-size:var(--t-label); font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted-2); margin-bottom:.2rem }
+.ci-value { font-size:.95rem; line-height:1.5 }
+a.contact-info__row:hover .ci-value { color:var(--red-ink) }
+.contact-form-card { background:#fff; border:1px solid var(--line); border-radius:var(--r-md); padding:clamp(1.5rem,3vw,2.5rem); box-shadow:var(--shadow-sm) }
+.contact-form-card h3 { font-size:1.25rem; font-weight:600; margin:0 0 .35rem }
+.contact-form-card > p { color:var(--muted); font-size:.9rem; margin:0 0 1.5rem }
+.contact-field { margin-bottom:1.15rem }
+.contact-field label { display:block; font-size:.8rem; font-weight:600; letter-spacing:.04em; color:var(--ink-2); margin-bottom:.45rem }
+.contact-field label .req { color:var(--red-ink) }
+.contact-field input, .contact-field textarea { width:100%; padding:.95rem 1.15rem; background:var(--paper); border:1px solid var(--line); border-radius:var(--r-sm); font:inherit; font-size:.95rem; color:var(--ink); transition:border-color .3s var(--ease), box-shadow .3s var(--ease) }
+.contact-field input:focus, .contact-field textarea:focus { outline:none; border-color:var(--ink); box-shadow:0 0 0 3px rgba(23,19,16,.06) }
+.contact-field input::placeholder, .contact-field textarea::placeholder { color:var(--muted-2) }
+.contact-field textarea { resize:vertical; min-height:140px }
+.contact-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:1rem }
+.contact-submit { display:flex; align-items:center; gap:1rem; margin-top:1.5rem }
+.contact-submit .fineprint { margin:0; font-size:.76rem; color:var(--muted-2) }
+@media (max-width:900px) { .phero{grid-template-columns:minmax(0,1fr)} .phero__media{order:-1} .help-grid__items{grid-template-columns:repeat(2,minmax(0,1fr))} .contact-grid{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:560px) { .help-grid__items{grid-template-columns:minmax(0,1fr)} .help-cta{flex-direction:column;align-items:flex-start} .promise{grid-template-columns:1fr 1fr} .contact-row{grid-template-columns:minmax(0,1fr)} }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 7h11v9H2z"/><path d="M13 10h5l3 3v3h-8z"/><circle cx="7" cy="18" r="1.5"/><circle cx="17.5" cy="18" r="1.5"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l8 3v6c0 5-3.4 8-8 9-4.6-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 4C10 4 4 10 4 18v2h2c8 0 14-6 14-14V4z"/><path d="M6 20c4-6 8-9 14-11" stroke-linecap="round"/></symbol>
+<symbol id="i-hammer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14.5 5.5l4 4-2 2-4-4z"/><path d="M12.5 7.5L4 16l3 3 8.5-8.5" stroke-linejoin="round"/></symbol>
+<symbol id="i-rotate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3" stroke-linecap="round"/><path d="M18 3v4h-4M6 21v-4h4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 12h15M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 3h3.5l1.8 4.5-2.2 1.6a12 12 0 0 0 6.8 6.8l1.6-2.2L21 15.5V19a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 3 5.2 2 2 0 0 1 5 3z" stroke-linejoin="round"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.2 2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6 8.5-6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.8v.4" stroke-linecap="round"/></symbol>
+</defs></svg>
+
+<div class="switch">
+  <button class="active" data-p="help">Help page</button>
+  <button data-p="contact">Contact page</button>
+</div>
+
+<!-- ===================== HELP PAGE ===================== -->
+<div class="page active" id="p-help">
+  <div class="page-head"><div class="container">
+    <nav aria-label="Breadcrumb"><ol class="breadcrumb">
+      <li><a href="#">Home</a></li>
+      <li><span aria-current="page">How can we help?</span></li>
+    </ol></nav>
+  </div></div>
+
+  <section class="section collection-banner-section">
+    <div class="container"><div class="collection-banner">
+      <div class="phero phero--single">
+        <div class="phero__text">
+          <p class="eyebrow"><i class="dew"></i> Support</p>
+          <h1>How can we help?</h1>
+          <div class="phero__desc"><p>Everything you need to make the most of your Dew's furniture — from delivery and care to returns and tracking your order.</p></div>
+          <div class="phero__meta">
+            <div><svg><use href="#i-hammer"/></svg> Fast replies</div>
+            <div><svg><use href="#i-truck"/></svg> Track any order</div>
+            <div><svg><use href="#i-rotate"/></svg> 30-day returns</div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="section help-grid">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <div class="section-head__text">
+          <p class="eyebrow"><i class="dew"></i> Support</p>
+          <h2>Choose a topic</h2>
+        </div>
+      </div>
+      <div class="help-grid__items">
+        <a class="help-card" href="#"><span class="help-card__icon"><svg><use href="#i-info"/></svg></span><h3>Frequently asked questions</h3><p>Delivery, returns, care and everything in between — the answers our customers ask for most.</p><span class="link-arrow">Read more <svg><use href="#i-arrow"/></svg></span></a>
+        <a class="help-card" href="#"><span class="help-card__icon"><svg><use href="#i-leaf"/></svg></span><h3>Care guide</h3><p>Simple habits to keep solid wood and natural cane looking beautiful for decades.</p><span class="link-arrow">Read more <svg><use href="#i-arrow"/></svg></span></a>
+        <a class="help-card" href="#"><span class="help-card__icon"><svg><use href="#i-truck"/></svg></span><h3>Track your order</h3><p>Enter your order number to see the live status of your delivery.</p><span class="link-arrow">Track order <svg><use href="#i-arrow"/></svg></span></a>
+        <a class="help-card" href="#"><span class="help-card__icon"><svg><use href="#i-rotate"/></svg></span><h3>Delivery &amp; returns</h3><p>Shipping times, white-glove delivery and our 30-day at-home trial.</p><span class="link-arrow">Read policy <svg><use href="#i-arrow"/></svg></span></a>
+        <a class="help-card" href="#"><span class="help-card__icon"><svg><use href="#i-mail"/></svg></span><h3>Contact us</h3><p>Talk to our studio team about orders, bespoke pieces or anything else.</p><span class="link-arrow">Get in touch <svg><use href="#i-arrow"/></svg></span></a>
+        <a class="help-card" href="#"><span class="help-card__icon"><svg><use href="#i-hammer"/></svg></span><h3>Materials &amp; craft</h3><p>Learn what we build with — genuine sheesham, mango wood and natural cane.</p><span class="link-arrow">Explore <svg><use href="#i-arrow"/></svg></span></a>
+      </div>
+      <div class="help-cta">
+        <div><h2>Still need a hand?</h2><p>Our studio team replies within one business day — send us a note and we'll sort it out.</p></div>
+        <a class="btn btn--light" href="#">Contact us <svg><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <div class="section-head__text">
+          <p class="eyebrow"><i class="dew"></i> The Dew's promise</p>
+          <h2>Help that goes the extra mile</h2>
+        </div>
+      </div>
+      <div class="promise">
+        <div class="promise__item"><div class="promise__icon"><svg><use href="#i-truck"/></svg></div><h3>White-glove delivery</h3><p>Brought into your room of choice, unpacked, inspected and fully assembled by our team.</p></div>
+        <div class="promise__item"><div class="promise__icon"><svg><use href="#i-shield"/></svg></div><h3>1-year structural warranty</h3><p>If a joint wobbles or timber splits under normal use, we collect it and fix it on our dime.</p></div>
+        <div class="promise__item"><div class="promise__icon"><svg><use href="#i-rotate"/></svg></div><h3>30-day trial at home</h3><p>Live with the piece. If the scale or tone isn't quite right, we'll arrange the return.</p></div>
+        <div class="promise__item"><div class="promise__icon"><svg><use href="#i-hammer"/></svg></div><h3>Solid wood, no veneers</h3><p>Genuine sheesham and mango frames through and through. No compressed particle board.</p></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===================== CONTACT PAGE ===================== -->
+<div class="page" id="p-contact">
+  <div class="page-head"><div class="container">
+    <nav aria-label="Breadcrumb"><ol class="breadcrumb">
+      <li><a href="#">Home</a></li>
+      <li><span aria-current="page">Let's talk</span></li>
+    </ol></nav>
+  </div></div>
+
+  <section class="section collection-banner-section">
+    <div class="container"><div class="collection-banner">
+      <div class="phero phero--single">
+        <div class="phero__text">
+          <p class="eyebrow"><i class="dew"></i> Contact</p>
+          <h1>Let's talk</h1>
+          <div class="phero__desc"><p>Questions about an order, a bespoke piece or just want to say hello? We'd love to hear from you.</p></div>
+          <div class="phero__meta">
+            <div><svg><use href="#i-clock"/></svg> Replies in 1 day</div>
+            <div><svg><use href="#i-hammer"/></svg> Bespoke queries</div>
+            <div><svg><use href="#i-mail"/></svg> Real humans</div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="section contact-page">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <p class="eyebrow"><i class="dew"></i> Contact</p>
+          <h2>We're here to help</h2>
+          <p>Questions about an order, a bespoke piece or just want to say hello? We'd love to hear from you.</p>
+          <div class="contact-info__list">
+            <a class="contact-info__row" href="#"><span class="ci-icon"><svg><use href="#i-mail"/></svg></span><span><span class="ci-label">Email</span><span class="ci-value">hello@dewsfurniture.com</span></span></a>
+            <a class="contact-info__row" href="#"><span class="ci-icon"><svg><use href="#i-phone"/></svg></span><span><span class="ci-label">Phone</span><span class="ci-value">+91 98765 43210</span></span></a>
+            <div class="contact-info__row"><span class="ci-icon"><svg><use href="#i-pin"/></svg></span><span><span class="ci-label">Studio</span><span class="ci-value">Jaipur, Rajasthan, India</span></span></div>
+            <div class="contact-info__row"><span class="ci-icon"><svg><use href="#i-clock"/></svg></span><span><span class="ci-label">Hours</span><span class="ci-value">Mon–Sat, 9am–7pm IST</span></span></div>
+          </div>
+        </div>
+
+        <div class="contact-form-card">
+          <h3>Send us a message</h3>
+          <p>We reply within one business day.</p>
+          <form>
+            <div class="contact-row">
+              <div class="contact-field"><label for="f-name">Name <span class="req">*</span></label><input id="f-name" type="text" placeholder="Your full name"></div>
+              <div class="contact-field"><label for="f-email">Email <span class="req">*</span></label><input id="f-email" type="email" placeholder="you@example.com"></div>
+            </div>
+            <div class="contact-row">
+              <div class="contact-field"><label for="f-phone">Phone (optional)</label><input id="f-phone" type="tel" placeholder="Your phone number"></div>
+              <div class="contact-field"><label for="f-order">Order number (optional)</label><input id="f-order" type="text" placeholder="e.g. #1042"></div>
+            </div>
+            <div class="contact-field"><label for="f-msg">Message <span class="req">*</span></label><textarea id="f-msg" placeholder="How can we help?"></textarea></div>
+            <div class="contact-submit">
+              <button type="submit" class="btn">Send message <svg><use href="#i-arrow"/></svg></button>
+              <p class="fineprint">We'll only use your details to reply to your enquiry.</p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  var btns = document.querySelectorAll('.switch button');
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      btns.forEach(function (x) { x.classList.remove('active'); });
+      b.classList.add('active');
+      document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); });
+      document.getElementById('p-' + b.getAttribute('data-p')).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>

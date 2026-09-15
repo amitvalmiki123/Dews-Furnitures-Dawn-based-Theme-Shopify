@@ -1087,3 +1087,108 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
   /* …but a description sitting directly under an h2 still needs its gap */
   .section-head h2 + p { margin-top: 1.1rem; }
 }
+
+/* =========================================================
+   CART DRAWER — empty state, scroll layout, typography
+========================================================= */
+
+/* --- 1. Empty cart: ONE close button, pinned to the drawer corner ---------
+   Dawn hides .drawer__header when the cart is empty and renders its own close
+   button inside .cart-drawer__empty-content. Two things broke that:
+     a) the compact-header rule above uses display:flex !important, which
+        defeated `cart-drawer.is-empty .drawer__header { display: none }`;
+     b) `is-empty` is only ever REMOVED by the theme JS, never added, so after
+        an AJAX removal the fresh markup contains BOTH close buttons.
+   The :has() form is JS-independent — it keys off the empty-state markup
+   itself, so it works no matter how the drawer was re-rendered. */
+cart-drawer.is-empty .drawer__header,
+cart-drawer:has(.drawer__inner-empty) .drawer__header { display: none !important; }
+
+cart-drawer.is-empty .drawer__inner-empty {
+  position: relative;      /* containing block for the close button */
+  width: 100%;
+  align-self: stretch;
+}
+
+cart-drawer .cart-drawer__warnings .drawer__close,
+cart-drawer.is-empty .cart-drawer__empty-content .drawer__close {
+  position: absolute !important;
+  top: 0.85rem !important;
+  right: 0 !important;                      /* 1.5rem from the drawer edge */
+  min-width: 2.5rem !important; min-height: 2.5rem !important;
+  width: 2.5rem !important; height: 2.5rem !important;
+  display: grid !important; place-items: center !important;
+  padding: 0 !important; background: transparent !important;
+  border: 0 !important; box-shadow: none !important;
+}
+cart-drawer .cart-drawer__warnings .drawer__close .svg-wrapper,
+cart-drawer.is-empty .cart-drawer__empty-content .drawer__close .svg-wrapper {
+  width: 1.05rem !important; height: 1.05rem !important;
+  display: grid !important; place-items: center !important;
+}
+cart-drawer .cart-drawer__warnings .drawer__close svg,
+cart-drawer.is-empty .cart-drawer__empty-content .drawer__close svg {
+  width: 100% !important; height: 100% !important; display: block !important;
+}
+/* normal (non-empty) header close — same optical inset as the empty one */
+cart-drawer .drawer__close { right: 0 !important; }
+
+/* --- 2. "Continue shopping" hover --------------------------------------- */
+cart-drawer.is-empty .drawer__inner-empty .button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px #0000001f!important;
+    background-color: var(--cane);
+}
+
+/* --- 3. "Log in to check out faster" link ------------------------------- */
+.cart__login-paragraph a {
+    font-size: inherit;
+    color: #666;
+    text-decoration: none;
+    border-bottom: 1px solid #666;
+}
+
+/* --- 4. Scroll layout: fixed header · scrolling items · fixed footer ---- */
+cart-drawer .drawer__inner { overflow: hidden !important; }
+cart-drawer .drawer__header { flex: none !important; }
+cart-drawer-items {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-width: thin;
+}
+cart-drawer .drawer__footer { flex: none !important; }
+/* Dawn flips both of these on short screens — keep the same split instead */
+@media screen and (max-height: 650px) {
+  cart-drawer-items { overflow-y: auto !important; }
+  cart-drawer .drawer__inner { overflow: hidden !important; }
+}
+
+/* --- 5. Cart item typography & spacing ---------------------------------- */
+cart-drawer .cart-item {
+  gap: 0.9rem 1rem !important;
+  padding-block: 1rem !important;
+  border-bottom: 1px solid var(--line-soft);
+}
+cart-drawer .cart-item:last-child { border-bottom: 0; }
+cart-drawer .cart-item__media { grid-row: 1 / 3; }
+cart-drawer .cart-item__image { width: 100%; border-radius: var(--r-xs); }
+cart-drawer .cart-item__name,
+cart-drawer .cart-item__title {
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  line-height: 1.35 !important;
+}
+cart-drawer .cart-item__details { font-size: 0.8rem !important; line-height: 1.5; }
+cart-drawer .cart-item__price-wrapper,
+cart-drawer .cart-item__totals,
+cart-drawer .cart-item__final-price { font-size: 0.85rem !important; }
+cart-drawer .cart-item__old-price { font-size: 0.78rem !important; }
+cart-drawer .product-option { font-size: 0.78rem !important; }
+
+/* --- 6. Judge.me review widget inside the drawer ------------------------ */
+/* Scoped to the drawer so the storefront widget is untouched. */
+cart-drawer .jm-review-widget[data-v-d92151cd] { padding-block: 0.75rem !important; }
+cart-drawer .jm-text[data-v-6d928e9f] { font-size: 1rem !important; line-height: 1.35 !important; }

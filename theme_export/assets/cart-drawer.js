@@ -89,6 +89,12 @@ class CartDrawer extends HTMLElement {
       sectionElement.innerHTML = this.getSectionInnerHTML(parsedState.sections[section.id], section.selector);
     });
 
+    // Keep the host's is-empty flag in sync with the real item count.
+    // The theme only ever REMOVED this class (and from .drawer__inner, not the
+    // host), so after emptying the cart the freshly rendered markup kept BOTH
+    // the empty-state close button and the normal header one — two X icons.
+    this.classList.toggle('is-empty', !(parsedState.item_count > 0));
+
     setTimeout(() => {
       this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
       this.open();
