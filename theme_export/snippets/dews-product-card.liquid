@@ -32,6 +32,7 @@
       
       <!-- QUICK VIEW BUTTON -->
       <button class="tool-btn" data-quickview
+        data-id="{{ product.id }}"
         data-name="{{ product.title | escape }}" 
         data-price="{{ product.price | money }}" 
         data-was="{% if product.compare_at_price > product.price %}{{ product.compare_at_price | money }}{% endif %}"

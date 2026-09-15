@@ -250,6 +250,8 @@
     scrollbar-width:none; -ms-overflow-style:none;
     max-height:none; padding-block:0;
     -webkit-mask-image:none; mask-image:none;
+    /* keep a clear gap between the main image and the thumbnail rail below it */
+    margin-top:.9rem;
   }
   .gallery__thumbs::-webkit-scrollbar{ display:none; }
   .gallery__thumb{ width:72px; }
@@ -257,6 +259,16 @@
 }
 @media (max-width:480px){
   .pdp__trust{ grid-template-columns:minmax(0,1fr); }
-  .buy > .btn{ flex:1 1 100%; }
+  /* Buy row on mobile:
+     row 1 = quantity (natural width, left aligned)
+     row 2 = Add to cart (flexible) + wishlist icon side by side
+     row 3 (.buy-now, outside .buy) = full width Buy it now */
+  .buy{
+    display:grid; grid-template-columns:minmax(0,1fr) auto;
+    align-items:center; gap:.7rem;
+  }
+  .buy .product-form__quantity{ grid-column:1 / -1; justify-self:start; }
+  .buy > .btn{ grid-column:1; width:100%; }
+  .buy__wishlist{ grid-column:2; }
   .sticky-atc__media{ display:none; }
 }

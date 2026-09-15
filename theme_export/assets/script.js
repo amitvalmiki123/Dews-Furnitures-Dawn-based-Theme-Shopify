@@ -278,6 +278,7 @@
             <button class="modal__close" id="qvClose" aria-label="Close modal"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
             <div class="modal__media"><img id="qvImg" src="" alt=""></div>
             <div class="modal__body">
+              <div class="qv-rating" id="qvRating" hidden></div>
               <h3 id="qvName"></h3>
               <p class="price-row"><span class="price" id="qvPrice"></span> <span class="price--was" id="qvWas"></span></p>
               <p class="desc" id="qvDesc"></p>
@@ -299,6 +300,7 @@
     var price = $('#qvPrice');
     var was   = $('#qvWas');
     var desc  = $('#qvDesc');
+    var rating = $('#qvRating');
     var close = $('#qvClose');
     var lastFocus = null;
 
@@ -331,7 +333,30 @@
           if (pLink && qvLink) qvLink.href = pLink.href;
         }
 
+        /* Judge.me preview badge — sits just above the product title.
+           Seeded from the product card's already-rendered badge so the stars
+           paint instantly, then re-hydrated by Judge.me's own script. */
+        if (rating) {
+          var pid = btn.dataset.id || '';
+          rating.innerHTML = '';
+          if (pid) {
+            var badge = document.createElement('div');
+            badge.className = 'jdgm-widget jdgm-preview-badge';
+            badge.setAttribute('data-id', pid);
+            var srcBadge = productCard ? productCard.querySelector('.jdgm-widget') : null;
+            if (srcBadge) badge.innerHTML = srcBadge.innerHTML;
+            rating.appendChild(badge);
+            rating.hidden = false;
+          } else {
+            rating.hidden = true;
+          }
+        }
+
         setOpen(true);
+
+        if (window.judgeme && typeof window.judgeme.badge === 'function') {
+          try { window.judgeme.badge(); window.judgeme.customizeBadges(); } catch (err) {}
+        }
       });
     });
 
