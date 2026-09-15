@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dew's Furnitures — CSS fixes preview</title>
+
+<!-- real theme CSS -->
+<link rel="stylesheet" href="theme_export/assets/dews-tokens.css">
+<link rel="stylesheet" href="theme_export/assets/style.css">
+<link rel="stylesheet" href="theme_export/assets/component-dews-product.css">
+<link rel="stylesheet" href="theme_export/assets/component-cart-drawer.css">
+
+<style>
+  /* ---------- preview-only scaffolding (NOT part of the theme) ---------- */
+  .pv-section { max-width: 1440px; margin-inline: auto; padding: clamp(1.5rem,4vw,3rem) var(--gutter) }
+  .pv-h { font-size: 1.05rem; font-weight: 600; color: var(--ink); margin-bottom: .35rem }
+  .pv-sub { font-size: .84rem; color: var(--muted); margin-bottom: 1.4rem; line-height: 1.6 }
+  .pv-card { border: 1px solid var(--line); border-radius: var(--r-md); background: var(--paper); padding: 1.25rem }
+  .pv-btn { display: inline-flex; align-items: center; gap: .5rem; padding: .7rem 1.4rem; border: 0;
+            border-radius: var(--r-pill); background: var(--ink); color: #fff; font: inherit;
+            font-size: .84rem; font-weight: 600; cursor: pointer }
+  .pv-btn:hover { background: var(--red-ink) }
+
+  /* sticky header demo (proves overflow-x:clip did NOT break sticky) */
+  .dews-header { position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--line);
+                 background: var(--paper) }
+  .dews-header .container { display: flex; align-items: center; justify-content: space-between;
+                            min-height: var(--header-h); gap: 1rem }
+  .dews-header .brand { font-family: var(--font-accent); font-size: 1.3rem; color: var(--ink) }
+  .dews-header .actions { display: flex; align-items: center; gap: .25rem }
+  .dews-header .actions a { position: relative }
+  .icon-btn { width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center;
+              border-radius: var(--r-pill); color: var(--ink-2) }
+  .icon-btn:hover { background: var(--bone) }
+  .icon-btn svg { width: 19px; height: 19px }
+
+  /* item 3 demo: an element deliberately wider than the screen */
+  .pv-overflow-demo { margin-top: 1rem; border: 1px dashed var(--line); border-radius: var(--r-sm);
+                      background: var(--bone); padding: .9rem 1rem; font-size: .8rem; color: var(--muted) }
+  .pv-wide { width: 1400px; height: 54px; display: flex; align-items: center; padding-left: 1rem;
+             background: repeating-linear-gradient(45deg, #e6ddd2, #e6ddd2 12px, #f1ebe3 12px, #f1ebe3 24px);
+             color: var(--ink-3); font-weight: 600; font-size: .75rem; letter-spacing: .08em }
+  .pv-longword { font-size: .85rem; color: var(--ink-2); margin-top: .6rem }
+
+  /* item 4 demo */
+  .dews-reviews-heading .section-head { display: flex; flex-direction: column; gap: .5rem }
+  .dews-reviews-heading .eyebrow { font-size: var(--t-lead); letter-spacing: .16em; text-transform: uppercase;
+                                   color: var(--muted-2); font-weight: 600; margin: 0 }
+  .dews-reviews-heading h2 { font-size: var(--t-h2); color: var(--ink); margin: 0 }
+  .pv-jdgm { border: 1px dashed var(--line); border-radius: var(--r-sm); padding: 1.25rem;
+             background: var(--paper); color: var(--muted); font-size: .85rem }
+</style>
+</head>
+<body>
+
+<!-- ================= HEADER · item 1 (wishlist badge == cart badge) ================= -->
+<header class="dews-header">
+  <div class="container">
+    <a class="brand" href="#">Dew's Furnitures</a>
+    <nav class="nav nav--end">
+      <div class="actions">
+        <button class="icon-btn" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.2-3.2"/></svg>
+        </button>
+        <a class="icon-btn" href="#" aria-label="Account">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+        </a>
+
+        <!-- Wishlist Hero icon + app count bubble (item 1) -->
+        <a class="site-header__icon header__icon link link--text focus-inset wishlist-hero-header-icon"
+           href="#" aria-label="Open Wishlist">
+          <svg class="wlh-svg-Icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+               style="width:1em;font-size:22px">
+            <path d="M12 20.5S3.5 15 3.5 9.2A4.7 4.7 0 0 1 12 6.6a4.7 4.7 0 0 1 8.5 2.6c0 5.8-8.5 11.3-8.5 11.3z"/>
+          </svg>
+          <span class="wishlisthero-header-count">3</span>
+        </a>
+
+        <a class="icon-btn" href="#" id="cart-icon-bubble" aria-label="Cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="width:20px;height:20px">
+            <path d="M4 7h16l-1.4 12.2a1.5 1.5 0 0 1-1.5 1.3H6.9a1.5 1.5 0 0 1-1.5-1.3z"/>
+            <path d="M9 7V5.5a3 3 0 0 1 6 0V7"/>
+          </svg>
+          <span class="cart-count">2</span>
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= item 1 ================= -->
+<section class="pv-section">
+  <p class="pv-h">1 · Wishlist badge = cart badge</p>
+  <p class="pv-sub">
+    Upar header mein <b>wishlist heart (3)</b> aur <b>cart (2)</b> — dono ko ab ek hi styling milti hai:
+    red pill background, white bold text, top-right corner. Wishlist Hero app ki apni CSS ko beat karne
+    ke liye <code>!important</code> use kiya gaya hai.
+  </p>
+  <div class="pv-card" style="font-size:.83rem;color:var(--muted);line-height:1.7">
+    <code>background: var(--red) !important; color:#fff !important; border-radius: var(--r-pill) !important;
+    font-size:.625rem !important; font-weight:700 !important; min-width:17px; height:17px;</code>
+  </div>
+</section>
+
+<!-- ================= item 2 ================= -->
+<section class="pv-section">
+  <p class="pv-h">2 · Cart drawer — chhota heading + chhota close icon</p>
+  <p class="pv-sub">
+    Neeche button dabayein — cart drawer right se slide hoke khulega. Pehle <b>"Cart"</b> heading
+    <b>2rem / 2.4rem</b> tha, ab <b>1.25rem</b> hai. Close (×) button pehle <b>4.4rem</b> box aur
+    <b>2rem</b> icon tha, ab <b>2.5rem</b> box aur <b>1.05rem</b> icon hai.
+  </p>
+  <button class="pv-btn" id="openDrawer">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:17px;height:17px">
+      <path d="M4 7h16l-1.4 12.2a1.5 1.5 0 0 1-1.5 1.3H6.9a1.5 1.5 0 0 1-1.5-1.3z"/><path d="M9 7V5.5a3 3 0 0 1 6 0V7"/>
+    </svg>
+    Open cart drawer
+  </button>
+</section>
+
+<!-- ================= item 3 ================= -->
+<section class="pv-section">
+  <p class="pv-h">3 · Mobile horizontal scroll — fixed</p>
+  <p class="pv-sub">
+    Neeche ek <b>1400px chauda</b> block aur ek bahut lamba word hai. Mobile width (390/430) par bhi
+    page left-right scroll <b>nahi</b> hona chahiye. Saath hi upar wala header scroll karte waqt
+    <b>sticky</b> rehna chahiye — <code>overflow-x: clip</code> isliye use kiya (hidden se sticky toot jata).
+  </p>
+  <div class="pv-overflow-demo">
+    <div class="pv-wide">THIS BLOCK IS 1400px WIDE — PAGE MUST NOT SCROLL SIDEWAYS</div>
+    <p class="pv-longword">Long word test:
+      <b>Supercalifragilisticexpialidociousfurniturewarehouseclearancesale2026</b></p>
+  </div>
+
+  <p class="pv-sub" style="margin-top:1.75rem">
+    <b>Root cause (homepage-only):</b> neeche wali <b>Rooms list</b> — is row mein 5 cheezein hain
+    (number · thumb · naam · meta · arrow). <code>.rooms__name</code> mein <code>min-width:0</code> nahi tha
+    aur <code>.rooms__meta</code> <code>flex:none</code> tha, toh ye row shrink nahi ho paati thi aur
+    390px phone pe <b>~16px bahar</b> nikal jati thi. Ab gap kam kiya aur dono ko shrinkable bana diya.
+  </p>
+
+  <div class="pv-rooms-demo" style="border:1px solid var(--line);border-radius:var(--r-md);background:var(--paper);padding:0 1rem">
+    <ul class="rooms__list" style="list-style:none;margin:0;padding:0">
+      <li class="rooms__item is-active">
+        <a class="rooms__link" href="#">
+          <span class="rooms__num">01</span>
+          <span class="rooms__thumb"><img alt="" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150'><rect width='150' height='150' fill='%23e9e3da'/><rect x='26' y='72' width='98' height='42' rx='8' fill='%23c9a882'/></svg>"></span>
+          <h3 class="rooms__name">Living Room</h3>
+          <span class="rooms__meta">18 pieces</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </li>
+      <li class="rooms__item">
+        <a class="rooms__link" href="#">
+          <span class="rooms__num">02</span>
+          <span class="rooms__thumb"><img alt="" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150'><rect width='150' height='150' fill='%23e4ddd2'/><rect x='34' y='56' width='82' height='68' rx='8' fill='%23a8825e'/></svg>"></span>
+          <h3 class="rooms__name">Workspace</h3>
+          <span class="rooms__meta">12 pieces</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </li>
+      <li class="rooms__item">
+        <a class="rooms__link" href="#">
+          <span class="rooms__num">03</span>
+          <span class="rooms__thumb"><img alt="" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150'><rect width='150' height='150' fill='%23efe9e1'/><rect x='30' y='66' width='90' height='50' rx='8' fill='%236b4a33'/></svg>"></span>
+          <h3 class="rooms__name">Dining Room</h3>
+          <span class="rooms__meta">24 pieces</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </li>
+      <li class="rooms__item">
+        <a class="rooms__link" href="#">
+          <span class="rooms__num">04</span>
+          <span class="rooms__thumb"><img alt="" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150'><rect width='150' height='150' fill='%23e9e3da'/><circle cx='75' cy='75' r='38' fill='%23d8b489'/></svg>"></span>
+          <h3 class="rooms__name">Bedroom</h3>
+          <span class="rooms__meta">16 pieces</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= item 4 ================= -->
+<section class="pv-section">
+  <p class="pv-h">4 · Reviews sections — bone background + padding</p>
+  <p class="pv-sub">
+    Neeche dono naye rules live hain: reviews-heading section par <b>bone background + 4.3rem top padding</b>,
+    aur Judge.me wrapper par <b>bone background, 2.5rem bottom padding, 0 top padding</b>.
+  </p>
+</section>
+
+<section id="shopify-section-template--28471390666933__reviews-heading" class="dews-reviews-heading">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Reviews</p>
+      <h2>What our customers say</h2>
+    </div>
+  </div>
+</section>
+
+<section id="shopify-section-template--28471390666933__1788325876b6967a8d">
+  <div class="container">
+    <div class="pv-jdgm">Judge.me reviews widget area — background bone, top padding 0, bottom padding 2.5rem</div>
+  </div>
+</section>
+
+<section class="pv-section" style="padding-block:3rem">
+  <p class="pv-sub" style="margin:0">
+    (Yahan se neeche sirf scroll karne ke liye jagah hai — sticky header test karne ke liye.)
+  </p>
+  <div style="height:120vh"></div>
+</section>
+
+<!-- ================= CART DRAWER (item 2) ================= -->
+<cart-drawer class="drawer" id="pvCartDrawer">
+  <div id="CartDrawer" class="cart-drawer">
+    <div id="CartDrawer-Overlay" class="cart-drawer__overlay"></div>
+    <div class="drawer__inner">
+      <div class="drawer__header">
+        <h2 class="drawer__heading">Cart</h2>
+        <button class="drawer__close" type="button" aria-label="Close" id="pvDrawerClose">
+          <span class="svg-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="icon icon-close" viewBox="0 0 18 17">
+              <path fill="currentColor" d="M.865 15.978a.5.5 0 0 0 .707.707l7.433-7.431 7.579 7.282a.501.501 0 0 0 .846-.37.5.5 0 0 0-.153-.351L9.712 8.546l7.417-7.416a.5.5 0 1 0-.707-.708L8.991 7.853 1.413.573a.5.5 0 1 0-.693.72l7.563 7.268z"/>
+            </svg>
+          </span>
+        </button>
+      </div>
+
+      <cart-drawer-items>
+        <div class="drawer__contents">
+          <table class="cart-items">
+            <tbody>
+              <tr class="cart-item">
+                <td class="cart-item__media">
+                  <img class="cart-item__image" width="120" height="120" alt="" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect width='200' height='200' fill='%23e9e3da'/><rect x='35' y='95' width='130' height='55' rx='10' fill='%23c9a882'/></svg>">
+                </td>
+                <td class="cart-item__details">
+                  <a href="#" style="font-weight:600;color:var(--ink);font-size:.9rem">Haven 3-Seater Sofa</a>
+                  <div class="product-option"><dt>Colour:</dt><dd>Washed Linen</dd></div>
+                  <div style="margin-top:.4rem;font-weight:600;font-size:.9rem">₹84,900</div>
+                </td>
+              </tr>
+              <tr class="cart-item">
+                <td class="cart-item__media">
+                  <img class="cart-item__image" width="120" height="120" alt="" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect width='200' height='200' fill='%23e4ddd2'/><rect x='45' y='60' width='110' height='90' rx='10' fill='%23a8825e'/></svg>">
+                </td>
+                <td class="cart-item__details">
+                  <a href="#" style="font-weight:600;color:var(--ink);font-size:.9rem">Aria Lounge Chair</a>
+                  <div class="product-option"><dt>Finish:</dt><dd>Solid Ash</dd></div>
+                  <div style="margin-top:.4rem;font-weight:600;font-size:.9rem">₹32,400</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </cart-drawer-items>
+
+      <div class="drawer__footer">
+        <div style="display:flex;justify-content:space-between;font-weight:600;margin-bottom:1rem;color:var(--ink)">
+          <span>Subtotal</span><span>₹1,17,300</span>
+        </div>
+        <button type="button" class="cart__checkout-button button" style="width:100%;border-radius:30px;padding:14px;background:#1a1a1a;color:#fff;font-weight:600;border:0;cursor:pointer">
+          Check out
+        </button>
+      </div>
+    </div>
+  </div>
+</cart-drawer>
+
+<script>
+(function () {
+  var drawer = document.getElementById('pvCartDrawer');
+  var openBtn = document.getElementById('openDrawer');
+  var closeBtn = document.getElementById('pvDrawerClose');
+  var overlay = document.getElementById('CartDrawer-Overlay');
+
+  function open() { drawer.classList.add('active'); }
+  function close() { drawer.classList.remove('active'); }
+
+  if (openBtn) openBtn.addEventListener('click', open);
+  if (closeBtn) closeBtn.addEventListener('click', close);
+  if (overlay) overlay.addEventListener('click', close);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+</script>
+</body>
+</html>

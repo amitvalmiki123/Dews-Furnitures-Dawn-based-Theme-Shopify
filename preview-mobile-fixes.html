@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dew's Furnitures — mobile fixes preview</title>
+<style>
+  :root { --ink:#171310; --muted:#7c716a; --line:#e2dcd3; --bone:#f3efe9; --paper:#fbfaf8; --red:#e01b22 }
+  * { box-sizing: border-box }
+  body { margin: 0; background: #ece7e0; color: var(--ink);
+         font-family: Archivo, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif }
+  .bar { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; gap: .75rem;
+         flex-wrap: wrap; padding: .75rem 1rem; background: var(--paper);
+         border-bottom: 1px solid var(--line) }
+  .bar strong { font-size: .9rem; font-weight: 600 }
+  .bar .hint { font-size: .78rem; color: var(--muted) }
+  .bar .sp { flex: 1 }
+  button.w { padding: .45rem .8rem; border: 1px solid var(--line); background: #fff; color: var(--ink);
+             border-radius: 999px; font: inherit; font-size: .78rem; font-weight: 600; cursor: pointer }
+  button.w:hover { border-color: var(--ink) }
+  button.w[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink) }
+  .stage { display: flex; justify-content: center; padding: 1.25rem 1rem 3rem; min-height: calc(100vh - 60px) }
+  .frame-wrap { background: #fff; border-radius: 14px; box-shadow: 0 20px 60px rgba(23,19,16,.16);
+                overflow: hidden; transition: width .25s ease; width: 100%; max-width: 100% }
+  iframe { display: block; width: 100%; height: 86vh; border: 0; background: #fff }
+  @media (max-width: 700px) { .bar .hint { display: none } }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <strong>CSS fixes preview</strong>
+  <span class="hint">wishlist badge · cart drawer · homepage overflow · reviews padding</span>
+  <span class="sp"></span>
+  <button class="w" data-w="390">iPhone 390</button>
+  <button class="w" data-w="430">430</button>
+  <button class="w" data-w="768">Tablet 768</button>
+  <button class="w" data-w="1280">Desktop</button>
+</div>
+
+<div class="stage">
+  <div class="frame-wrap" id="wrap">
+    <iframe id="frame" src="preview-frame.html" title="Preview"></iframe>
+  </div>
+</div>
+
+<script>
+  var wrap = document.getElementById('wrap');
+  var btns = Array.prototype.slice.call(document.querySelectorAll('button.w'));
+
+  function setWidth(w) {
+    if (w >= 1280) { wrap.style.width = '100%'; }
+    else { wrap.style.width = w + 'px'; wrap.style.maxWidth = '100%'; }
+    btns.forEach(function (b) {
+      b.setAttribute('aria-pressed', String(parseInt(b.dataset.w, 10) === w));
+    });
+    try { localStorage.setItem('pv-width', String(w)); } catch (e) {}
+  }
+
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () { setWidth(parseInt(b.dataset.w, 10)); });
+  });
+
+  var saved = 390;
+  try { saved = parseInt(localStorage.getItem('pv-width'), 10) || 390; } catch (e) {}
+  setWidth(saved);
+</script>
+</body>
+</html>
