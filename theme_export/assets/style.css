@@ -887,8 +887,16 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 /* --- breadcrumb (page head) — shared with PDP --- */
 .page-head{ padding-block:clamp(1.25rem,2.5vw,2rem) 0; }
 .breadcrumb{ display:flex; flex-wrap:wrap; align-items:center; gap:.55rem; font-size:.8rem; color:var(--muted); list-style:none; margin:0; padding:0; }
-.breadcrumb li{ display:inline-flex; align-items:center; gap:.55rem; }
-.breadcrumb li + li::before{ content:''; width:3px; height:3px; border-radius:50%; background:var(--muted-2); flex:none; }
+/* Separator dots align with the FIRST line when a crumb wraps onto two lines.
+   align-items:center put the dot in the middle of the whole (wrapped) block;
+   flex-start + a half-line top margin parks it on the first line instead —
+   which is identical to centre while the crumb fits on one line. */
+.breadcrumb li{ display:inline-flex; align-items:flex-start; gap:.55rem; }
+.breadcrumb li + li::before{
+  content:''; width:3px; height:3px; border-radius:50%; background:var(--muted-2); flex:none;
+  margin-top: calc(0.85em - 1.5px);  /* half of the 1.7 line-height, less half the dot */
+  margin-top: calc(0.5lh - 1.5px);   /* exact, where the lh unit is supported */
+}
 .breadcrumb a{ color:var(--muted); }
 .breadcrumb a:hover{ color:var(--red-ink); }
 .breadcrumb [aria-current]{ color:var(--ink); font-weight:500; }

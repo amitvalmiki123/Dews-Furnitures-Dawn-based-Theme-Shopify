@@ -196,73 +196,79 @@
      AJAX Quick Add (Dawn Native renderContents & Class Sync Fix)
      ------------------------------------------------------------------ */
   (function quickAdd() {
-    $$('form[action="/cart/add"]').forEach(function (form) {
-      
-      if (form.getAttribute('data-type') === 'add-to-cart-form' || form.closest('product-form')) {
-        return; 
-      }
+    /* Delegated on `document`, NOT per-form.
+       Product cards injected after this file runs (e.g.
+       <product-recommendations> - "You may also like") did not exist yet, so a
+       per-form binding silently missed them: the form fell back to a normal
+       POST and dumped the shopper on the /cart page instead of opening the
+       drawer. `submit` bubbles, so one document-level listener covers every
+       card, whenever it appears. */
+    document.addEventListener('submit', function (e) {
+      var form = e.target && e.target.closest
+        ? e.target.closest('form[action="/cart/add"]')
+        : null;
+      if (!form) return;
+      if (form.getAttribute('data-type') === 'add-to-cart-form' || form.closest('product-form')) return;
 
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        e.stopImmediatePropagation(); 
+      e.preventDefault();
+      e.stopImmediatePropagation();
 
-        var btn = form.querySelector('button[type="submit"]');
-        if (!btn || btn.disabled) return;
+      var btn = form.querySelector('button[type="submit"]');
+      if (!btn || btn.disabled) return;
 
-        var textTarget = btn.querySelector('span') || btn;
-        var originalText = textTarget.textContent;
-        
-        textTarget.textContent = 'Adding...';
-        btn.disabled = true;
+      var textTarget = btn.querySelector('span') || btn;
+      var originalText = textTarget.textContent;
 
-        var formData = new FormData(form);
-        
-        // Shopify standard section parameters
-        formData.append('sections', 'cart-drawer,cart-icon-bubble');
-        formData.append('sections_url', window.location.pathname);
+      textTarget.textContent = 'Adding...';
+      btn.disabled = true;
 
-        fetch('/cart/add.js', {
-          method: 'POST',
-          body: formData
-        })
-        .then(function (res) {
-          if (!res.ok) throw new Error('Network response was not ok');
-          return res.json();
-        })
-        .then(function (parsedState) {
-          textTarget.textContent = 'Added! ✓';
+      var formData = new FormData(form);
 
-          // DAWN NATIVE METHOD WITH BULLETPROOF FIX: Remove 'is-empty' class instantly so items don't hide
-          var cartDrawerElement = document.querySelector('cart-drawer');
-          if (cartDrawerElement && typeof cartDrawerElement.renderContents === 'function') {
-             cartDrawerElement.renderContents(parsedState);
-             
-             setTimeout(function() {
-               cartDrawerElement.classList.remove('is-empty');
-               if (typeof cartDrawerElement.open === 'function') {
-                 cartDrawerElement.open();
-               } else {
-                 document.documentElement.classList.add('cart-drawer-open');
-               }
-             }, 50);
+      // Shopify standard section parameters
+      formData.append('sections', 'cart-drawer,cart-icon-bubble');
+      formData.append('sections_url', window.location.pathname);
 
-          } else {
-             window.location.reload();
-          }
+      fetch('/cart/add.js', {
+        method: 'POST',
+        body: formData
+      })
+      .then(function (res) {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      })
+      .then(function (parsedState) {
+        textTarget.textContent = 'Added! ✓';
 
-          setTimeout(function () {
-            textTarget.textContent = originalText;
-            btn.disabled = false;
-          }, 2000);
-        })
-        .catch(function (err) {
-          console.error('Quick add error:', err);
-          textTarget.textContent = 'Error';
-          setTimeout(function () {
-            textTarget.textContent = originalText;
-            btn.disabled = false;
-          }, 2000);
-        });
+        // DAWN NATIVE METHOD WITH BULLETPROOF FIX: Remove 'is-empty' class instantly so items don't hide
+        var cartDrawerElement = document.querySelector('cart-drawer');
+        if (cartDrawerElement && typeof cartDrawerElement.renderContents === 'function') {
+           cartDrawerElement.renderContents(parsedState);
+
+           setTimeout(function() {
+             cartDrawerElement.classList.remove('is-empty');
+             if (typeof cartDrawerElement.open === 'function') {
+               cartDrawerElement.open();
+             } else {
+               document.documentElement.classList.add('cart-drawer-open');
+             }
+           }, 50);
+
+        } else {
+           window.location.reload();
+        }
+
+        setTimeout(function () {
+          textTarget.textContent = originalText;
+          btn.disabled = false;
+        }, 2000);
+      })
+      .catch(function (err) {
+        console.error('Quick add error:', err);
+        textTarget.textContent = 'Error';
+        setTimeout(function () {
+          textTarget.textContent = originalText;
+          btn.disabled = false;
+        }, 2000);
       });
     });
   })();
@@ -315,49 +321,51 @@
       }
     };
 
-    $$('[data-quickview]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        lastFocus = btn;
-        var wasPrice = btn.dataset.was || '';
+    document.addEventListener('click', function (e) {
+      var btn = e.target && e.target.closest ? e.target.closest('[data-quickview]') : null;
+      if (!btn) return;
 
-        if (img)   { img.src = btn.dataset.img || ''; img.alt = btn.dataset.name || ''; }
-        if (name)  name.textContent  = btn.dataset.name || '';
-        if (price) price.textContent = btn.dataset.price || '';
-        if (was)   { was.textContent = wasPrice; was.style.display = wasPrice ? '' : 'none'; }
-        if (desc)  desc.textContent  = btn.dataset.desc || '';
+      lastFocus = btn;
+      var wasPrice = btn.dataset.was || '';
 
-        var productCard = btn.closest('.product');
-        if (productCard) {
-          var pLink = productCard.querySelector('h3 a');
-          var qvLink = $('#qvLink');
-          if (pLink && qvLink) qvLink.href = pLink.href;
+      if (img)   { img.src = btn.dataset.img || ''; img.alt = btn.dataset.name || ''; }
+      if (name)  name.textContent  = btn.dataset.name || '';
+      if (price) price.textContent = btn.dataset.price || '';
+      if (was)   { was.textContent = wasPrice; was.style.display = wasPrice ? '' : 'none'; }
+      if (desc)  desc.textContent  = btn.dataset.desc || '';
+
+      var productCard = btn.closest('.product');
+      if (productCard) {
+        var pLink = productCard.querySelector('h3 a');
+        var qvLink = $('#qvLink');
+        if (pLink && qvLink) qvLink.href = pLink.href;
+      }
+
+      /* Judge.me preview badge — sits just above the product title.
+         Seeded from the product card's already-rendered badge so the stars
+         paint instantly, then re-hydrated by Judge.me's own script. */
+      if (rating) {
+        var pid = btn.dataset.id || '';
+        rating.innerHTML = '';
+        if (pid) {
+          var badge = document.createElement('div');
+          badge.className = 'jdgm-widget jdgm-preview-badge';
+          badge.setAttribute('data-id', pid);
+          var srcBadge = productCard ? productCard.querySelector('.jdgm-widget') : null;
+          if (srcBadge) badge.innerHTML = srcBadge.innerHTML;
+          rating.appendChild(badge);
+          rating.hidden = false;
+        } else {
+          rating.hidden = true;
         }
+      }
 
-        /* Judge.me preview badge — sits just above the product title.
-           Seeded from the product card's already-rendered badge so the stars
-           paint instantly, then re-hydrated by Judge.me's own script. */
-        if (rating) {
-          var pid = btn.dataset.id || '';
-          rating.innerHTML = '';
-          if (pid) {
-            var badge = document.createElement('div');
-            badge.className = 'jdgm-widget jdgm-preview-badge';
-            badge.setAttribute('data-id', pid);
-            var srcBadge = productCard ? productCard.querySelector('.jdgm-widget') : null;
-            if (srcBadge) badge.innerHTML = srcBadge.innerHTML;
-            rating.appendChild(badge);
-            rating.hidden = false;
-          } else {
-            rating.hidden = true;
-          }
-        }
+      setOpen(true);
 
-        setOpen(true);
-
-        if (window.judgeme && typeof window.judgeme.badge === 'function') {
-          try { window.judgeme.badge(); window.judgeme.customizeBadges(); } catch (err) {}
-        }
-      });
+      if (window.judgeme && typeof window.judgeme.badge === 'function') {
+        try { window.judgeme.badge(); window.judgeme.customizeBadges(); } catch (err) {}
+      }
+      
     });
 
     if (close) close.addEventListener('click', function () { setOpen(false); });
@@ -390,8 +398,31 @@
 
       btn.addEventListener('click', function () {
         var willOpen = !item.classList.contains('is-open');
+
+        /* Keep the heading the user clicked pinned to the same spot on screen.
+           Only one item is open at a time, so opening this one collapses the
+           item above it — that removed height used to drag the page downwards
+           and shove the heading off screen. Measure before/after and cancel the
+           shift for as long as the max-height transition is running. */
+        var before = item.getBoundingClientRect().top;
+
         items.forEach(function (other) { setOpen(other, false); });
         setOpen(item, willOpen);
+
+        var started = Date.now();
+        var pin = function () {
+          var delta = item.getBoundingClientRect().top - before;
+          if (Math.abs(delta) > 0.5) {
+            var html = document.documentElement;
+            var prev = html.style.scrollBehavior;
+            html.style.scrollBehavior = 'auto';   /* instant, never smooth */
+            window.scrollBy(0, delta);
+            html.style.scrollBehavior = prev;
+          }
+          /* .faq__a transitions max-height over 0.5s — cover the whole run */
+          if (Date.now() - started < 700) requestAnimationFrame(pin);
+        };
+        requestAnimationFrame(pin);
       });
     });
 
