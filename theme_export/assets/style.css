@@ -1095,7 +1095,7 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 ========================================================= */
 @media (max-width: 989px) {
   .section,
-  .section--tight { padding-block: 30px; }
+  .section--tight { padding-block: 40px; }
 
   /* the eyebrow must not add its own top margin on top of the 30px, or the
      gap above a section doubles */
@@ -1320,7 +1320,7 @@ cart-drawer .jm-text[data-v-6d928e9f] { font-size: 1rem !important; line-height:
   :root {
     --t-hero: clamp(2.2rem, 8.5vw, 3rem);
     --t-display: clamp(1.85rem, 6.8vw, 2.5rem);
-    --t-h2: clamp(1.55rem, 6.2vw, 2.1rem);
+    --t-h2: clamp(1.65rem, 6.4vw, 2.1rem);
     --t-h3: clamp(0.95rem, 3.6vw, 1.15rem);
     --t-lead: clamp(0.95rem, 3.8vw, 1.05rem);
     --t-body: 0.95rem;
@@ -1354,4 +1354,59 @@ cart-drawer .jm-text[data-v-6d928e9f] { font-size: 1rem !important; line-height:
   .section.dews-reviews-heading { padding-block-start: 30px; }
   body.template-index [id$="__1788325876b6967a8d"],
   body.template-index [id$="-1788325876b6967a8d"] { padding-block-end: 30px; }
+}
+
+/* =========================================================
+   MOBILE POLISH — headings, rhythm, component spacing
+========================================================= */
+@media (max-width: 989px) {
+
+  /* --- double padding fix ------------------------------------------------
+     The `.section, .section--tight` rule a few lines up is what gives mobile
+     its 40px rhythm, but it now wins over the two collection-page rules that
+     zero their own padding-block (they sit earlier in this file and have the
+     same specificity). Re-asserted here so those sections do not double up. */
+  .dews-collection-about,
+  .dews-more-collections { padding-block: 0; }
+
+  /* --- reviews: 30px above the heading, nothing below --------------------
+     The Judge.me widget section below it supplies the tail gap, so the two
+     halves together still read as one section. */
+  body.template-index section.dews-reviews-heading {
+    background-color: var(--bone);
+    padding-block-start: 30px;
+    padding-bottom: 0;
+  }
+
+  /* --- heading offsets --------------------------------------------------- */
+  .section-head h2 { margin-top: 8px; }
+  .hero h1 { margin-top: 0.75rem; }
+
+  /* --- "Our craft" heading -----------------------------------------------
+     #craft-title is a bare <h2> (no .section-head h2 wrapper), so it was
+     falling back to Dawn's base h2 — calc(--font-heading-scale * 2rem) —
+     which is far bigger than --t-h2. Pin it to the same scale. */
+  #craft-title { font-size: var(--t-h2); }
+
+  /* --- craft step numbers: sit on the heading's baseline ------------------ */
+  .step__num { padding-top: 0; }
+
+  /* --- ribbon ------------------------------------------------------------ */
+  .ribbon { padding: 10px 0; }
+
+  /* --- collection page --------------------------------------------------- */
+  .chero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 15px;
+    margin-top: 15px;
+  }
+  .shop {
+    grid-template-columns: minmax(0, 1fr);
+    padding-bottom: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .rooms__name { font-size: 1.2rem; }
 }
