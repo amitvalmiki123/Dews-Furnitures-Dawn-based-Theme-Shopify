@@ -137,7 +137,7 @@ cart-drawer-items.is-empty + .drawer__footer {
 }
 
 .drawer__footer > details + .cart-drawer__footer {
-  padding-top: 1.5rem;
+  padding-top: 0;
 }
 
 cart-drawer {
@@ -258,7 +258,7 @@ cart-drawer-items {
 }
 
 .cart-drawer .cart-items td {
-  padding-top: 1.7rem;
+  padding-top: 0px;
 }
 
 .cart-drawer .cart-items .cart-item__nested-line td:not(.cart-item__quantity) {
@@ -299,11 +299,22 @@ cart-drawer-items {
   padding-top: 0;
   grid-column: 2 / 5;
 }
+.cart__note .field__input {font-size: .89rem;}
 
 @media screen and (max-width: 749px) {
   .cart-drawer .cart-item cart-remove-button {
     margin-left: 0;
   }
+  .drawer__footer>details+.cart-drawer__footer {
+    padding-top: 0;
+}
+.drawer__footer summary {padding: 0.9rem 0;}
+.cart__note .field__input {
+    height: max-content;
+    min-height: 80px;
+    border-radius: var(--inputs-radius);
+    padding: 6px 10px;
+}
 }
 
 .cart-drawer__footer > * + * {
@@ -321,6 +332,7 @@ cart-drawer-items {
 .cart-drawer .tax-note {
   margin: 1.2rem 0 2rem auto;
   text-align: left;
+  font-size:0.8rem !important;
 }
 
 .cart-drawer .product-option dd {
@@ -634,6 +646,7 @@ cart-drawer.is-empty [id*="jdgm"],
 cart-drawer.is-empty .cart-drawer__collection + div:not(.cart-drawer__warnings) {
   display: none !important;
 }
+
 /* ---------------------------------------------------------------------------
    Cart drawer — discount code accordion
    Replaces the old "Order special instructions" note.

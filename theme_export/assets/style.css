@@ -8,13 +8,6 @@ cart-items:not([hidden]) { visibility: visible; opacity: 1 }
 *::before,
 *::after { box-sizing: border-box }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100% }
-/* overflow-x:clip (never `hidden`) — it stops sideways scrolling WITHOUT
-   creating a scroll container, which `hidden` would do (and that breaks
-   position:sticky on the header).
-   scrollbar-gutter:stable keeps the scrollbar's space reserved at all times,
-   so locking the scroll when the cart drawer opens no longer widens the page
-   by a scrollbar width (which is what made the drawer appear to jump to full
-   width). */
 html { overflow-x: clip; scrollbar-gutter: stable }
 body { margin: 0; font-family: var(--font); font-size: var(--t-body); line-height: 1.7; font-weight: 400; color: var(--ink-2); letter-spacing: normal; background: var(--paper) !important; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: clip }
 img { max-width: 100%; display: block }
@@ -57,8 +50,11 @@ body h5 { margin: 0; font-family: var(--font) !important; font-weight: 600 !impo
 .section-head h2 { font-size: var(--t-h2); margin-top: 1rem }
 .section-head p { margin-top: 1.1rem; color: var(--muted); font-size: var(--t-lead) }
 .section-head .eyebrow { font-size: var(--t-lead) }
+.faq--flush h2, .faq--flush h4 {font-size: var(--label);font-weight: 400 !important;}
 @media screen and (max-width: 989px) {
   .section-head .eyebrow { font-size: var(--t-label) }
+  .collection-banner { padding-bottom: 0 !important;}
+  .contact-info .eyebrow { margin-bottom: 8px; font-size: var(--t-label);}
 }
 .section--ink .section-head p { color: #b9afa6 }
 .section-head--center { flex-direction: column; align-items: center; text-align: center }
@@ -320,7 +316,7 @@ body .product__media .badge--new { background: #fff; color: var(--ink); box-shad
 .craft__shot--main { grid-column: 1/-1; aspect-ratio: 16/10 }
 .craft__shot img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease) }
 .craft__shot:hover img { transform: scale(1.05) }
-.craft__shot figcaption { position: absolute; inset: auto 0 0 0; padding: 2rem 0.95rem 0.8rem; background: linear-gradient(transparent, rgba(23, 19, 16, 0.8)); color: #fff; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; display: flex; align-items: center; gap: 0.55rem }
+.craft__shot figcaption { position: absolute; inset: auto 0 0 0; padding: 2rem 0.95rem 0.8rem; background: linear-gradient(transparent, rgba(23, 19, 16, 0.8)); color: #fff; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; display: flex; align-items: flex-start; gap: 0.55rem }
 .craft__step-no { color: var(--cane) }
 .craft__badge { position: absolute; right: 1.25rem; top: 1.25rem; padding: 1rem 1.25rem; border-radius: var(--r-sm); background: rgba(23, 19, 16, 0.82); backdrop-filter: blur(8px); color: #fff; text-align: center }
 .craft__badge strong { display: block; font-size: 1.5rem; font-weight: 600; line-height: 1.1 }
@@ -353,8 +349,9 @@ body .product__media .badge--new { background: #fff; color: var(--ink); box-shad
 .look__item-price { font-size: 0.89rem; font-weight: 600; color: var(--ink); flex: none }
 .look__items a:hover .look__item-price { color: var(--red-ink) }
 @media (max-width: 749px) {
-  .look__items a { flex-wrap: wrap; }
+  .look__items a { flex-wrap: wrap;gap: 0px .85rem; }
   .look__item-price { flex: 0 0 100%; margin-left: calc(48px + 0.85rem); }
+  
 }
 .look__foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem }
 .look__count { font-size: 0.8rem; color: var(--muted-2) }
@@ -516,8 +513,13 @@ body .product__media .badge--new { background: #fff; color: var(--ink); box-shad
   .reveal,
   .reveal-img { opacity: 1; transform: none; clip-path: none }
 }
-/* Content-page sections (page banner, craft split/features/story) now live in
-   dews-pages.css and are loaded by those sections. */
+
+.nav__item:hover .mega, .nav__item:focus-within .mega {
+    transform: translate(10px,17px);
+}
+.mega ul li {
+    line-height: 1.2;
+}
 
 /* =========================================================
     8. COLLECTION PAGE OVERHAUL (Clean Banner & Layout)
@@ -686,6 +688,8 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
 	.product.grid { display: flex !important; flex-direction: column !important; gap: 2rem !important; }
 	.product__media-wrapper,
 	.product__info-wrapper { width: 100% !important; }
+  .hotspot.is-open .hotspot__card { transform: translate(-20%, 0) }
+  
 }
 
 @media (max-width:1024px) {
@@ -785,6 +789,14 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
   .header__row { gap: 0.5rem }
   .icon-btn { width: 38px; height: 38px }
   .icon-btn svg { width: 23px; height: auto }
+  .metafield-rich_text_field ul li, .metafield-rich_text_field ul li strong {
+    font-size: 0.75rem;
+    gap: 10px;
+}
+.metafield-rich_text_field ul li::before {
+    position: relative;
+    top: -2px;
+}
   .logo__word { font-size: 0.92rem }
   .logo__mark { width: 22px; height: 22px }
   .newsletter__form { flex-direction: column }
@@ -853,6 +865,10 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
     top: 0.6rem;
     left: 0.6rem;
   }
+  .totals {
+    justify-content: space-between !important;
+}
+.search input {font-size:14px;}
 }
 
 /* --- Header: match .icon-btn --- */
@@ -1107,6 +1123,15 @@ cart-drawer .product-option dd { margin: 0 !important; word-break: break-word; d
   .section-head p { margin-top: 0; }
   /* …but a description sitting directly under an h2 still needs its gap */
   .section-head h2 + p { margin-top: 1.1rem; }
+  section#shopify-section-template--28491440226485__reviews-heading {
+    padding-bottom: 0;
+}
+section#shopify-section-template--28491440226485__judgeme-reviews {
+    padding-block: 0;
+}
+.jm-review-widget.jm-review-widget--minimal-header {
+    padding-block: 0 !important;
+}
 }
 
 /* =========================================================
@@ -1249,8 +1274,8 @@ cart-drawer .jm-text[data-v-6d928e9f] { font-size: 1rem !important; line-height:
 .totals > h2,
 .totals .totals__total,
 .totals .totals__total-value {
-  font-size: 1.1rem !important;
-  line-height: 1.35 !important;
+  font-size: 0.9rem !important;
+  line-height: normal !important;
 }
 
 /* --- (2d) Mobile cart row ----------------------------------------------- */
@@ -1298,7 +1323,7 @@ cart-drawer .jm-text[data-v-6d928e9f] { font-size: 1rem !important; line-height:
   top: 50%;
   left: 0;
   width: 100%;
-  height: 1.5px;
+  height: 2px;
   margin-top: -0.75px;          /* true centring without spending `transform` */
   background: currentColor;
   transition: transform 0.4s var(--ease);
@@ -1352,7 +1377,8 @@ cart-drawer .jm-text[data-v-6d928e9f] { font-size: 1rem !important; line-height:
 
   /* product / content grids breathe less on a phone */
   .grid-products { gap: 1.15rem 1rem; }
-  .footer__grid { gap: 1.75rem; }
+  .footer__contact-text p a, .footer__col ul li a {font-size: 14px;}
+  .footer__grid {gap: 1.75rem;grid-template-columns: 1fr 1fr;}
   .footer__signup h2 { font-size: clamp(1.3rem, 6vw, 1.75rem); }
   .footer__contact-text,
   .footer__brand p { font-size: 0.86rem; line-height: 1.7; }
@@ -1422,6 +1448,7 @@ cart-drawer .jm-text[data-v-6d928e9f] { font-size: 1rem !important; line-height:
 
 @media (max-width: 576px) {
   .rooms__name { font-size: 1.2rem; }
+  .contact-page .contact-row {gap:0;}
 }
 
 /* =========================================================
@@ -1478,6 +1505,7 @@ body.template-search:has(predictive-search[open]) .toolbar { z-index: 1 !importa
 /* --- (4) Hero proof badges on phones ------------------------------------ */
 @media (max-width: 768px) {
   .hero__proof { gap: 3px 20px; }
+  .cart-drawer .tax-note { margin: 10px; font-size: 14px !important;}
 }
 
 /* =========================================================
@@ -1515,6 +1543,7 @@ body.template-search:has(predictive-search[open]) .toolbar { z-index: 1 !importa
   .dews-related-wrapper { padding-block: 0 !important; }
   .dews-recently-viewed { padding-block: 0; }
   .dews-complete-look   { padding-block: 0; }
+  .contact-page {padding-block: 0 !important;}
 }
 
 /* --- Reviews: strip the app widget's own default gaps ------------------- */
@@ -1531,3 +1560,6 @@ section#shopify-section-template--28486573293749__judgeme-reviews {
 .jdgm-tabs.jm-review-widget-minimal-header__tabs {
     margin-block: 0;
 }
+
+.contact-info__list a, .contact-info__list .contact-info__row {width:fit-content;}
+.contact-submit { flex-wrap: wrap; gap: 1rem; margin-top:10px;}
