@@ -47,7 +47,17 @@ class CartDrawer extends HTMLElement {
       { once: true },
     );
 
-    document.body.classList.add('overflow-hidden');
+    /* Lock the scroll on <html>, NOT <body>.
+       style.css sets `html { overflow-x: clip }`, so html's overflow is no
+       longer `visible` — which means body's overflow stops propagating to the
+       viewport. Adding `overflow:hidden` to body therefore turned body into
+       the scroll container, and every position:sticky descendant (the header
+       group) re-anchored to body's non-scrolling scrollport: on a scrolled
+       page the header snapped to the top of the document and looked like it
+       vanished, while the page kept its scroll offset so nothing else moved.
+       html IS the viewport scroll container, so locking it disables scrolling
+       while leaving sticky elements stuck where they are. */
+    document.documentElement.classList.add('overflow-hidden');
 
     // cart-drawer-items is a CartItems subclass that extends createViewEventElement.
     // Its `view-event-trigger="manual"` skips auto-dispatch on connect; we fire
@@ -59,14 +69,14 @@ class CartDrawer extends HTMLElement {
     this.classList.remove('active');
     // Remember where the page was before closing. removeTrapFocus() hands focus
     // back to whatever opened the drawer (the cart icon in the header) and
-    // toggling `overflow-hidden` on <body> can reset the offset on some
+    // toggling `overflow-hidden` on <html> can reset the offset on some
     // browsers — either one yanks a scrolled page back to the top. The .focus()
     // call is now preventScroll, and this puts the offset back if anything
     // else still moved it. The filter drawer and the mobile menu do not use
     // this path, which is why only the cart drawer jumped.
     const scrollY = window.scrollY;
     removeTrapFocus(this.activeElement);
-    document.body.classList.remove('overflow-hidden');
+    document.documentElement.classList.remove('overflow-hidden');
     if (window.scrollY !== scrollY) window.scrollTo(0, scrollY);
   }
 
