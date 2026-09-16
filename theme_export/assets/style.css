@@ -1592,3 +1592,210 @@ section#shopify-section-template--28486573293749__judgeme-reviews {
 }
 
 .site-mobile-drawer .drawer__nav a:hover, .site-mobile-drawer .drawer__toggle:hover {background-color:var(--cane);}
+
+/* ---------------------------------------------------------------------------
+   Policy + plain page content (refund, privacy, terms, shipping, contact info)
+
+   These render through templates/page.json into sections/main-page.liquid, so
+   the body is whatever Shopify's policy editor produces: one .rte block of
+   bare h2/h3, p, ul/ol and occasional tables, with no classes to hook onto.
+   Everything below is written after the earlier .rte rules (around line 470)
+   so these values win.
+
+   Two real bugs fixed here:
+   - The old rule set `list-style: disc` on ul AND ol, so every numbered policy
+     list rendered with bullets instead of numbers.
+   - .rte headings had no font-size at all, so they fell back to the browser
+     default 1.5em/1.17em, which never matched the rest of the theme.
+   --------------------------------------------------------------------------- */
+
+/* Container ---------------------------------------------------------------- */
+.page-width--narrow,
+.shopify-policy__container {
+  max-width: 76rem;
+  margin-inline: auto;
+}
+
+.shopify-policy__container {
+  margin-block: 3rem !important;
+  padding-inline: 1.5rem;
+}
+
+/* Title ------------------------------------------------------------------- */
+.main-page-title,
+.page-title,
+.shopify-policy__title h1,
+.shopify-policy__title {
+  font-family: var(--font-heading-family, var(--font-accent)) !important;
+  font-size: clamp(1.9rem, 3.6vw, 2.6rem) !important;
+  line-height: 1.18 !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.015em !important;
+  color: var(--ink, #171310) !important;
+  text-align: left !important;
+  margin-top: 3rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* Body -------------------------------------------------------------------- */
+.rte {
+  font-size: var(--t-body, 1.0313rem) !important;
+  line-height: 1.8 !important;
+  color: var(--ink-2, #2a221c) !important;
+}
+
+.rte > *:first-child { margin-top: 0 !important }
+.rte > *:last-child { margin-bottom: 0 !important }
+
+.rte p {
+  margin-top: 0 !important;
+  margin-bottom: 1.25rem !important;
+  line-height: 1.8 !important;
+}
+
+/* Headings ---------------------------------------------------------------- */
+.rte h1,
+.rte h2 {
+  font-family: var(--font-heading-family, var(--font-accent)) !important;
+  font-size: clamp(1.3rem, 2.2vw, 1.6rem) !important;
+  line-height: 1.3 !important;
+  font-weight: 600 !important;
+  color: var(--ink, #171310) !important;
+  margin-top: 2.5rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.rte h3 {
+  font-family: var(--font-heading-family, var(--font-accent)) !important;
+  font-size: clamp(1.12rem, 1.7vw, 1.28rem) !important;
+  line-height: 1.35 !important;
+  font-weight: 600 !important;
+  color: var(--ink, #171310) !important;
+  margin-top: 2rem !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.rte h4,
+.rte h5,
+.rte h6 {
+  font-size: 1.05rem !important;
+  line-height: 1.4 !important;
+  font-weight: 600 !important;
+  color: var(--ink, #171310) !important;
+  margin-top: 1.75rem !important;
+  margin-bottom: 0.6rem !important;
+}
+
+/* Lists — ul keeps discs, ol gets its numbers back ------------------------ */
+.rte ul { list-style: disc outside !important; padding-left: 1.5rem !important }
+.rte ol { list-style: decimal outside !important; padding-left: 1.75rem !important }
+
+.rte ul,
+.rte ol {
+  margin-top: 0 !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.rte li {
+  margin-bottom: 0.55rem !important;
+  line-height: 1.75 !important;
+}
+
+.rte li:last-child { margin-bottom: 0 !important }
+
+.rte ul ul,
+.rte ol ol,
+.rte ul ol,
+.rte ol ul {
+  margin-top: 0.55rem !important;
+  margin-bottom: 0 !important;
+}
+
+/* Inline + media ---------------------------------------------------------- */
+.rte a {
+  color: var(--ink, #171310);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  text-decoration-thickness: 1px;
+}
+
+.rte a:hover { color: var(--walnut, #6b4a33) }
+
+.rte strong,
+.rte b { font-weight: 600; color: var(--ink, #171310) }
+
+.rte img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--r-sm, 6px);
+}
+
+.rte blockquote {
+  margin: 1.75rem 0 !important;
+  padding: 0.25rem 0 0.25rem 1.25rem;
+  border-left: 2px solid var(--cane, #d8b489);
+  color: var(--muted, #7c716a);
+  font-style: italic;
+}
+
+/* Tables — refund and shipping policies usually carry one ----------------- */
+.rte table {
+  width: 100%;
+  margin: 1.5rem 0 !important;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.rte th,
+.rte td {
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--line, #e2dcd3);
+  text-align: left;
+  vertical-align: top;
+}
+
+.rte th {
+  font-weight: 600;
+  background: var(--bone, #f3efe9);
+  color: var(--ink, #171310);
+}
+
+/* Mobile ------------------------------------------------------------------ */
+@media screen and (max-width: 749px) {
+  .main-page-title,
+  .page-title,
+  .shopify-policy__title h1,
+  .shopify-policy__title {
+    font-size: 1.75rem !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.25rem !important;
+  }
+
+  .shopify-policy__container { margin-block: 2rem !important }
+
+  .rte { font-size: 1rem !important; line-height: 1.75 !important }
+
+  .rte p { margin-bottom: 1.1rem !important }
+
+  .rte h1,
+  .rte h2 {
+    font-size: 1.25rem !important;
+    margin-top: 2rem !important;
+    margin-bottom: 0.8rem !important;
+  }
+
+  .rte h3 {
+    font-size: 1.12rem !important;
+    margin-top: 1.6rem !important;
+    margin-bottom: 0.6rem !important;
+  }
+
+  .rte ul,
+  .rte ol { margin-bottom: 1.25rem !important }
+
+  /* A wide policy table would otherwise push the whole page sideways. */
+  .rte table { display: block; overflow-x: auto }
+
+  .rte th,
+  .rte td { min-width: 8rem }
+}
