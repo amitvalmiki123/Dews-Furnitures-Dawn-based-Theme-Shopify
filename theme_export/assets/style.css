@@ -559,6 +559,12 @@ cart-drawer {
      pushing the page sideways. */
   width: 100% !important;
   height: 100vh !important;
+  /* On a phone `100vh` is the LARGE viewport — the height the page would have
+     with the address bar hidden. That makes the drawer taller than the space
+     you can actually see, so the footer with the Checkout button sits below
+     the fold and looks like it is stuck. 100dvh tracks the visible area as the
+     browser chrome shows and hides. Browsers without dvh keep the 100vh above. */
+  height: 100dvh !important;
   z-index: 999999 !important;
   pointer-events: none; /* Allows clicking outside overlay */
 }
@@ -1207,8 +1213,15 @@ cart-drawer-items {
   overflow-y: auto !important;
   overscroll-behavior: contain !important;
   scrollbar-width: thin;
+  /* iOS will not give the list momentum scrolling without this, which made the
+     drawer feel like it was not scrollable at all on a real phone. */
+  -webkit-overflow-scrolling: touch;
 }
-cart-drawer .drawer__footer { flex: none !important; }
+cart-drawer .drawer__footer {
+  flex: none !important;
+  /* Keep the Checkout button clear of the iPhone home indicator. */
+  padding-bottom: calc(30px + env(safe-area-inset-bottom, 0px));
+}
 /* Dawn flips both of these on short screens — keep the same split instead */
 @media screen and (max-height: 650px) {
   cart-drawer-items { overflow-y: auto !important; }

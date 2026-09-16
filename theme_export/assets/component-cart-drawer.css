@@ -709,3 +709,46 @@ cart-drawer.is-empty .cart-drawer__collection + div:not(.cart-drawer__warnings) 
 }
 
 .cart-drawer__discount-remove:hover { color: var(--red-ink, #b9151b) }
+
+/* ---------------------------------------------------------------------------
+   Discount field sizing + cart drawer sale banner
+   --------------------------------------------------------------------------- */
+
+/* Dawn's .button is min-width 12rem / min-height 4.5rem and .field__input is
+   4.5rem tall with 1.6rem text — far too heavy next to a one-line code input.
+   Both are pulled back to a 4rem control so the row reads as one field. */
+.cart-drawer__discount-input {
+  height: 4rem;
+  min-height: 4rem;
+  min-width: 0;
+  padding: 0 1.2rem;
+  font-size: 1.05rem;
+}
+
+.cart-drawer__discount-apply {
+  min-width: 0;
+  min-height: 4rem;
+  height: 4rem;
+  padding: 0 1.4rem;
+  font-size: 1.05rem;
+}
+
+/* Sale banner — set in Theme settings > Cart ------------------------------- */
+.cart-drawer__banner {
+  margin: 0 0 1.25rem;
+  border-radius: var(--r-sm, 6px);
+  overflow: hidden;
+  background: var(--bone, #f3efe9);
+}
+
+.cart-drawer__banner-link { display: block }
+
+/* Height and object-fit come from the theme settings, so they are written as a
+   custom property by snippets/cart-drawer.liquid — a plain .css asset is not
+   parsed for Liquid. */
+.cart-drawer__banner-img {
+  display: block;
+  width: 100%;
+  height: var(--cart-drawer-banner-height, 90px);
+  object-fit: var(--cart-drawer-banner-fit, cover);
+}

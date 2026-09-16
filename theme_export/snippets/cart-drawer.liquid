@@ -15,6 +15,13 @@
   .drawer {
     visibility: hidden;
   }
+
+  /* Theme settings are only readable here — a plain .css asset is not parsed
+     for Liquid. component-cart-drawer.css consumes these two properties. */
+  .cart-drawer__banner-img {
+    --cart-drawer-banner-height: {{ settings.cart_drawer_banner_height | default: 90 | plus: 0 }}px;
+    --cart-drawer-banner-fit: {{ settings.cart_drawer_banner_fit | default: 'cover' }};
+  }
 </style>
 
 <cart-drawer class="drawer{% if cart == empty %} is-empty{% endif %}">
@@ -81,6 +88,32 @@
           class=" is-empty"
         {% endif %}
       >
+        {%- comment -%}
+          Sale banner — set it in Theme settings > Cart. It sits at the top of
+          the item list and scrolls with it.
+        {%- endcomment -%}
+        {%- if settings.cart_drawer_banner != blank -%}
+          {%- assign banner_alt = settings.cart_drawer_banner.alt | default: 'Sale' | escape -%}
+          <div class="cart-drawer__banner">
+            {%- if settings.cart_drawer_banner_link != blank -%}
+              <a href="{{ settings.cart_drawer_banner_link }}" class="cart-drawer__banner-link">
+            {%- endif -%}
+              {{
+                settings.cart_drawer_banner
+                | image_url: width: 900
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '300,450,600,900',
+                  sizes: '(min-width: 750px) 450px, 100vw',
+                  alt: banner_alt,
+                  class: 'cart-drawer__banner-img'
+              }}
+            {%- if settings.cart_drawer_banner_link != blank -%}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
         <form
           action="{{ routes.cart_url }}"
           id="CartDrawer-Form"

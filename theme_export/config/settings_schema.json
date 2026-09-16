@@ -1445,6 +1445,48 @@
         "info": "t:settings_schema.cart.settings.cart_drawer.collection.info"
       },
       {
+        "type": "header",
+        "content": "Cart drawer sale banner"
+      },
+      {
+        "type": "image_picker",
+        "id": "cart_drawer_banner",
+        "label": "Banner image",
+        "info": "Shown at the top of the item list inside the cart drawer. Leave empty to hide it."
+      },
+      {
+        "type": "url",
+        "id": "cart_drawer_banner_link",
+        "label": "Banner link",
+        "info": "Optional. Leave blank for no link."
+      },
+      {
+        "type": "range",
+        "id": "cart_drawer_banner_height",
+        "label": "Banner height",
+        "min": 40,
+        "max": 240,
+        "step": 5,
+        "unit": "px",
+        "default": 90
+      },
+      {
+        "type": "select",
+        "id": "cart_drawer_banner_fit",
+        "label": "Image fit",
+        "default": "cover",
+        "options": [
+          {
+            "value": "cover",
+            "label": "Fill (crop to fit)"
+          },
+          {
+            "value": "contain",
+            "label": "Fit whole image"
+          }
+        ]
+      },
+      {
         "type": "color_scheme",
         "id": "cart_color_scheme",
         "label": "t:sections.all.colors.label",
