@@ -1838,3 +1838,57 @@ section#shopify-section-template--28486573293749__judgeme-reviews {
 
 /* The first bold lead on a page should not carry that extra top margin. */
 .rte > p:first-child > strong:first-child { margin-top: 0; }
+
+/* ---------------------------------------------------------------------------
+   Policy + plain page lists — red diamond bullets
+
+   The policy HTML (privacy, terms, refund) carries <ul> lists. They were
+   picking up the default round disc, while every other list in the theme —
+   .craft-content, .seo-copy, .dew — already uses the 5px red diamond.
+
+   Same recipe as .craft-content: drop the marker, position a 5x5 square
+   rotated 45deg, centred on the first line. Only <ul> is touched, so numbered
+   lists keep their numbers.
+
+   Scoped to .page-width--narrow (sections/main-page.liquid) and
+   .shopify-policy__container rather than the template, so page templates with
+   their own sections are not swept in. Two classes also outrank the plain
+   `.rte ul` rule earlier in this file.
+   --------------------------------------------------------------------------- */
+.page-width--narrow .rte ul,
+.shopify-policy__container .rte ul {
+  list-style: none !important;
+  padding-left: 0 !important;
+}
+
+.page-width--narrow .rte li,
+.shopify-policy__container .rte li {
+  position: relative;
+  padding-left: 1.15rem;
+}
+
+.page-width--narrow .rte li::before,
+.shopify-policy__container .rte li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: calc(0.9em - 2.5px);   /* half the 1.8 line-height, less half the dot */
+  width: 5px;
+  height: 5px;
+  background: var(--red, #e01b22);
+  transform: rotate(45deg);
+}
+
+/* Numbered lists keep their numbers, so no diamond for them. */
+.page-width--narrow .rte ol > li,
+.shopify-policy__container .rte ol > li {
+  padding-left: 0;
+}
+
+.page-width--narrow .rte ol > li::before,
+.shopify-policy__container .rte ol > li::before {
+  display: none;
+}
+
+.page-width--narrow .rte li::marker,
+.shopify-policy__container .rte li::marker { color: transparent !important; }
