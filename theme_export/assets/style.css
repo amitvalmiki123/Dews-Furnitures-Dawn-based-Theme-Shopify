@@ -1799,3 +1799,42 @@ section#shopify-section-template--28486573293749__judgeme-reviews {
   .rte th,
   .rte td { min-width: 8rem }
 }
+
+/* ---------------------------------------------------------------------------
+   Policy copy pasted as plain text inside a single <p>
+
+   The policy templates were pasted with blank lines between sentences but all
+   inside one <p>. The editor turned every one of those blank lines into a
+   <br>, and two in a row stack to more than a full paragraph gap — which is
+   why the pages read as one enormous block of whitespace.
+
+   CSS cannot split a <p> into paragraphs, so the breaks are collapsed instead
+   and the sentences flow as the single paragraph the markup actually is.
+   --------------------------------------------------------------------------- */
+
+/* Collapse the line breaks the editor added inside paragraphs. */
+.rte p br,
+.rte li br { display: none; }
+
+/* Empty paragraphs were used as spacers between sections. A <p> holding only
+   one or more (now hidden) breaks is the same thing. */
+.rte p:empty { display: none !important; }
+
+.rte p:has(> br:only-child) { display: none !important; }
+
+/* Headings were written as a bold lead at the top of a paragraph. Making that
+   bold run a block puts it on its own line, so it reads as a heading instead
+   of running into the body copy now that the <br> after it is gone. */
+.rte p > strong:first-child {
+  display: block;
+  font-family: var(--font-heading-family, var(--font-accent));
+  font-size: clamp(1.12rem, 1.7vw, 1.28rem);
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--ink, #171310);
+  margin-top: 1.25rem;
+  margin-bottom: 0.6rem;
+}
+
+/* The first bold lead on a page should not carry that extra top margin. */
+.rte > p:first-child > strong:first-child { margin-top: 0; }
