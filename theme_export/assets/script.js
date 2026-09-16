@@ -121,6 +121,12 @@
     items.forEach(function (item, i) {
       item.addEventListener('mouseenter', function () { activate(i); });
       item.addEventListener('focusin', function () { activate(i); });
+      /* Touch devices never fire mouseenter, so on mobile the first row stayed
+         is-active forever. pointerdown / touchstart fire the moment the finger
+         lands, so a tap highlights that row (and turns its number red) and a
+         drag-scroll still leaves the last touched row highlighted. */
+      item.addEventListener('pointerdown', function () { activate(i); });
+      item.addEventListener('touchstart', function () { activate(i); }, { passive: true });
     });
   })();
 

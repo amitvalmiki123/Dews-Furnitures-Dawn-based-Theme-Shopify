@@ -181,6 +181,52 @@
   </div>
 </div>
 
+<div class="pv-block">
+  <p class="pv-tag">(1) List dots &mdash; red diamond (pehle round + cane)</p>
+  <div class="craft-content">
+    <span class="eyebrow">Our craft</span>
+    <h2 style="margin:0;font-size:var(--t-h3)">What we build with</h2>
+    <div class="rte">
+      <ul>
+        <li>Seasoned solid wood &mdash; sheesham, oak and teak.</li>
+        <li>Hand-woven natural cane, never synthetic.</li>
+        <li>Low-VOC finishes, rubbed in by hand.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="pv-block">
+  <p class="pv-tag">(5) Rooms &mdash; active row switch (ab touch pe bhi)</p>
+  <div class="rooms" style="gap:1.5rem">
+    <div class="rooms__list" id="roomsList">
+      <div class="rooms__item is-active">
+        <a class="rooms__link" href="#">
+          <span class="rooms__num">01</span>
+          <span class="rooms__name">Living room</span>
+        </a>
+      </div>
+      <div class="rooms__item">
+        <a class="rooms__link" href="#">
+          <span class="rooms__num">02</span>
+          <span class="rooms__name">Bedroom</span>
+        </a>
+      </div>
+      <div class="rooms__item">
+        <a class="rooms__link" href="#">
+          <span class="rooms__num">03</span>
+          <span class="rooms__name">Dining</span>
+        </a>
+      </div>
+    </div>
+    <div class="rooms__stage" id="roomsStage">
+      <img class="is-active" alt="" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect width='400' height='500' fill='%23d9c9b2'/%3E%3C/svg%3E">
+      <img alt="" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect width='400' height='500' fill='%23c9bda8'/%3E%3C/svg%3E">
+      <img alt="" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect width='400' height='500' fill='%23bfae95'/%3E%3C/svg%3E">
+    </div>
+  </div>
+</div>
+
 <div class="pv-block" style="margin:0 -1px">
   <p class="pv-tag" style="color:#c9a06a">Craft heading + step numbers + ribbon</p>
   <section class="section section--ink" id="craft">
@@ -247,6 +293,25 @@
   });
   var open = document.querySelector('.faq__item.is-open .faq__a');
   if (open) open.style.maxHeight = open.scrollHeight + 'px';
+
+  /* same activation logic as assets/script.js — hover / focus / touch */
+  (function rooms() {
+    var list  = document.getElementById('roomsList');
+    var stage = document.getElementById('roomsStage');
+    if (!list || !stage) return;
+    var items  = [].slice.call(list.querySelectorAll('.rooms__item'));
+    var frames = [].slice.call(stage.querySelectorAll('img'));
+    var activate = function (index) {
+      items.forEach(function (item, i) { item.classList.toggle('is-active', i === index); });
+      frames.forEach(function (img, i) { img.classList.toggle('is-active', i === index); });
+    };
+    items.forEach(function (item, i) {
+      item.addEventListener('mouseenter', function () { activate(i); });
+      item.addEventListener('focusin',    function () { activate(i); });
+      item.addEventListener('pointerdown', function () { activate(i); });
+      item.addEventListener('touchstart', function () { activate(i); }, { passive: true });
+    });
+  })();
 </script>
 </body>
 </html>
