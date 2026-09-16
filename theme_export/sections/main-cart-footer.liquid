@@ -24,18 +24,51 @@
 >
   <div class="page-width">
     <div class="cart__footer isolate section-{{ section.id }}-padding">
-      {%- if settings.show_cart_note -%}
-        <cart-note class="cart__note field">
-          <label for="Cart-note">{{ 'sections.cart.note' | t }}</label>
-          <textarea
-            class="text-area field__input"
-            name="note"
-            form="cart"
-            id="Cart-note"
-            placeholder="{{ 'sections.cart.note' | t }}"
-          >{{ cart.note }}</textarea>
-        </cart-note>
-      {%- endif -%}
+      {%- comment -%}
+        Discount code field — mirrors the cart drawer. Uses /cart/update.js with
+        a `discount` parameter (Summer Editions '25), so the code is written to
+        the real cart server-side and every total redraws without a reload.
+        The JS is shared with the drawer and lives at the end of assets/cart.js.
+      {%- endcomment -%}
+      <div class="cart__discount" data-money-format="{{ shop.money_format | escape }}">
+        <label class="cart__discount-label" for="Cart-Discount">Discount code</label>
+        <div class="cart__discount-row">
+          <input
+            id="Cart-Discount"
+            class="field__input cart__discount-input"
+            type="text"
+            name="discount"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Discount code"
+            value="{{ cart.cart_level_discount_applications.first.title | escape }}"
+          >
+          <button
+            type="button"
+            class="button cart__discount-apply"
+            data-cart-drawer-discount-apply
+          >
+            Apply
+          </button>
+        </div>
+        <p class="cart__discount-msg" data-cart-drawer-discount-msg role="status" aria-live="polite"></p>
+        {%- if cart.cart_level_discount_applications.size > 0 -%}
+          <ul class="cart__discount-list list-unstyled">
+            {%- for discount in cart.cart_level_discount_applications -%}
+              <li class="cart__discount-item">
+                <span class="cart__discount-code">{{ discount.title | escape }}</span>
+                <button
+                  type="button"
+                  class="cart__discount-remove"
+                  data-cart-drawer-discount-remove
+                >
+                  Remove
+                </button>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
 
       <div class="cart__blocks">
         {% for block in section.blocks %}

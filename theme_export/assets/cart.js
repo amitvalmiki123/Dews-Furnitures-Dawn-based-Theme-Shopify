@@ -415,41 +415,57 @@ if (!customElements.get('cart-note')) {
 }
 
 /* --------------------------------------------------------------------------
-   Cart drawer — discount code accordion
-   Markup: snippets/cart-drawer.liquid
-   Styles: end of assets/component-cart-drawer.css
+   Discount code field — cart drawer AND /cart page
+   Markup: snippets/cart-drawer.liquid   and   sections/main-cart-footer.liquid
+   Styles: end of assets/component-cart-drawer.css and assets/component-cart.css
 
    /cart/update.js has accepted a `discount` parameter since Summer Editions
    '25 (21 May 2025), so the code is written to the real cart server-side and
    the totals redraw with no page reload. Works on every plan, not just Plus.
 
-   Two gotchas this code handles:
-   1. Shopify returns 200 OK even for an unknown code or one that does not
-      apply to anything in the cart — so we re-read the returned cart to
-      confirm the discount is really there instead of trusting the response.
-   2. The drawer's innerHTML is replaced on every repaint, so every listener
-      is delegated from `document` and the <details> open state is restored
-      by hand afterwards.
+   Three things this has to work around:
+
+   1. Shopify answers 200 OK for an unknown code, or one that does not apply
+      to anything in the cart. So the response is never trusted — the cart
+      object returned by the same request is checked for the code in
+      cart_level_discount_applications, discount_codes and line-item discounts.
+
+   2. `sections:` returns freshly rendered HTML, so the drawer (and the cart
+      page, which has the same data) can be repainted in place. innerHTML
+      replacement resets any <details>, which would slam the accordion shut
+      the instant a code is applied, so the open state is saved and restored.
+
+   3. Every listener is delegated from `document`, because a repaint destroys
+      the original nodes. The same handlers serve both the drawer and the
+      cart page, so the scope is resolved from the button that was clicked.
    -------------------------------------------------------------------------- */
 (function () {
-  var SECTION_ID = 'cart-drawer';
   var DRAWER_SEL = '#CartDrawer';
   var DETAILS_ID = 'Details-CartDrawer-Discount';
-  var INPUT_ID = 'CartDrawer-Discount';
+  var CART_ITEMS_SEL = '#main-cart-items';
+  var CART_FOOTER_SEL = '#main-cart-footer';
+  var SECTION_IDS = ['cart-drawer', 'cart-items', 'cart-footer'];
+
+  var APPLY = '[data-cart-drawer-discount-apply]';
+  var REMOVE = '[data-cart-drawer-discount-remove]';
+  var MSG = '[data-cart-drawer-discount-msg]';
+  var INPUT = '.cart-drawer__discount-input, .cart__discount-input';
 
   function shopifyRoot() {
     return (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
   }
 
+  function all(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+
   function setMsg(text, isError) {
-    var el = document.querySelector('[data-cart-drawer-discount-msg]');
-    if (!el) return;
-    el.textContent = text || '';
-    el.classList.toggle('is-error', !!isError);
+    all(MSG).forEach(function (el) {
+      el.textContent = text || '';
+      el.classList.toggle('is-error', !!isError);
+    });
   }
 
   function money(cents) {
-    var holder = document.querySelector('.cart-drawer__discount');
+    var holder = document.querySelector('.cart-drawer__discount') || document.querySelector('.cart__discount');
     var fmt = (holder && holder.dataset.moneyFormat) || '{{amount}}';
     return fmt.replace(/\{\{\s*amount(\s*\|[^}]*)?\}\}/g, (cents / 100).toFixed(2));
   }
@@ -458,7 +474,7 @@ if (!customElements.get('cart-note')) {
     return fetch(shopifyRoot() + 'cart/update.js', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ discount: code, sections: SECTION_ID })
+      body: JSON.stringify({ discount: code, sections: SECTION_IDS.join(',') })
     }).then(function (res) {
       if (!res.ok) throw new Error('Cart update failed: ' + res.status);
       return res.json();
@@ -479,7 +495,7 @@ if (!customElements.get('cart-note')) {
       return (d.code || '').toUpperCase() === want && d.applicable !== false;
     })) return true;
 
-    // Line-item level discounts (e.g. a code for one specific product).
+    // Line-item level discounts, e.g. a code valid for one specific product.
     return (cart.items || []).some(function (item) {
       return (item.discounts || []).some(function (d) {
         return (d.title || '').toUpperCase() === want;
@@ -487,42 +503,46 @@ if (!customElements.get('cart-note')) {
     });
   }
 
-  function repaint(cart) {
-    var html = cart && cart.sections && cart.sections[SECTION_ID];
-    var current = document.querySelector(DRAWER_SEL);
-    if (!html || !current) return false;
+  function paintInto(html, sel, detailsId) {
+    if (!html) return false;
+    var current = document.querySelector(sel);
+    if (!current) return false;
 
-    var next = new DOMParser().parseFromString(html, 'text/html').querySelector(DRAWER_SEL);
+    var next = new DOMParser().parseFromString(html, 'text/html').querySelector(sel);
     if (!next) return false;
 
     var wasOpen = false;
-    var details = document.getElementById(DETAILS_ID);
-    if (details) wasOpen = details.hasAttribute('open');
+    if (detailsId) {
+      var details = document.getElementById(detailsId);
+      if (details) wasOpen = details.hasAttribute('open');
+    }
 
     current.innerHTML = next.innerHTML;
 
-    // innerHTML replacement drops the open state, which would slam the
-    // accordion shut right after the customer applies a code.
-    if (wasOpen) {
-      var reopened = document.getElementById(DETAILS_ID);
+    if (detailsId && wasOpen) {
+      var reopened = document.getElementById(detailsId);
       if (reopened) reopened.setAttribute('open', '');
     }
     return true;
   }
 
+  function repaint(cart) {
+    var sections = (cart && cart.sections) || {};
+    var painted = false;
+    if (paintInto(sections['cart-drawer'], DRAWER_SEL, DETAILS_ID)) painted = true;
+    if (paintInto(sections['cart-items'], CART_ITEMS_SEL, null)) painted = true;
+    if (paintInto(sections['cart-footer'], CART_FOOTER_SEL, null)) painted = true;
+    return painted;
+  }
+
   function busy(state) {
-    var btn = document.querySelector('[data-cart-drawer-discount-apply]');
-    if (btn) btn.disabled = state;
+    all(APPLY).forEach(function (btn) { btn.disabled = state; });
   }
 
   function apply(code) {
-    var input = document.getElementById(INPUT_ID);
-    if (code === undefined) code = input ? input.value.trim() : '';
     code = (code || '').trim();
-
     if (!code) {
       setMsg('Enter a discount code first.', true);
-      if (input) input.focus();
       return;
     }
 
@@ -536,12 +556,12 @@ if (!customElements.get('cart-note')) {
           return;
         }
         var saved = money(cart.total_discount || 0);
-        if (!repaint(cart)) setMsg('', false);
+        repaint(cart);
         setMsg('Code applied — you saved ' + saved + '!', false);
       })
       .catch(function (err) {
         setMsg('Something went wrong. Please try again.', true);
-        if (window.console) console.error('[cart-drawer discount]', err);
+        if (window.console) console.error('[discount]', err);
       })
       .then(function () { busy(false); });
   }
@@ -561,21 +581,30 @@ if (!customElements.get('cart-note')) {
   document.addEventListener('click', function (event) {
     var target = event.target;
     if (!target || !target.closest) return;
-    if (target.closest('[data-cart-drawer-discount-apply]')) apply();
-    else if (target.closest('[data-cart-drawer-discount-remove]')) remove();
+
+    var applyBtn = target.closest(APPLY);
+    if (applyBtn) {
+      var scope = applyBtn.closest('.cart-drawer__discount') || applyBtn.closest('.cart__discount');
+      var input = scope ? scope.querySelector(INPUT) : null;
+      apply(input ? input.value : '');
+      return;
+    }
+
+    if (target.closest(REMOVE)) remove();
   });
 
   document.addEventListener('keydown', function (event) {
-    if (event.key !== 'Enter') return;
-    if (event.target && event.target.id === INPUT_ID) {
+    if (event.key !== 'Enter' || !event.target) return;
+    var id = event.target.id;
+    if (id === 'CartDrawer-Discount' || id === 'Cart-Discount') {
       event.preventDefault();
-      apply();
+      apply(event.target.value);
     }
   });
 
   // Auto-apply codes arriving from /discount/CODE links (email, SMS, ads).
   // Shopify stores the code in the session; push it into the cart on load so
-  // the drawer shows the discounted total straight away.
+  // the drawer and the cart page both show the discounted total straight away.
   function autoApply() {
     var code = new URLSearchParams(window.location.search).get('discount');
     if (!code) return;

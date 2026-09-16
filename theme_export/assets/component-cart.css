@@ -220,3 +220,121 @@ cart-items {
     gap: 1rem;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Cart page (/cart) — summary block + discount field
+   The discount field mirrors the one in the cart drawer; markup is in
+   sections/main-cart-footer.liquid and the JS is shared, at the end of
+   assets/cart.js.
+   --------------------------------------------------------------------------- */
+.cart__footer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2rem;
+}
+
+.cart__footer > * + * { margin-top: 0 }
+
+.cart__blocks,
+.cart__discount { width: 100%; max-width: 46rem }
+
+/* Discount field ----------------------------------------------------------- */
+.cart__discount-label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-size: var(--t-label, 0.75rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted, #7c716a);
+}
+
+.cart__discount-row { display: flex; gap: 0.8rem; align-items: stretch }
+
+.cart__discount-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  border-radius: var(--r-sm, 6px);
+}
+
+.cart__discount-input::placeholder { color: var(--muted-2, #9a9089) }
+
+.cart__discount-apply {
+  flex: 0 0 auto;
+  min-height: 4.4rem;
+  padding: 0 1.8rem;
+  border-radius: var(--r-sm, 6px);
+  white-space: nowrap;
+}
+
+.cart__discount-apply[disabled] { opacity: 0.55; cursor: default }
+
+.cart__discount-msg {
+  margin: 0.8rem 0 0;
+  font-size: var(--t-sm, 0.875rem);
+  color: var(--muted, #7c716a);
+}
+
+.cart__discount-msg.is-error { color: var(--red-ink, #b9151b) }
+
+.cart__discount-list { margin: 1rem 0 0; display: grid; gap: 0.5rem }
+
+.cart__discount-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 1rem;
+  background: var(--bone, #f3efe9);
+  border-radius: var(--r-sm, 6px);
+  font-size: var(--t-sm, 0.875rem);
+}
+
+.cart__discount-code { font-weight: 600; letter-spacing: 0.04em }
+
+.cart__discount-remove {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-size: var(--t-sm, 0.875rem);
+  color: var(--muted, #7c716a);
+  text-decoration: underline;
+}
+
+.cart__discount-remove:hover { color: var(--red-ink, #b9151b) }
+
+/* Totals ------------------------------------------------------------------- */
+.cart__blocks .totals {
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--line, #e2dcd3);
+}
+
+.cart__blocks .totals__total { font-size: 1.15rem; margin-top: 0 }
+
+.cart__blocks .totals__total-value {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.cart__blocks .tax-note {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: var(--t-sm, 0.875rem);
+  color: var(--muted, #7c716a);
+}
+
+/* Mobile ------------------------------------------------------------------- */
+@media screen and (max-width: 749px) {
+  .cart__footer { align-items: stretch; gap: 2.5rem }
+
+  .cart__blocks,
+  .cart__discount { max-width: 100% }
+
+  .cart__blocks .totals__total-value { font-size: 1.4rem }
+}

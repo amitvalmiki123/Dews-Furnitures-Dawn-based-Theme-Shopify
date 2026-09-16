@@ -622,3 +622,130 @@ cart-remove-button .icon-remove {
     padding-left: 0;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Cart page (/cart) — typography + spacing pass
+   Dawn ships this page oversized: .cart-item__details is 1.6rem while the
+   theme body is ~1.03rem, and the product title is rendered as .h4, so every
+   row looks like a billboard next to the cart drawer. This brings the page
+   back in line with the drawer.
+   --------------------------------------------------------------------------- */
+
+cart-items .title-wrapper-with-link {
+  margin: 0 0 2rem;
+  gap: 0.75rem;
+}
+
+cart-items .title--primary {
+  margin: 0;
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+cart-items .title-wrapper-with-link .underlined-link { font-size: var(--t-sm, 0.875rem) }
+
+/* Column headings ---------------------------------------------------------- */
+.cart-items th {
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--line, #e2dcd3);
+  font-size: var(--t-label, 0.75rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted, #7c716a);
+}
+
+/* Rows --------------------------------------------------------------------- */
+.cart-item { border-bottom: 1px solid var(--line, #e2dcd3) }
+
+.cart-item > td {
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+  vertical-align: top;
+}
+
+/* Thumbnail ---------------------------------------------------------------- */
+.cart-item__media { width: 11rem }
+
+.cart-item__image-container {
+  border-radius: var(--r-sm, 6px);
+  overflow: hidden;
+  background: var(--bone, #f3efe9);
+}
+
+.cart-item__image { max-width: 9.5rem }
+
+/* Details — 1.6rem in Dawn, which is what made the whole row oversized ----- */
+.cart-item__details {
+  font-size: 1rem;
+  line-height: 1.55;
+  padding-left: 1.5rem;
+}
+
+.cart-item__details > * + * { margin-top: 0.4rem }
+
+.cart-item__name,
+.cart-item__name.h4 {
+  font-size: 1.05rem;
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink, #171310);
+}
+
+/* Price sits directly inside .cart-item__details; keep it readable --------- */
+.cart-item__details > .product-option {
+  font-size: 1rem;
+  color: var(--ink-2, #2a221c);
+}
+
+.cart-item__details dl .product-option {
+  font-size: var(--t-sm, 0.875rem);
+  color: var(--muted, #7c716a);
+}
+
+.cart-item__details dt { font-weight: 500 }
+
+.cart-item__old-price { color: var(--muted-2, #9a9089) }
+
+.cart-item__final-price { color: var(--ink, #171310); font-weight: 600 }
+
+/* Line total --------------------------------------------------------------- */
+.cart-item__totals { font-size: 1.05rem; font-weight: 600 }
+
+/* Tablet / desktop column gaps -------------------------------------------- */
+@media screen and (min-width: 990px) {
+  .cart-item__details { width: auto }
+
+  .cart-item .cart-item__quantity,
+  .cart-items .cart-items__heading--wide { padding-left: 3rem }
+}
+
+/* Mobile ------------------------------------------------------------------- */
+@media screen and (max-width: 749px) {
+  cart-items .title--primary { font-size: 1.9rem }
+
+  .cart-items thead tr {
+    margin-bottom: 1.5rem;
+    border-bottom-color: var(--line, #e2dcd3);
+  }
+
+  .cart-item {
+    gap: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .cart-item__media { width: 9rem }
+
+  .cart-item__image { max-width: 9rem }
+
+  .cart-item__details {
+    padding-left: 0;
+    font-size: 0.95rem;
+  }
+
+  .cart-item__name,
+  .cart-item__name.h4 { font-size: 1rem }
+}
