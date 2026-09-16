@@ -634,3 +634,65 @@ cart-drawer.is-empty [id*="jdgm"],
 cart-drawer.is-empty .cart-drawer__collection + div:not(.cart-drawer__warnings) {
   display: none !important;
 }
+/* ---------------------------------------------------------------------------
+   Cart drawer — discount code accordion
+   Replaces the old "Order special instructions" note.
+   Markup: snippets/cart-drawer.liquid   Logic: end of assets/cart.js
+   --------------------------------------------------------------------------- */
+.cart-drawer__discount { padding-top: 1.2rem }
+
+.cart-drawer__discount-row { display: flex; gap: 0.8rem; align-items: stretch }
+
+.cart-drawer__discount-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  border-radius: var(--r-sm, 6px);
+}
+
+.cart-drawer__discount-input::placeholder { color: var(--muted-2, #9a9089) }
+
+.cart-drawer__discount-apply {
+  flex: 0 0 auto;
+  min-height: 4.4rem;
+  padding: 0 1.8rem;
+  border-radius: var(--r-sm, 6px);
+  white-space: nowrap;
+}
+
+.cart-drawer__discount-apply[disabled] { opacity: 0.55; cursor: default }
+
+.cart-drawer__discount-msg {
+  margin: 0.8rem 0 0;
+  font-size: var(--t-sm, 0.875rem);
+  color: var(--muted, #7c716a);
+}
+
+.cart-drawer__discount-msg.is-error { color: var(--red-ink, #b9151b) }
+
+.cart-drawer__discount-list { margin: 1rem 0 0; display: grid; gap: 0.5rem }
+
+.cart-drawer__discount-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 1rem;
+  background: var(--bone, #f3efe9);
+  border-radius: var(--r-sm, 6px);
+  font-size: var(--t-sm, 0.875rem);
+}
+
+.cart-drawer__discount-code { font-weight: 600; letter-spacing: 0.04em }
+
+.cart-drawer__discount-remove {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-size: var(--t-sm, 0.875rem);
+  color: var(--muted, #7c716a);
+  text-decoration: underline;
+}
+
+.cart-drawer__discount-remove:hover { color: var(--red-ink, #b9151b) }

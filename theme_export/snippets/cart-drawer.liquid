@@ -492,25 +492,61 @@
         </form>
       </cart-drawer-items>
       <div class="drawer__footer">
-        {%- if settings.show_cart_note -%}
-          <details id="Details-CartDrawer">
-            <summary>
-              <span class="summary__title">
-                {{ 'sections.cart.note' | t }}
-                {{- 'icon-caret.svg' | inline_asset_content -}}
-              </span>
-            </summary>
-            <cart-note class="cart__note field">
-              <label class="visually-hidden" for="CartDrawer-Note">{{ 'sections.cart.note' | t }}</label>
-              <textarea
-                id="CartDrawer-Note"
-                class="text-area text-area--resize-vertical field__input"
-                name="note"
-                placeholder="{{ 'sections.cart.note' | t }}"
-              >{{ cart.note }}</textarea>
-            </cart-note>
-          </details>
-        {%- endif -%}
+        {%- comment -%}
+          Discount code accordion — replaces the old "Order special instructions"
+          cart note. Shopify's /cart/update.js has accepted a `discount`
+          parameter since Summer Editions '25 (21 May 2025), so the code is
+          written to the real cart server-side and the totals redraw without a
+          page reload. Works on every plan, not just Plus.
+          The apply logic lives at the end of assets/cart.js.
+        {%- endcomment -%}
+        <details id="Details-CartDrawer-Discount" class="cart-drawer__discount-details">
+          <summary>
+            <span class="summary__title">
+              Discount code
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </summary>
+          <div class="cart-drawer__discount" data-money-format="{{ shop.money_format | escape }}">
+            <label class="visually-hidden" for="CartDrawer-Discount">Discount code</label>
+            <div class="cart-drawer__discount-row">
+              <input
+                id="CartDrawer-Discount"
+                class="field__input cart-drawer__discount-input"
+                type="text"
+                name="discount"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="Discount code"
+                value="{{ cart.cart_level_discount_applications.first.title | escape }}"
+              >
+              <button
+                type="button"
+                class="button cart-drawer__discount-apply"
+                data-cart-drawer-discount-apply
+              >
+                Apply
+              </button>
+            </div>
+            <p class="cart-drawer__discount-msg" data-cart-drawer-discount-msg role="status" aria-live="polite"></p>
+            {%- if cart.cart_level_discount_applications.size > 0 -%}
+              <ul class="cart-drawer__discount-list list-unstyled">
+                {%- for discount in cart.cart_level_discount_applications -%}
+                  <li class="cart-drawer__discount-item">
+                    <span class="cart-drawer__discount-code">{{ discount.title | escape }}</span>
+                    <button
+                      type="button"
+                      class="cart-drawer__discount-remove"
+                      data-cart-drawer-discount-remove
+                    >
+                      Remove
+                    </button>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        </details>
 
         <!-- Start blocks -->
         <!-- Subtotals -->

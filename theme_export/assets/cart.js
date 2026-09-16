@@ -413,3 +413,180 @@ if (!customElements.get('cart-note')) {
     }
   );
 }
+
+/* --------------------------------------------------------------------------
+   Cart drawer — discount code accordion
+   Markup: snippets/cart-drawer.liquid
+   Styles: end of assets/component-cart-drawer.css
+
+   /cart/update.js has accepted a `discount` parameter since Summer Editions
+   '25 (21 May 2025), so the code is written to the real cart server-side and
+   the totals redraw with no page reload. Works on every plan, not just Plus.
+
+   Two gotchas this code handles:
+   1. Shopify returns 200 OK even for an unknown code or one that does not
+      apply to anything in the cart — so we re-read the returned cart to
+      confirm the discount is really there instead of trusting the response.
+   2. The drawer's innerHTML is replaced on every repaint, so every listener
+      is delegated from `document` and the <details> open state is restored
+      by hand afterwards.
+   -------------------------------------------------------------------------- */
+(function () {
+  var SECTION_ID = 'cart-drawer';
+  var DRAWER_SEL = '#CartDrawer';
+  var DETAILS_ID = 'Details-CartDrawer-Discount';
+  var INPUT_ID = 'CartDrawer-Discount';
+
+  function shopifyRoot() {
+    return (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+  }
+
+  function setMsg(text, isError) {
+    var el = document.querySelector('[data-cart-drawer-discount-msg]');
+    if (!el) return;
+    el.textContent = text || '';
+    el.classList.toggle('is-error', !!isError);
+  }
+
+  function money(cents) {
+    var holder = document.querySelector('.cart-drawer__discount');
+    var fmt = (holder && holder.dataset.moneyFormat) || '{{amount}}';
+    return fmt.replace(/\{\{\s*amount(\s*\|[^}]*)?\}\}/g, (cents / 100).toFixed(2));
+  }
+
+  function postDiscount(code) {
+    return fetch(shopifyRoot() + 'cart/update.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ discount: code, sections: SECTION_ID })
+    }).then(function (res) {
+      if (!res.ok) throw new Error('Cart update failed: ' + res.status);
+      return res.json();
+    });
+  }
+
+  // Shopify silently ignores a code it cannot use, so check the cart it hands
+  // back rather than the HTTP status.
+  function applied(cart, code) {
+    var want = (code || '').trim().toUpperCase();
+    if (!want) return false;
+
+    var apps = cart.cart_level_discount_applications || [];
+    if (apps.some(function (d) { return (d.title || '').toUpperCase() === want; })) return true;
+
+    var codes = cart.discount_codes || [];
+    if (codes.some(function (d) {
+      return (d.code || '').toUpperCase() === want && d.applicable !== false;
+    })) return true;
+
+    // Line-item level discounts (e.g. a code for one specific product).
+    return (cart.items || []).some(function (item) {
+      return (item.discounts || []).some(function (d) {
+        return (d.title || '').toUpperCase() === want;
+      });
+    });
+  }
+
+  function repaint(cart) {
+    var html = cart && cart.sections && cart.sections[SECTION_ID];
+    var current = document.querySelector(DRAWER_SEL);
+    if (!html || !current) return false;
+
+    var next = new DOMParser().parseFromString(html, 'text/html').querySelector(DRAWER_SEL);
+    if (!next) return false;
+
+    var wasOpen = false;
+    var details = document.getElementById(DETAILS_ID);
+    if (details) wasOpen = details.hasAttribute('open');
+
+    current.innerHTML = next.innerHTML;
+
+    // innerHTML replacement drops the open state, which would slam the
+    // accordion shut right after the customer applies a code.
+    if (wasOpen) {
+      var reopened = document.getElementById(DETAILS_ID);
+      if (reopened) reopened.setAttribute('open', '');
+    }
+    return true;
+  }
+
+  function busy(state) {
+    var btn = document.querySelector('[data-cart-drawer-discount-apply]');
+    if (btn) btn.disabled = state;
+  }
+
+  function apply(code) {
+    var input = document.getElementById(INPUT_ID);
+    if (code === undefined) code = input ? input.value.trim() : '';
+    code = (code || '').trim();
+
+    if (!code) {
+      setMsg('Enter a discount code first.', true);
+      if (input) input.focus();
+      return;
+    }
+
+    busy(true);
+    setMsg('Checking…', false);
+
+    postDiscount(code)
+      .then(function (cart) {
+        if (!applied(cart, code)) {
+          setMsg('That code is not valid for the items in your cart.', true);
+          return;
+        }
+        var saved = money(cart.total_discount || 0);
+        if (!repaint(cart)) setMsg('', false);
+        setMsg('Code applied — you saved ' + saved + '!', false);
+      })
+      .catch(function (err) {
+        setMsg('Something went wrong. Please try again.', true);
+        if (window.console) console.error('[cart-drawer discount]', err);
+      })
+      .then(function () { busy(false); });
+  }
+
+  function remove() {
+    busy(true);
+    setMsg('Removing…', false);
+    postDiscount('')
+      .then(function (cart) {
+        repaint(cart);
+        setMsg('Discount removed.', false);
+      })
+      .catch(function () { setMsg('Something went wrong. Please try again.', true); })
+      .then(function () { busy(false); });
+  }
+
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+    if (!target || !target.closest) return;
+    if (target.closest('[data-cart-drawer-discount-apply]')) apply();
+    else if (target.closest('[data-cart-drawer-discount-remove]')) remove();
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key !== 'Enter') return;
+    if (event.target && event.target.id === INPUT_ID) {
+      event.preventDefault();
+      apply();
+    }
+  });
+
+  // Auto-apply codes arriving from /discount/CODE links (email, SMS, ads).
+  // Shopify stores the code in the session; push it into the cart on load so
+  // the drawer shows the discounted total straight away.
+  function autoApply() {
+    var code = new URLSearchParams(window.location.search).get('discount');
+    if (!code) return;
+    postDiscount(code)
+      .then(function (cart) { if (applied(cart, code)) repaint(cart); })
+      .catch(function () {});
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', autoApply);
+  } else {
+    autoApply();
+  }
+})();
