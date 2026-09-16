@@ -57,8 +57,17 @@ class CartDrawer extends HTMLElement {
 
   close() {
     this.classList.remove('active');
+    // Remember where the page was before closing. removeTrapFocus() hands focus
+    // back to whatever opened the drawer (the cart icon in the header) and
+    // toggling `overflow-hidden` on <body> can reset the offset on some
+    // browsers — either one yanks a scrolled page back to the top. The .focus()
+    // call is now preventScroll, and this puts the offset back if anything
+    // else still moved it. The filter drawer and the mobile menu do not use
+    // this path, which is why only the cart drawer jumped.
+    const scrollY = window.scrollY;
     removeTrapFocus(this.activeElement);
     document.body.classList.remove('overflow-hidden');
+    if (window.scrollY !== scrollY) window.scrollTo(0, scrollY);
   }
 
   setSummaryAccessibility(cartDrawerNote) {

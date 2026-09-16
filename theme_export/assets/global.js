@@ -199,7 +199,7 @@ function removeTrapFocus(elementToFocus = null) {
   document.removeEventListener('focusout', trapFocusHandlers.focusout);
   document.removeEventListener('keydown', trapFocusHandlers.keydown);
 
-  if (elementToFocus) elementToFocus.focus();
+  if (elementToFocus) elementToFocus.focus({ preventScroll: true });
 }
 
 function onKeyUpEscape(event) {
