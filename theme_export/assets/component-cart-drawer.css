@@ -752,3 +752,67 @@ cart-drawer.is-empty .cart-drawer__collection + div:not(.cart-drawer__warnings) 
   height: var(--cart-drawer-banner-height, 90px);
   object-fit: var(--cart-drawer-banner-fit, cover);
 }
+
+/* ---------------------------------------------------------------------------
+   Discount field — restyle supplied by the store owner
+   Applied after the sizing above so these values win.
+   --------------------------------------------------------------------------- */
+.cart-drawer__discount-apply {
+	min-width: 0;
+	min-height: fit-content;
+	height: 100%;
+	padding: 0.5rem 1.4rem;
+	font-size: 0.9rem;
+	border-radius: 5px;
+	outline: 0;
+	border: 0;
+	box-shadow: none;
+	background: #2d2c2c;
+}
+#CartDrawer-Discount:focus {
+	outline: 0;
+	box-shadow: none;
+	border: 1px solid var(--cane);
+	padding: 0 10px !important;
+}
+
+.cart-drawer__discount-input {
+	height: auto;
+	min-width: 0;
+	padding: 0 1.2rem !important;
+	font-size: 1.05rem;
+	border: 1px solid #2d2c2c;
+	border-radius:5px !important;
+	min-height: fit-content;
+}
+.drawer__footer summary {
+	display: flex;
+	position: relative;
+	line-height: 1;
+	padding: 0.9rem 0;
+}
+summary .icon-caret {
+	position: absolute;
+	height: .6rem;
+	right: 10px;
+	top: calc(50% - .2rem);
+}
+
+.cart-drawer__discount {
+	padding-top: 0;
+}
+.drawer__footer > details[open] {
+	padding-bottom: 10px;
+}
+
+.cart-drawer .cart-item > td + td {
+	padding-left: 2px;
+	padding-block: 0;
+}
+.cart-drawer .cart-item:last-child {
+	margin-bottom: 0;
+}
+
+.button.cart-drawer__discount-apply::before, .cart-drawer__discount-apply::after {
+	display: none;
+}

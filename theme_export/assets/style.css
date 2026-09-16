@@ -1576,3 +1576,19 @@ section#shopify-section-template--28486573293749__judgeme-reviews {
 
 .contact-info__list a, .contact-info__list .contact-info__row {width:fit-content;}
 .contact-submit { flex-wrap: wrap; gap: 1rem; margin-top:10px;}
+/* ---------------------------------------------------------------------------
+   Mobile drawer menu — restyle supplied by the store owner
+   --------------------------------------------------------------------------- */
+.site-mobile-drawer .drawer__nav a, .site-mobile-drawer .drawer__toggle {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	padding: 8px 4px;
+	font-size: 15px;
+	font-weight: 500;
+	color: var(--ink);
+	text-align: left;
+}
+
+.site-mobile-drawer .drawer__nav a:hover, .site-mobile-drawer .drawer__toggle:hover {background-color:var(--cane);}
