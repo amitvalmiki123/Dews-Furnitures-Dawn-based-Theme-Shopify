@@ -24,6 +24,77 @@
   }
 
   /* ---------------- Gallery ---------------- */
+
+  /* On mobile .gallery__thumbs becomes a horizontal rail roughly four thumbs
+     wide, so most products have thumbs waiting off-screen. The old
+     scrollIntoView({block:'nearest'}) only moved the rail when the tapped
+     thumb was already hidden, which meant tapping the last thumb on screen did
+     nothing and the rest could only be reached by dragging with a finger.
+
+     This keeps two jobs in one place:
+     - if the tapped thumb is cut off, scroll just enough to bring it in;
+     - if it is fully visible but sits at the right edge of the rail, that is
+       the last one on screen, so advance by one thumb and let the next ones
+       slide in.
+     The vertical desktop rail is unaffected and keeps the old behaviour. */
+
+  /* element.scrollTo with options is fine everywhere now, but keep a plain
+     assignment as a fallback rather than dropping the scroll entirely. */
+  function scrollRailTo(rail, left) {
+    if (rail.scrollTo) {
+      try {
+        rail.scrollTo({ left: left, behavior: 'smooth' });
+        return;
+      } catch (err) { /* fall through */ }
+    }
+    rail.scrollLeft = left;
+  }
+
+  function revealThumb(rail, thumb) {
+    if (!rail || !thumb) return;
+
+    var isHorizontalRail = rail.scrollWidth > rail.clientWidth + 1;
+    if (!isHorizontalRail) {
+      if (thumb.scrollIntoView) {
+        thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      return;
+    }
+
+    var maxScroll = rail.scrollWidth - rail.clientWidth;
+    if (maxScroll <= 1) return;                 // everything already fits
+
+    /* One thumb plus the gap after it. */
+    var step = thumb.offsetWidth;
+    var next = thumb.nextElementSibling;
+    if (next && next.offsetLeft > thumb.offsetLeft) {
+      step = next.offsetLeft - thumb.offsetLeft;
+    }
+
+    var railRect = rail.getBoundingClientRect();
+    var thumbRect = thumb.getBoundingClientRect();
+    var cutOffLeft = railRect.left - thumbRect.left;
+    var cutOffRight = thumbRect.right - railRect.right;
+    var margin = step * 0.15;
+
+    if (cutOffRight > 0) {
+      scrollRailTo(rail, rail.scrollLeft + cutOffRight + margin);
+      return;
+    }
+
+    if (cutOffLeft > 0) {
+      scrollRailTo(rail, rail.scrollLeft - cutOffLeft - margin);
+      return;
+    }
+
+    /* Fully visible. Only advance when it is effectively the last one on
+       screen, otherwise tapping a middle thumb would jog the rail. */
+    if (railRect.right - thumbRect.right > step * 0.6) return;
+    if (rail.scrollLeft >= maxScroll - 1) return;   // already at the far end
+
+    scrollRailTo(rail, Math.min(rail.scrollLeft + step, maxScroll));
+  }
+
   function initGallery() {
     var root = document.getElementById('gallery');
     if (!root) return;
@@ -42,10 +113,9 @@
           t.classList.toggle('is-active', on);
           t.setAttribute('aria-selected', String(on));
         });
-        // Keep the selected thumbnail visible inside the scrollable rail
-        if (thumb.scrollIntoView) {
-          thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
+        // Keep the selected thumbnail visible inside the scrollable rail, and
+        // on mobile pull the next ones in when the last visible one is tapped.
+        revealThumb(root.querySelector('.gallery__thumbs'), thumb);
         main.classList.remove('is-zoomed');
         img.style.transformOrigin = 'center';
       });
