@@ -1,61 +1,71 @@
-# Dew's Furniture — Manual CSS (paste-ready)
+# Dew's Furniture — Kaunsi file, kahan paste karein
 
-**Purpose:** apply any change without uploading the whole theme zip.
+Har change ke saath **file name** aur **exact location** diya gaya hai.
+Tum sirf copy-paste kar ke manually update kar sakte ho — poori zip upload karne ki zarurat nahi.
 
 ---
 
-## Why a zip upload resets your section values
+## 1. Kaunsi file kis page ke liye
 
-| What | Where it lives | Zip upload kya karta hai |
+| Page / Section | File | Paste kahan |
 |---|---|---|
-| Section images, titles, text | `templates/*.json` | **overwrites** → values reset |
-| Theme settings (logo, colours) | `config/settings_data.json` | **overwrites** |
-| CSS / Liquid code | `assets/*.css`, `sections/*`, `layout/*` | replaced by ours (fine) |
+| **Global** — header, footer, hero, rooms, promise, promo, ribbon, section rhythm, type tokens | `assets/style.css` | file ke **sabse end** mein |
+| **Collection page** — toolbar, `.shop`, `.chero`, facets, product grid | `assets/dews-collection.css` | file ke **sabse end** mein |
+| **PDP / product page** — gallery, buy row, accordion, breadcrumb | `assets/component-dews-product.css` | file ke **sabse end** mein |
+| **Pages** — Our craft, Material, Sustainability | `assets/dews-pages.css` | file ke **sabse end** mein |
+| **Cart drawer** | `assets/component-cart-drawer.css` | file ke **sabse end** mein |
 
-So anything you set **in the theme editor** (image, title) is lost on a zip upload.
-Anything you write as **code** survives.
+**Rule:** jis file mein original rule hai, **usi file ke end mein** paste karo.
+Tab `!important` ki zarurat nahi padti.
 
 ---
 
-## Your permanent spot for hand-written CSS
-
-A new snippet exists: **`snippets/dews-custom-css.liquid`**, rendered from
-`layout/theme.liquid` right before `</head>`. It loads **after** every other
-stylesheet, so whatever you paste there always wins.
+## 2. CSS load order (ye samajh lo, aage kaam aayega)
 
 ```
-Shopify Admin -> Online Store -> Themes -> ... -> Edit code
-  -> snippets / dews-custom-css.liquid
-  -> paste between the <style> tags -> Save
+1. assets/style.css                    (theme.liquid:281)   <- sabse pehle
+2. assets/base.css                     (282)
+3. assets/component-cart-items.css     (283)
+4. assets/component-cart-drawer.css    (286)
+5. assets/component-cart.css           (287)
+6. assets/component-totals.css         (288)
+7. assets/component-price.css          (289)
+8. assets/component-discounts.css      (290)
+--- section stylesheets (inke baad load hoti hain) ---
+9. assets/dews-collection.css          (main-collection-banner / -product-grid)
+10. assets/dews-pages.css              (custom-craft-*)
+11. assets/component-dews-product.css  (main-product.liquid)
+12. assets/component-facets.css        (main-collection-product-grid / main-search)
 ```
 
-Send me that file's contents whenever you add something by hand, so I can bake
-it into the zip too.
+**Jo file baad mein load hoti hai, woh jeetti hai** (agar specificity barabar ho).
+Isliye agar tum `style.css` mein koi aisi cheez change kar rahe ho jo
+`dews-collection.css` ya `component-dews-product.css` mein defined hai,
+toh `!important` lagana padega.
 
 ---
 
-## Option 2 — Theme editor ke "Custom CSS" se
+## 3. Responsive changes kahan
 
-`Customize -> Theme settings (gear) -> Custom CSS`
+Har file ke end mein ye block maujood hai:
 
-Easy, but it is stored in `settings_data.json`, so **a zip upload wipes it.**
-Use `dews-custom-css.liquid` if you want it to survive.
+```css
+@media (max-width: 989px) {
+  /* mobile / tablet rules */
+}
+```
+
+**Mobile changes isi `@media` block ke andar** paste karo.
+Agar file mein ye block nahi hai, toh end mein naya bana lo.
+
+Note: `component-facets.css` mein Dawn ka block `@media screen and (max-width: 749px)` hai.
 
 ---
 
-## Option 3 — assets/style.css ke end mein paste karo
+## 4. Line numbers kaise dhundho
 
-`Edit code -> assets / style.css` → sabse neeche paste → Save.
-Last mein hone ki wajah se ye bhi jeetta hai (unless `!important` conflict ho).
-
----
-
-## Note on JS / Liquid changes
-
-Some fixes need more than CSS (e.g. the rooms touch fix in `assets/script.js`,
-the `is-empty` sync in `assets/cart-drawer.js`, `template-{{ template.name }}`
-on `<body>` in `layout/theme.liquid`). Those are listed at the bottom with the
-exact file and line — CSS alone will not reproduce them.
+`Edit code` mein file kholo, phir browser ka Find (`Ctrl/Cmd + F`) use karo —
+main har change ke saath **nearby selector** bhi bataata hoon, usse dhoondh lo.
 
 ---
 ---
@@ -78,7 +88,7 @@ exact file and line — CSS alone will not reproduce them.
 }
 ```
 
-> Paste at the **end** of `assets/style.css` — or into `snippets/dews-custom-css.liquid`.
+> **Paste:** `assets/style.css` ke sabse end mein.
 
 ---
 
@@ -150,7 +160,7 @@ exact file and line — CSS alone will not reproduce them.
 }
 ```
 
-> Paste at the **end** of `assets/style.css` — or into `snippets/dews-custom-css.liquid`.
+> **Paste:** `assets/style.css` ke sabse end mein.
 
 ---
 
@@ -264,7 +274,7 @@ cart-drawer .jm-review-widget[data-v-d92151cd] { padding-block: 0.75rem !importa
 cart-drawer .jm-text[data-v-6d928e9f] { font-size: 1rem !important; line-height: 1.35 !important; }
 ```
 
-> Paste at the **end** of `assets/style.css` — or into `snippets/dews-custom-css.liquid`.
+> **Paste:** `assets/style.css` ke sabse end mein.
 
 ---
 
@@ -277,7 +287,7 @@ cart-drawer .jm-text[data-v-6d928e9f] { font-size: 1rem !important; line-height:
 cart-drawer.is-empty .drawer__header { display: none !important; }
 ```
 
-> Paste at the **end** of `assets/style.css` — or into `snippets/dews-custom-css.liquid`.
+> **Paste:** `assets/style.css` ke sabse end mein.
 
 ---
 
@@ -450,7 +460,7 @@ body.template-index [id$="-1788325876b6967a8d"] {
 }
 ```
 
-> Paste at the **end** of `assets/style.css` — or into `snippets/dews-custom-css.liquid`.
+> **Paste:** `assets/style.css` ke sabse end mein.
 
 ---
 
@@ -463,7 +473,7 @@ body.template-index [id$="-1788325876b6967a8d"] {
     --t-lead: clamp(0.95rem, 3.8vw, 1.05rem);
 ```
 
-> Paste at the **end** of `assets/style.css` — or into `snippets/dews-custom-css.liquid`.
+> **Paste:** `assets/style.css` ke sabse end mein.
 
 ---
 
@@ -529,7 +539,7 @@ body.template-index [id$="-1788325876b6967a8d"] {
 }
 ```
 
-> Paste at the **end** of `assets/style.css` — or into `snippets/dews-custom-css.liquid`.
+> **Paste:** `assets/style.css` ke sabse end mein.
 
 ---
 
@@ -604,7 +614,7 @@ body.template-search:has(predictive-search[open]) .toolbar { z-index: 1 !importa
 }
 ```
 
-> Paste at the **end** of `assets/style.css` — or into `snippets/dews-custom-css.liquid`.
+> **Paste:** `assets/style.css` ke sabse end mein.
 
 ---
 
@@ -665,20 +675,18 @@ section#shopify-section-template--28486573293749__judgeme-reviews {
 }
 ```
 
-> Paste at the **end** of `assets/style.css` — or into `snippets/dews-custom-css.liquid`.
+> **Paste:** `assets/style.css` ke sabse end mein.
 
 ---
 
 # Non-CSS changes (JS / Liquid)
 
-These cannot be done with CSS alone. Files to edit:
+Ye sirf CSS se nahi ho sakte — file khol kar exactly ye edit karo:
 
 | Batch | File | Change |
 |---|---|---|
-| `aa4055a` | `assets/script.js` | rooms IIFE — add `pointerdown` + `touchstart` (passive) listeners next to `mouseenter` / `focusin`, so the active row switches on touch |
-| `f4884be` | `assets/cart-drawer.js` | in `renderContents`, after the section re-render: `if (typeof parsedState.item_count === 'number') { this.classList.toggle('is-empty', parsedState.item_count === 0); } else if (!this.querySelector('.drawer__inner-empty')) { this.classList.remove('is-empty'); }` |
-| `0c5f3f2` | `layout/theme.liquid` | `<body class="gradient template-{{ template.name }} ...">` — enables `body.template-index` / `body.template-search` scoping |
-| `0c5f3f2` | `layout/theme.liquid` | add `{%- render 'dews-custom-css' -%}` just before `</head>` |
+| `aa4055a` | `assets/script.js` | rooms IIFE — `mouseenter` / `focusin` ke saath `pointerdown` + `touchstart` (passive) listeners add karo, taaki touch pe active row switch ho |
+| `f4884be` | `assets/cart-drawer.js` | `renderContents` mein, section re-render ke baad: `if (typeof parsedState.item_count === 'number') { this.classList.toggle('is-empty', parsedState.item_count === 0); } else if (!this.querySelector('.drawer__inner-empty')) { this.classList.remove('is-empty'); }` |
+| `0c5f3f2` | `layout/theme.liquid` | `<body class="gradient template-{{ template.name }} ...">` — `body.template-index` / `body.template-search` scoping ke liye |
 
-Full diffs are always on the branch:
-`git show <batch>` or view the commit on GitHub.
+Poori diff hamesha branch par milti hai: `git show <batch>` ya GitHub par commit dekho.

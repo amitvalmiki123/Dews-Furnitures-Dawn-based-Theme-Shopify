@@ -324,12 +324,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
     <script src="{{ 'script.js' | asset_url }}" defer></script>
-
-    {%- comment -%}
-      Loads LAST, after every section stylesheet, so hand-written CSS in
-      snippets/dews-custom-css.liquid always wins. Safe to leave empty.
-    {%- endcomment -%}
-    {%- render 'dews-custom-css' -%}
   </head>
 
   <body class="gradient template-{{ template.name }}{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
