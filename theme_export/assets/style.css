@@ -1474,3 +1474,55 @@ body.template-search:has(predictive-search[open]) .toolbar { z-index: 1 !importa
 @media (max-width: 768px) {
   .hero__proof { gap: 3px 20px; }
 }
+
+/* =========================================================
+   BATCH — promo eyebrow, promise, footer perks,
+   app-widget gaps, PDP section double padding
+========================================================= */
+
+/* --- Promo eyebrow ------------------------------------------------------
+   `.promo p { font-size: var(--t-lead) }` (line ~365) outranks the base
+   `.eyebrow { font-size: var(--t-label) }` — `.promo p` is class+type while
+   `.eyebrow` is a bare class — and the promo eyebrow IS a <p>. Pin it back to
+   --t-label, scoped to .promo__body so nothing else in .promo changes. */
+.promo__body .eyebrow { font-size: var(--t-label); }
+
+@media (max-width: 989px) {
+
+  /* --- Promise boxes ---------------------------------------------------- */
+  .promise__item { padding: 15px; }
+  .promise__icon { width: 30px; height: 30px; color: var(--ink); margin-bottom: 10px; }
+
+  /* --- Footer newsletter perks ------------------------------------------ */
+  .newsletter__perks { gap: 8px 20px; }
+
+  /* --- Judge.me cards carousel: default bottom margin -------------------
+       Applies to both the homepage and the PDP — the widget markup is
+       identical on the two. */
+  .jdgm-widget.jdgm-cards-carousel .jdgm-content { margin-bottom: 0; }
+
+  /* --- PDP sections: cancel the doubled 40px ---------------------------
+       .dews-related-wrapper, .dews-recently-viewed and .dews-complete-look
+       each carry `padding-block: 0` earlier in this file, but the mobile
+       `.section, .section--tight { padding-block: 40px }` rule sits further
+       down with the same specificity, so it wins and stacks 40px twice.
+       Re-asserted here so each section keeps the 40px rhythm once. */
+  .dews-related-wrapper { padding-block: 0 !important; }
+  .dews-recently-viewed { padding-block: 0; }
+  .dews-complete-look   { padding-block: 0; }
+}
+
+/* --- Reviews: strip the app widget's own default gaps ------------------- */
+section#shopify-section-template--28486573293749__reviews-heading {
+    padding-bottom: 0;
+}
+section#shopify-section-template--28486573293749__judgeme-reviews {
+    padding-block: 0;
+}
+
+.jm-review-widget.jm-review-widget--minimal-header {
+    padding-block: 0;
+}
+.jdgm-tabs.jm-review-widget-minimal-header__tabs {
+    margin-block: 0;
+}
