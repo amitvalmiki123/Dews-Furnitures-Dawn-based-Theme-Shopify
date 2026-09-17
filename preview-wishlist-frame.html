@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wishlist popup frame</title>
+<style>
+/* ---------- MUI base defaults (what the app ships) ---------- */
+.MuiDialog-root{position:fixed;inset:0;z-index:1300;display:flex;align-items:center;justify-content:center}
+.MuiDialog-paper{background:#fff;color:rgba(0,0,0,.87);border-radius:4px;box-shadow:0 11px 15px -7px rgba(0,0,0,.2),0 24px 38px 3px rgba(0,0,0,.14);margin:32px;position:relative;overflow-y:auto;width:100%;max-width:600px}
+.MuiDialogTitle-root{margin:0;padding:16px 24px;flex:0 0 auto}
+.MuiDialogTitle-root h2{font-family:Roboto,Helvetica,Arial,sans-serif;font-weight:500;font-size:1.25rem;line-height:1.6;letter-spacing:.0075em}
+.MuiDialogContent-root{flex:1 1 auto;overflow-y:auto;padding:8px 24px}
+.MuiButtonBase-root{display:inline-flex;align-items:center;justify-content:center;position:relative;box-sizing:border-box;background:transparent;outline:0;border:0;margin:0;border-radius:0;padding:0;cursor:pointer;user-select:none;vertical-align:middle;color:inherit}
+.MuiIconButton-root{flex:0 0 auto;color:rgba(0,0,0,.54);padding:8px;overflow:visible;font-size:1.5rem;text-align:center;border-radius:50%}
+.MuiSvgIcon-root{fill:currentColor;width:1em;height:1em;display:inline-block;font-size:1.5rem;transition:fill .2s;flex-shrink:0;user-select:none}
+.MuiList-root{list-style:none;margin:0;padding:8px 0;position:relative}
+.MuiCard-root{overflow:hidden;background:#fff;border-radius:4px;box-shadow:0 2px 1px -1px rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14);margin-bottom:12px}
+.MuiCardHeader-root{display:flex;align-items:center;padding:16px}
+.MuiCardHeader-content{flex:1 1 auto;min-width:0}
+.MuiCardHeader-title{font-family:Roboto,Helvetica,Arial,sans-serif;font-weight:400;font-size:1.5rem;line-height:1.334;letter-spacing:-.00735em;display:block}
+.MuiCardHeader-title a{color:inherit;text-decoration:none}
+.MuiCardHeader-subheader{font-family:Roboto,Helvetica,Arial,sans-serif;font-weight:400;font-size:.875rem;line-height:1.43;letter-spacing:.01071em;display:block;color:rgba(0,0,0,.6)}
+.MuiCardContent-root{padding:16px}
+.MuiCardActions-root{display:flex;align-items:center;padding:8px;gap:8px}
+.MuiButton-root{font-family:Roboto,Helvetica,Arial,sans-serif;font-weight:500;font-size:.875rem;line-height:1.75;letter-spacing:.02857em;text-transform:uppercase;min-width:64px;padding:6px 16px;border-radius:4px;border:0;cursor:pointer}
+.MuiButton-containedPrimary{color:#fff;background-color:#1976d2;box-shadow:0 3px 1px -2px rgba(0,0,0,.2)}
+
+/* ---------- Wishlist Hero app block settings (from settings_data.json) ---------- */
+.MuiDialogTitle-root h2{font-size:30px}                                   /* HeaderFontSize: 30 */
+.MuiCardHeader-title,.MuiCardHeader-title a{font-size:18px}               /* ProductNameFontSize: 18 */
+.wishlist-hero-list-card-product-price{font-size:16px}                    /* PriceFontSize: 16 */
+
+/* ---------- demo page chrome ---------- */
+body{margin:0;padding:18px;background:#f3efe9;font-family:Roboto,Helvetica,Arial,sans-serif}
+img{display:block;width:100%;height:auto;object-fit:cover;aspect-ratio:1/1;background:#e9e3da}
+.row{display:flex;gap:12px;align-items:flex-start}
+.thumb{width:88px;flex:0 0 88px;border-radius:6px;overflow:hidden}
+.body{flex:1 1 auto;min-width:0}
+</style>
+<script>
+  // ?fix=1 loads the real theme stylesheet (which carries the new wishlist block)
+  if (new URLSearchParams(location.search).get('fix') === '1') {
+    document.write('<link rel="stylesheet" href="/theme_export/assets/style.css">');
+  }
+</script>
+</head>
+<body>
+
+<div class="MuiDialog-root">
+  <div class="MuiDialog-paper MuiPaper-root MuiPaper-elevation24 MuiPaper-rounded">
+    <div class="MuiDialogTitle-root">
+      <h2 class="MuiTypography-root MuiTypography-h6">My wishlist</h2>
+      <button class="MuiButtonBase-root MuiIconButton-root" aria-label="close">
+        <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="MuiDialogContent-root">
+      <div class="wishlisthero-customer-view-listing">
+        <ul class="MuiList-root">
+
+          <li class="MuiCard-root">
+            <div class="row">
+              <div class="thumb"><img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=200&q=70" alt=""></div>
+              <div class="body">
+                <div class="MuiCardHeader-root">
+                  <div class="MuiCardHeader-content">
+                    <span class="MuiTypography-root MuiTypography-h5 MuiCardHeader-title">
+                      <a href="#">Sheesham Wood Queen Size Bed With Box Storage — Honey Walnut Finish</a>
+                    </span>
+                    <span class="MuiTypography-root MuiTypography-body2 MuiCardHeader-subheader">Queen · Added 12 Sep 2026</span>
+                  </div>
+                  <div class="MuiCardHeader-action">
+                    <button class="MuiButtonBase-root MuiIconButton-root" aria-label="remove">
+                      <svg class="MuiSvgIcon-root" viewBox="0 0 24 24"><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="MuiCardContent-root wishlist-hero-list-card-product-price">₹ 42,999.00</div>
+                <div class="MuiCardActions-root">
+                  <button class="MuiButton-root MuiButton-contained MuiButton-containedPrimary">Add to cart</button>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <li class="MuiCard-root">
+            <div class="row">
+              <div class="thumb"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200&q=70" alt=""></div>
+              <div class="body">
+                <div class="MuiCardHeader-root">
+                  <div class="MuiCardHeader-content">
+                    <span class="MuiTypography-root MuiTypography-h5 MuiCardHeader-title">
+                      <a href="#">Sheesham Wood 3 Seater Sofa Set With Cane Weave Backrest</a>
+                    </span>
+                    <span class="MuiTypography-root MuiTypography-body2 MuiCardHeader-subheader">Walnut · Added 9 Sep 2026</span>
+                  </div>
+                  <div class="MuiCardHeader-action">
+                    <button class="MuiButtonBase-root MuiIconButton-root" aria-label="remove">
+                      <svg class="MuiSvgIcon-root" viewBox="0 0 24 24"><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="MuiCardContent-root wishlist-hero-list-card-product-price">₹ 58,499.00</div>
+                <div class="MuiCardActions-root">
+                  <button class="MuiButton-root MuiButton-contained MuiButton-containedPrimary">Add to cart</button>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <li class="MuiCard-root">
+            <div class="row">
+              <div class="thumb"><img src="https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=200&q=70" alt=""></div>
+              <div class="body">
+                <div class="MuiCardHeader-root">
+                  <div class="MuiCardHeader-content">
+                    <span class="MuiTypography-root MuiTypography-h5 MuiCardHeader-title">
+                      <a href="#">Solid Wood Study Table With Drawer Unit</a>
+                    </span>
+                    <span class="MuiTypography-root MuiTypography-body2 MuiCardHeader-subheader">Natural · Added 2 Sep 2026</span>
+                  </div>
+                  <div class="MuiCardHeader-action">
+                    <button class="MuiButtonBase-root MuiIconButton-root" aria-label="remove">
+                      <svg class="MuiSvgIcon-root" viewBox="0 0 24 24"><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="MuiCardContent-root wishlist-hero-list-card-product-price">₹ 16,750.00</div>
+                <div class="MuiCardActions-root">
+                  <button class="MuiButton-root MuiButton-contained MuiButton-containedPrimary">Add to cart</button>
+                </div>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

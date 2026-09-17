@@ -1892,3 +1892,357 @@ section#shopify-section-template--28486573293749__judgeme-reviews {
 
 .page-width--narrow .rte li::marker,
 .shopify-policy__container .rte li::marker { color: transparent !important; }
+
+/* ==========================================================================
+   WISHLIST HERO — popup / drawer styling
+   Target: .wishlisthero-customer-view-listing   (the "My wishlist" popup)
+
+   WHY EVERY DECLARATION IS !important
+   -----------------------------------
+   The app builds its UI with Material UI (MUI). MUI injects its stylesheet at
+   RUNTIME into <head>, so its rules land AFTER this theme file. At equal
+   specificity MUI would win, so everything here is pinned with !important.
+
+   ROOT CAUSE OF THE OVERSIZED TEXT
+   --------------------------------
+   The app's own "customise style" app-block ships:
+       HeaderFontSize      : 30   -> "My wishlist" rendered at 30px
+       ProductNameFontSize : 18
+       PriceFontSize       : 16
+   The rules below sit on top of those, so the numbers here are what you get.
+
+   NOTE ON :has()
+   --------------
+   :has() rules are kept in their OWN rules, never mixed into a list with plain
+   selectors. A selector list is all-or-nothing: if one selector uses :has() and
+   the browser does not support it, the whole rule is dropped. Keeping them
+   apart means old browsers still get the plain rules.
+   ========================================================================== */
+
+/* ---- 1. Base typography for the whole popup ------------------------------ */
+.wishlisthero-customer-view-listing,
+.wishlisthero-customer-view-listing * {
+  font-family: var(--font, "Archivo", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif) !important;
+  letter-spacing: normal !important;
+  -webkit-font-smoothing: antialiased;
+}
+.wishlisthero-customer-view-listing {
+  font-size: var(--t-body, 1.0313rem) !important;
+  line-height: 1.6 !important;
+  color: var(--ink-2, #2a221c) !important;
+}
+
+/* ---- 2. Popup shell ------------------------------------------------------ */
+.wishlisthero-customer-view-listing .MuiDialog-paper,
+.wishlisthero-customer-view-listing .MuiPaper-root.MuiDialog-paper {
+  border-radius: var(--r-lg, 20px) !important;
+  box-shadow: var(--shadow-lg, 0 28px 70px rgba(23, 19, 16, 0.15)) !important;
+  overflow: hidden !important;
+}
+
+/* ---- 3. HEADER ROW — "My wishlist" (left) + close icon (right) ----------- */
+.wishlisthero-customer-view-listing .MuiDialogTitle-root {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 1rem !important;
+  margin: 0 !important;
+  padding: 1.05rem 1.15rem !important;
+  min-height: 0 !important;
+  background: var(--paper, #fbfaf8) !important;
+  border-bottom: 1px solid var(--line, #e2dcd3) !important;
+}
+
+/* the "My wishlist" text — 30px -> ~17-21px, serif to match the theme */
+.wishlisthero-customer-view-listing .MuiDialogTitle-root > *:not(button):not(.MuiIconButton-root),
+.wishlisthero-customer-view-listing .MuiDialogTitle-root h2,
+.wishlisthero-customer-view-listing .MuiDialogTitle-root h6,
+.wishlisthero-customer-view-listing .MuiDialogTitle-root .MuiTypography-root {
+  flex: 1 1 auto !important;
+  order: 1 !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: var(--font-accent, "Instrument Serif", Georgia, serif) !important;
+  font-size: clamp(1.05rem, 3.4vw, 1.3rem) !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0 !important;
+  color: var(--ink, #171310) !important;
+  text-align: left !important;
+  text-transform: none !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* the close ✕ — pinned to the right, small, vertically centred */
+.wishlisthero-customer-view-listing .MuiDialogTitle-root button,
+.wishlisthero-customer-view-listing .MuiDialogTitle-root .MuiIconButton-root {
+  flex: 0 0 auto !important;
+  order: 2 !important;
+  margin: 0 0 0 auto !important;
+  padding: 0 !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 0 !important;
+  background: transparent !important;
+  border-radius: var(--r-pill, 999px) !important;
+  color: var(--ink-3, #4a3f37) !important;
+  box-shadow: none !important;
+  transition: background 0.22s var(--ease, ease), color 0.22s var(--ease, ease) !important;
+}
+.wishlisthero-customer-view-listing .MuiDialogTitle-root button:hover,
+.wishlisthero-customer-view-listing .MuiDialogTitle-root .MuiIconButton-root:hover {
+  background: var(--bone, #f3efe9) !important;
+  color: var(--ink, #171310) !important;
+}
+.wishlisthero-customer-view-listing .MuiDialogTitle-root button svg,
+.wishlisthero-customer-view-listing .MuiDialogTitle-root .MuiIconButton-root svg {
+  width: 17px !important;
+  height: 17px !important;
+  font-size: 17px !important;
+  fill: currentColor !important;
+}
+/* if the close control is a text glyph instead of an SVG icon */
+.wishlisthero-customer-view-listing .MuiDialogTitle-root button:not(:has(svg)) {
+  font-size: 1.05rem !important;
+  line-height: 1 !important;
+}
+
+/* ---- 4. Product name — 18px -> 15px -------------------------------------- */
+.wishlisthero-customer-view-listing .MuiCardHeader-root {
+  padding: 0.75rem 0.95rem 0.15rem !important;
+}
+.wishlisthero-customer-view-listing .MuiCardHeader-content {
+  display: block !important;
+  min-width: 0 !important;
+}
+/* the span is the clamp box so a long title can never blow up the card */
+.wishlisthero-customer-view-listing .MuiCardHeader-content span {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden !important;
+  min-width: 0 !important;
+}
+.wishlisthero-customer-view-listing .MuiCardHeader-title,
+.wishlisthero-customer-view-listing .MuiCardHeader-content span,
+.wishlisthero-customer-view-listing .MuiCardHeader-content span a {
+  font-family: var(--font, "Archivo", sans-serif) !important;
+  font-size: 0.9375rem !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0 !important;
+  color: var(--ink, #171310) !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+}
+.wishlisthero-customer-view-listing .MuiCardHeader-content span a:hover {
+  color: var(--red, #e01b22) !important;
+  text-decoration: none !important;
+}
+
+/* ---- 5. Price — 16px -> 14px --------------------------------------------- */
+.wishlisthero-customer-view-listing .MuiCardContent-root.wishlist-hero-list-card-product-price,
+.wishlisthero-customer-view-listing [class*="wishlist-hero-list-card-product-price"],
+.wishlisthero-customer-view-listing [class*="list-card-product-price"] {
+  padding: 0.1rem 0.95rem 0.8rem !important;
+  font-family: var(--font, "Archivo", sans-serif) !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0 !important;
+  color: var(--ink, #171310) !important;
+}
+
+/* ---- 6. Sub-header (variant / date / meta) -------------------------------- */
+.wishlisthero-customer-view-listing .MuiCardHeader-subheader,
+.wishlisthero-customer-view-listing .MuiCardHeader-subheader * {
+  font-family: var(--font, "Archivo", sans-serif) !important;
+  font-size: 0.8125rem !important;
+  font-weight: 400 !important;
+  line-height: 1.45 !important;
+  letter-spacing: 0 !important;
+  color: var(--muted, #7c716a) !important;
+}
+
+/* ---- 7. Buttons (add to cart / view / share) ------------------------------ */
+.wishlisthero-customer-view-listing .MuiButton-root {
+  font-family: var(--font, "Archivo", sans-serif) !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  padding: 0.62rem 1.1rem !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+  border-radius: var(--r-pill, 999px) !important;
+  box-shadow: none !important;
+}
+.wishlisthero-customer-view-listing .MuiButton-contained,
+.wishlisthero-customer-view-listing .MuiButton-containedPrimary {
+  background: var(--ink, #171310) !important;
+  color: #fff !important;
+  border: 0 !important;
+}
+.wishlisthero-customer-view-listing .MuiButton-contained:hover,
+.wishlisthero-customer-view-listing .MuiButton-containedPrimary:hover {
+  background: var(--red, #e01b22) !important;
+  color: #fff !important;
+}
+.wishlisthero-customer-view-listing .MuiButton-outlined,
+.wishlisthero-customer-view-listing .MuiButton-text {
+  color: var(--ink-2, #2a221c) !important;
+  border-color: var(--line, #e2dcd3) !important;
+  background: transparent !important;
+}
+
+/* ---- 8. Row icons (remove / move to cart) --------------------------------- */
+.wishlisthero-customer-view-listing .MuiCard-root .MuiIconButton-root,
+.wishlisthero-customer-view-listing .MuiCardActions-root .MuiIconButton-root {
+  padding: 0.35rem !important;
+  color: var(--muted, #7c716a) !important;
+}
+.wishlisthero-customer-view-listing .MuiCard-root .MuiIconButton-root svg,
+.wishlisthero-customer-view-listing .MuiCardActions-root .MuiIconButton-root svg {
+  width: 16px !important;
+  height: 16px !important;
+  font-size: 16px !important;
+  fill: currentColor !important;
+}
+
+/* ---- 9. List container: breathing room + scroll --------------------------- */
+.wishlisthero-customer-view-listing .MuiList-root,
+.wishlisthero-customer-view-listing .MuiCard-root {
+  padding: 0.25rem !important;
+}
+.wishlisthero-customer-view-listing .MuiCard-root {
+  border-radius: var(--r-md, 12px) !important;
+  box-shadow: none !important;
+  border: 1px solid var(--line-soft, #eeeae3) !important;
+}
+
+/* ---- 10. MOBILE ---------------------------------------------------------- */
+@media screen and (max-width: 749px) {
+  .wishlisthero-customer-view-listing .MuiDialogTitle-root {
+    padding: 0.9rem 1rem !important;
+    gap: 0.75rem !important;
+  }
+  .wishlisthero-customer-view-listing .MuiDialogTitle-root > *:not(button):not(.MuiIconButton-root),
+  .wishlisthero-customer-view-listing .MuiDialogTitle-root h2,
+  .wishlisthero-customer-view-listing .MuiDialogTitle-root h6,
+  .wishlisthero-customer-view-listing .MuiDialogTitle-root .MuiTypography-root {
+    font-size: 1.0625rem !important;
+  }
+  .wishlisthero-customer-view-listing .MuiDialogTitle-root button,
+  .wishlisthero-customer-view-listing .MuiDialogTitle-root .MuiIconButton-root {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .wishlisthero-customer-view-listing .MuiDialogTitle-root button svg,
+  .wishlisthero-customer-view-listing .MuiDialogTitle-root .MuiIconButton-root svg {
+    width: 16px !important;
+    height: 16px !important;
+    font-size: 16px !important;
+  }
+  .wishlisthero-customer-view-listing .MuiCardHeader-root {
+    padding: 0.6rem 0.75rem 0.1rem !important;
+  }
+  .wishlisthero-customer-view-listing .MuiCardHeader-title,
+  .wishlisthero-customer-view-listing .MuiCardHeader-content span,
+  .wishlisthero-customer-view-listing .MuiCardHeader-content span a {
+    font-size: 0.875rem !important;
+    line-height: 1.35 !important;
+  }
+  .wishlisthero-customer-view-listing .MuiCardContent-root.wishlist-hero-list-card-product-price,
+  .wishlisthero-customer-view-listing [class*="wishlist-hero-list-card-product-price"],
+  .wishlisthero-customer-view-listing [class*="list-card-product-price"] {
+    padding: 0.05rem 0.75rem 0.65rem !important;
+    font-size: 0.8125rem !important;
+  }
+  .wishlisthero-customer-view-listing .MuiButton-root {
+    font-size: 0.75rem !important;
+    padding: 0.55rem 0.9rem !important;
+  }
+}
+
+/* ---- 11. FALLBACK: header sitting OUTSIDE the listing container -----------
+   Some Wishlist Hero builds put the title bar as a SIBLING of
+   .wishlisthero-customer-view-listing rather than a child. :has() reaches it.
+   Kept separate so browsers without :has() still apply sections 1-10.        */
+@supports selector(:has(*)) {
+  .MuiDialog-root:has(.wishlisthero-customer-view-listing) .MuiDialog-paper {
+    border-radius: var(--r-lg, 20px) !important;
+    box-shadow: var(--shadow-lg, 0 28px 70px rgba(23, 19, 16, 0.15)) !important;
+    overflow: hidden !important;
+  }
+  .MuiDialog-root:has(.wishlisthero-customer-view-listing) .MuiDialogTitle-root {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+    margin: 0 !important;
+    padding: 1.05rem 1.15rem !important;
+    min-height: 0 !important;
+    background: var(--paper, #fbfaf8) !important;
+    border-bottom: 1px solid var(--line, #e2dcd3) !important;
+  }
+  .MuiDialog-root:has(.wishlisthero-customer-view-listing) .MuiDialogTitle-root > *:not(button):not(.MuiIconButton-root),
+  .MuiDialog-root:has(.wishlisthero-customer-view-listing) .MuiDialogTitle-root h2,
+  .MuiDialog-root:has(.wishlisthero-customer-view-listing) .MuiDialogTitle-root h6,
+  .MuiDialog-root:has(.wishlisthero-customer-view-listing) .MuiDialogTitle-root .MuiTypography-root {
+    flex: 1 1 auto !important;
+    order: 1 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: var(--font-accent, "Instrument Serif", Georgia, serif) !important;
+    font-size: clamp(1.05rem, 3.4vw, 1.3rem) !important;
+    font-weight: 400 !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0 !important;
+    color: var(--ink, #171310) !important;
+    text-align: left !important;
+    text-transform: none !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  .MuiDialog-root:has(.wishlisthero-customer-view-listing) .MuiDialogTitle-root button,
+  .MuiDialog-root:has(.wishlisthero-customer-view-listing) .MuiDialogTitle-root .MuiIconButton-root {
+    flex: 0 0 auto !important;
+    order: 2 !important;
+    margin: 0 0 0 auto !important;
+    padding: 0 !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 0 !important;
+    background: transparent !important;
+    border-radius: var(--r-pill, 999px) !important;
+    color: var(--ink-3, #4a3f37) !important;
+    box-shadow: none !important;
+  }
+  .MuiDialog-root:has(.wishlisthero-customer-view-listing) .MuiDialogTitle-root button svg,
+  .MuiDialog-root:has(.wishlisthero-customer-view-listing) .MuiDialogTitle-root .MuiIconButton-root svg {
+    width: 17px !important;
+    height: 17px !important;
+    font-size: 17px !important;
+    fill: currentColor !important;
+  }
+}

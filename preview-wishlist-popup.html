@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wishlist Hero popup — before / after</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#171310;color:#fbfaf8;
+       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Archivo,sans-serif;padding:22px}
+  h1{font-size:1.3rem;margin:0 0 4px;font-weight:600;letter-spacing:.01em}
+  .sub{color:#9a9089;font-size:.85rem;margin-bottom:18px;line-height:1.5}
+  .bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+  button.tog{background:#2a221c;color:#fbfaf8;border:1px solid #4a3f37;border-radius:999px;
+             padding:8px 16px;font-size:.8rem;cursor:pointer;font-weight:600;letter-spacing:.03em;
+             font-family:inherit}
+  button.tog:hover{background:#3a2f27}
+  button.tog.on{background:#e01b22;border-color:#e01b22;color:#fff}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  .col{min-width:0}
+  .cap{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#9a9089;
+       margin:0 0 8px;font-weight:700}
+  .cap.bad{color:#ff6b6b}
+  .cap.good{color:#7bd88f}
+  .stage{background:#f3efe9;border-radius:14px;overflow:hidden;position:relative}
+  .stage.narrow{max-width:390px;margin:0 auto}
+  iframe{display:block;width:100%;border:0;background:#f3efe9}
+  .note{margin-top:18px;font-size:.8rem;color:#9a9089;line-height:1.7;max-width:900px}
+  .note b{color:#d8b489}
+  table{border-collapse:collapse;margin-top:14px;font-size:.82rem;width:100%;max-width:760px}
+  th,td{border:1px solid #3a2f27;padding:7px 11px;text-align:left}
+  th{background:#2a221c;color:#d8b489;font-weight:600;font-size:.72rem;
+     letter-spacing:.08em;text-transform:uppercase}
+  td.num{font-variant-numeric:tabular-nums;color:#fbfaf8}
+  td.old{color:#ff9b9b}
+  td.new{color:#7bd88f}
+</style>
+</head>
+<body>
+
+<h1>Wishlist Hero popup — Before / After</h1>
+<p class="sub">
+  Left = app ke apne settings (HeaderFontSize 30 · ProductName 18 · Price 16) jaise abhi dikhta hai.<br>
+  Right = <b>theme_export/assets/style.css</b> ke naye wishlist block ke baad.
+</p>
+
+<div class="bar">
+  <button class="tog on" id="btnD">Desktop</button>
+  <button class="tog" id="btnM">Mobile (390px)</button>
+</div>
+
+<div class="grid">
+  <div class="col">
+    <p class="cap bad">Before — bade fonts, close icon misaligned</p>
+    <div class="stage" id="stageA"><iframe id="a" src="/preview-wishlist-frame.html?fix=0"></iframe></div>
+  </div>
+  <div class="col">
+    <p class="cap good">After — theme fonts, header properly aligned</p>
+    <div class="stage" id="stageB"><iframe id="b" src="/preview-wishlist-frame.html?fix=1"></iframe></div>
+  </div>
+</div>
+
+<table>
+  <tr><th>Element</th><th>Before</th><th>After (desktop)</th><th>After (≤749px)</th></tr>
+  <tr><td>"My wishlist" title</td><td class="old">30px</td><td class="new">17–20.8px (clamp)</td><td class="new">17px</td></tr>
+  <tr><td>Close ✕ icon</td><td class="old">24px, 8px padding</td><td class="new">17px, 34×34 button</td><td class="new">16px, 32×32</td></tr>
+  <tr><td>Product name</td><td class="old">18px</td><td class="new">15px</td><td class="new">14px</td></tr>
+  <tr><td>Price</td><td class="old">16px</td><td class="new">14px</td><td class="new">13px</td></tr>
+  <tr><td>Sub-header (variant/date)</td><td class="old">14px #0009</td><td class="new">13px muted</td><td class="new">13px muted</td></tr>
+  <tr><td>Buttons</td><td class="old">14px, blue #1976d2</td><td class="new">13px, theme ink → red hover</td><td class="new">12px</td></tr>
+  <tr><td>Font family</td><td class="old">Roboto (MUI)</td><td class="new">Archivo + Instrument Serif</td><td class="new">same</td></tr>
+</table>
+
+<p class="note">
+  <b>Header alignment:</b> title ko <code>flex:1 1 auto</code> + close button ko <code>order:2</code> /
+  <code>margin-left:auto</code> diya gaya hai, dono <code>align-items:center</code> ke saath — isliye
+  "My wishlist" left me rahega aur ✕ right me, dono ek hi line par vertically centred.<br>
+  <b>Long titles:</b> product name 2 lines par clamp ho jata hai, jisse card kabhi bhi height me nahi phulega.<br>
+  <b>:</b> every rule is <code>!important</code> kyunki MUI apni stylesheet runtime par inject karta hai
+  (theme CSS ke baad), warna MUI jeet jata.
+</p>
+
+<script>
+  var D = 620, M = 390;
+  function setH(h){ ['a','b'].forEach(function(id){ document.getElementById(id).style.height = h + 'px'; }); }
+  function mode(mob){
+    var h = mob ? 560 : 620;
+    ['stageA','stageB'].forEach(function(id){
+      document.getElementById(id).classList.toggle('narrow', mob);
+    });
+    setH(h);
+    document.getElementById('btnM').classList.toggle('on', mob);
+    document.getElementById('btnD').classList.toggle('on', !mob);
+  }
+  document.getElementById('btnD').onclick = function(){ mode(false); };
+  document.getElementById('btnM').onclick = function(){ mode(true);  };
+  mode(false);
+</script>
+</body>
+</html>
