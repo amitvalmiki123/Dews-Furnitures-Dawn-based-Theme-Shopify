@@ -2246,3 +2246,130 @@ section#shopify-section-template--28486573293749__judgeme-reviews {
     fill: currentColor !important;
   }
 }
+
+/* ==========================================================================
+   WISHLIST HERO — equal-height cards in .MuiGrid-item
+   --------------------------------------------------------------------------
+   Problem: MUI Grid items stretch to the tallest row by default, but
+   .MuiCard-root has NO height of its own, so each card only grows as tall as
+   its own content. A one-line product title therefore leaves a short card
+   sitting next to full-height ones.
+
+   Fix in three parts:
+     1. the grid item becomes a flex column, the card inside fills it (100%)
+     2. the title block reserves two lines, so 1-line and 2-line titles
+        occupy exactly the same space and every price lines up
+     3. the action row is pushed to the bottom with margin-top:auto, so the
+        buttons align across the whole row
+   ========================================================================== */
+
+/* ---- 1. Grid item stretches, card fills it ------------------------------- */
+.wishlisthero-customer-view-listing .MuiGrid-container {
+  align-items: stretch !important;
+}
+.wishlisthero-customer-view-listing .MuiGrid-item {
+  display: flex !important;
+  flex-direction: column !important;
+}
+.wishlisthero-customer-view-listing .MuiGrid-item > .MuiCard-root,
+.wishlisthero-customer-view-listing .MuiGrid-item > .MuiPaper-root {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  margin: 0 !important;
+}
+
+/* ---- 2. Card internals become a column: image / title / price / actions -- */
+.wishlisthero-customer-view-listing .MuiCard-root {
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+/* image: fixed square so every card's media block is identical */
+.wishlisthero-customer-view-listing .MuiCardMedia-root {
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  background-size: cover !important;
+  background-position: center !important;
+}
+.wishlisthero-customer-view-listing .MuiCard-root img {
+  display: block !important;
+  width: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: cover !important;
+  height: auto !important;
+}
+
+/* header stays its natural height; the title reserves 2 lines either way */
+.wishlisthero-customer-view-listing .MuiCardHeader-root {
+  flex: 0 0 auto !important;
+  align-items: flex-start !important;
+}
+/* 2 lines x line-height 1.4 = 2.8em -> a 1-line title cannot shrink the card */
+.wishlisthero-customer-view-listing .MuiCardHeader-content span {
+  min-height: 2.8em !important;
+}
+.wishlisthero-customer-view-listing .MuiCardHeader-subheader {
+  min-height: 1.45em !important;
+}
+
+/* price: sits right under the title, never stretches */
+.wishlisthero-customer-view-listing .MuiCardContent-root.wishlist-hero-list-card-product-price,
+.wishlisthero-customer-view-listing [class*="wishlist-hero-list-card-product-price"] {
+  flex: 0 0 auto !important;
+}
+
+/* ---- 3. Action row pinned to the bottom of every card -------------------- */
+.wishlisthero-customer-view-listing .MuiCardActions-root {
+  flex: 0 0 auto !important;
+  margin-top: auto !important;
+  padding: 0.5rem 0.95rem 0.95rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+.wishlisthero-customer-view-listing .MuiCardActions-root .MuiButton-root {
+  width: 100% !important;
+}
+
+/* ---- Mobile: 2-up grid, same rules hold ---------------------------------- */
+@media screen and (max-width: 749px) {
+  .wishlisthero-customer-view-listing .MuiCardHeader-root {
+    align-items: flex-start !important;
+  }
+  .wishlisthero-customer-view-listing .MuiCardActions-root {
+    padding: 0.4rem 0.75rem 0.8rem !important;
+  }
+}
+
+/* ---- FALLBACK for the standalone wishlist PAGE ---------------------------
+   On the dedicated page the cards are not wrapped in the popup container, so
+   the rules above cannot reach them. :has() finds any MUI grid that holds
+   wishlist price nodes. Separate rule so browsers without :has() keep the
+   plain block above.                                                        */
+@supports selector(:has(*)) {
+  .MuiGrid-container:has([class*="wishlist-hero-list-card-product-price"]) {
+    align-items: stretch !important;
+  }
+  .MuiGrid-container:has([class*="wishlist-hero-list-card-product-price"]) > .MuiGrid-item {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .MuiGrid-container:has([class*="wishlist-hero-list-card-product-price"]) > .MuiGrid-item > .MuiCard-root,
+  .MuiGrid-container:has([class*="wishlist-hero-list-card-product-price"]) > .MuiGrid-item > .MuiPaper-root {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+  .MuiGrid-container:has([class*="wishlist-hero-list-card-product-price"]) .MuiCardActions-root {
+    margin-top: auto !important;
+  }
+  .MuiGrid-container:has([class*="wishlist-hero-list-card-product-price"]) .MuiCardHeader-content span {
+    min-height: 2.8em !important;
+  }
+}

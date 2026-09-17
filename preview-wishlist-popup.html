@@ -41,7 +41,7 @@
 
 <h1>Wishlist Hero popup — Before / After</h1>
 <p class="sub">
-  Left = app ke apne settings (HeaderFontSize 30 · ProductName 18 · Price 16) jaise abhi dikhta hai.<br>
+  Left = abhi jaisa dikhta hai (short title wala card chhota, heights unequal).<br>
   Right = <b>theme_export/assets/style.css</b> ke naye wishlist block ke baad.
 </p>
 
@@ -82,10 +82,10 @@
 </p>
 
 <script>
-  var D = 620, M = 390;
+  var D = 700, M = 390;
   function setH(h){ ['a','b'].forEach(function(id){ document.getElementById(id).style.height = h + 'px'; }); }
   function mode(mob){
-    var h = mob ? 560 : 620;
+    var h = mob ? 620 : 700;
     ['stageA','stageB'].forEach(function(id){
       document.getElementById(id).classList.toggle('narrow', mob);
     });
