@@ -2373,3 +2373,121 @@ section#shopify-section-template--28486573293749__judgeme-reviews {
     min-height: 2.8em !important;
   }
 }
+
+/* ==========================================================================
+   LOAD-IN FADE — homepage hero, collection banner, product page
+   --------------------------------------------------------------------------
+   Extends the page-hero fade in assets/dews-pages.css (§6) to the other three
+   templates. Same idea: a staggered fade that plays on first paint and on
+   every refresh. Pure CSS, no JS, so nothing depends on a script loading.
+
+   THREE THINGS WORTH KNOWING BEFORE EDITING
+   1. The hidden state lives ONLY in the `from` keyframe, never as a base
+      rule. animation-fill-mode:both holds `from` through the delay and `to`
+      afterwards, so if this file ever fails to load no rule applies and the
+      content simply stays visible instead of being stuck invisible.
+   2. Every .page-head rule is wrapped in @supports selector(:has(*)).
+      .page-head is shared by the page, collection, list-collections, search
+      and product templates, so it must never be targeted bare.
+   3. .gallery on the product page is position:sticky. It is deliberately
+      never animated — a transform there fights the sticky positioning. Its
+      two children are animated instead, and .gallery__thumbs (absolutely
+      positioned) gets a fade with no movement.
+
+   Nothing here carries .reveal, so there is no overlap with the
+   scroll-triggered reveal system in script.js.
+   ========================================================================== */
+
+@keyframes dewsFadeUp {
+  from { opacity: 0; transform: translate3d(0, 24px, 0) }
+  to   { opacity: 1; transform: translate3d(0, 0, 0) }
+}
+@keyframes dewsFade {
+  from { opacity: 0 }
+  to   { opacity: 1 }
+}
+@keyframes dewsMediaIn {
+  from { opacity: 0; transform: scale(1.035) }
+  to   { opacity: 1; transform: scale(1) }
+}
+
+/* ---- 1. HOMEPAGE HERO — .hero (sections/custom-dews-hero.liquid) --------- */
+.hero .hero__content > * {
+  animation: dewsFadeUp 0.85s var(--ease-out, ease) both;
+}
+/* the watermark owns transform: translateY(-50%); animating it would jump */
+.hero .hero__content > .hero__watermark {
+  animation: none !important;
+}
+.hero .hero__content > *:nth-child(1) { animation-delay: 0.05s }
+.hero .hero__content > *:nth-child(2) { animation-delay: 0.15s }
+.hero .hero__content > *:nth-child(3) { animation-delay: 0.25s }
+.hero .hero__content > *:nth-child(4) { animation-delay: 0.35s }
+.hero .hero__content > *:nth-child(5) { animation-delay: 0.45s }
+.hero .hero__content > *:nth-child(6) { animation-delay: 0.55s }
+.hero .hero__content > *:nth-child(n + 7) { animation-delay: 0.62s }
+
+.hero .hero__media {
+  animation: dewsMediaIn 1.15s var(--ease-out, ease) 0.15s both;
+}
+
+/* ---- 2. COLLECTION / LIST-COLLECTIONS / SEARCH BANNER — .chero ----------- */
+.chero__text > * {
+  animation: dewsFadeUp 0.85s var(--ease-out, ease) both;
+}
+.chero__text > *:nth-child(1) { animation-delay: 0.10s }
+.chero__text > *:nth-child(2) { animation-delay: 0.20s }
+.chero__text > *:nth-child(3) { animation-delay: 0.30s }
+.chero__text > *:nth-child(4) { animation-delay: 0.40s }
+.chero__text > *:nth-child(n + 5) { animation-delay: 0.48s }
+
+.chero__media {
+  animation: dewsMediaIn 1.15s var(--ease-out, ease) 0.15s both;
+}
+
+/* ---- 3. PRODUCT PAGE — .pdp (sections/main-product.liquid) --------------- */
+.pdp__info > * {
+  animation: dewsFadeUp 0.85s var(--ease-out, ease) both;
+}
+.pdp__info > *:nth-child(1) { animation-delay: 0.10s }
+.pdp__info > *:nth-child(2) { animation-delay: 0.20s }
+.pdp__info > *:nth-child(3) { animation-delay: 0.30s }
+.pdp__info > *:nth-child(4) { animation-delay: 0.40s }
+.pdp__info > *:nth-child(5) { animation-delay: 0.50s }
+.pdp__info > *:nth-child(n + 6) { animation-delay: 0.58s }
+
+/* .gallery itself is position:sticky — never animate it */
+.gallery__main {
+  animation: dewsFadeUp 1s var(--ease-out, ease) 0.15s both;
+}
+/* .gallery__thumbs is absolutely positioned, so fade only, no movement */
+.gallery__thumbs {
+  animation: dewsFade 0.9s var(--ease-out, ease) 0.32s both;
+}
+
+/* ---- 4. BREADCRUMBS ------------------------------------------------------
+   .page-head is shared by five templates, so each rule is scoped to the
+   section that actually owns the hero below it.                            */
+@supports selector(:has(*)) {
+  .shopify-section.collection-banner-section:has(.chero) .page-head,
+  .shopify-section.search-section:has(.chero) .page-head,
+  .shopify-section:has(.pdp) .page-head {
+    animation: dewsFade 0.7s var(--ease-out, ease) 0.05s both;
+  }
+}
+
+/* ---- 5. REDUCED MOTION — show it all at once, no movement ---------------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero .hero__content > *,
+  .hero .hero__media,
+  .chero__text > *,
+  .chero__media,
+  .pdp__info > *,
+  .gallery__main,
+  .gallery__thumbs,
+  .shopify-section .page-head {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

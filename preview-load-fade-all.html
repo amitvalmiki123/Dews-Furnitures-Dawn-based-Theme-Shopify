@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Load-in fade — homepage / collection / PDP / page hero</title>
+<link rel="stylesheet" href="/theme_export/assets/style.css">
+<link rel="stylesheet" href="/theme_export/assets/dews-collection.css">
+<link rel="stylesheet" href="/theme_export/assets/component-dews-product.css">
+<link rel="stylesheet" href="/theme_export/assets/dews-pages.css">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#fbfaf8}
+  .bar{position:sticky;top:0;z-index:200;background:#171310;color:#fbfaf8;
+       display:flex;gap:9px;align-items:center;padding:10px 16px;flex-wrap:wrap;
+       font-family:Archivo,-apple-system,sans-serif}
+  .bar b{font-size:.82rem;font-weight:600}
+  button{background:#2a221c;color:#fbfaf8;border:1px solid #4a3f37;border-radius:999px;
+         padding:7px 14px;font-size:.76rem;cursor:pointer;font-weight:600;letter-spacing:.03em;
+         font-family:inherit}
+  button:hover{background:#e01b22;border-color:#e01b22}
+  button.on{background:#e01b22;border-color:#e01b22}
+  .hint{font-size:.7rem;color:#9a9089;margin-left:auto}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;background:#231d18;padding:8px 16px;
+        position:sticky;top:44px;z-index:199}
+  .tab{background:transparent;border:1px solid #4a3f37;color:#c9c0b8}
+  .tab.on{background:#e01b22;border-color:#e01b22;color:#fff}
+  .demo{display:none}
+  .demo.on{display:block}
+  .lbl{background:#171310;color:#d8b489;font-size:.68rem;letter-spacing:.14em;
+       text-transform:uppercase;font-weight:700;padding:7px 16px;
+       font-family:Archivo,sans-serif}
+  /* re-trigger: strip animations, reflow, restore */
+  .stage.replay *{animation-name:none !important}
+  /* slow-mo */
+  .slow .hero .hero__content > *,.slow .chero__text > *,.slow .pdp__info > *,
+  .slow .phero__text > *{animation-duration:3.4s !important}
+  .slow .hero .hero__media,.slow .chero__media,.slow .phero__media
+    {animation-duration:4.6s !important}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <b>Load-in fade — sabhi templates</b>
+  <button id="btnReplay">↻ Replay</button>
+  <button id="btnSlow">Slow motion</button>
+  <span class="hint">Pure CSS · refresh par bhi chalta hai · .gallery sticky hai isliye uspe transform nahi</span>
+</div>
+
+<div class="tabs">
+  <button class="tab on" data-d="d1">Homepage hero</button>
+  <button class="tab" data-d="d2">Collection banner</button>
+  <button class="tab" data-d="d3">Product page (PDP)</button>
+  <button class="tab" data-d="d4">Page hero</button>
+</div>
+
+<div class="stage" id="stage">
+
+<!-- ══════════════ 1. HOMEPAGE HERO ══════════════ -->
+<div class="demo on" id="d1">
+  <div class="lbl">Homepage — .hero (sections/custom-dews-hero.liquid)</div>
+  <section class="hero" aria-labelledby="hero-title">
+    <p class="hero__rail">Solid wood · Made in India</p>
+    <div class="hero__content">
+      <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Handcrafted in Jodhpur</p>
+      <h1 id="hero-title">Furniture that<br>outlives trends</h1>
+      <p class="hero__lead">Solid timber, hand-woven cane and joinery that predates the staple gun.</p>
+      <div class="hero__ctas">
+        <a class="btn" href="#">Shop new arrivals <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn--ghost" href="#">Our craft</a>
+      </div>
+      <div class="hero__proof">
+        <span class="hero__proof-item"><span class="stars" aria-hidden="true">★★★★★</span> <strong>4.9</strong>&nbsp;2,140 reviews</span>
+        <span class="hero__proof-item"><svg aria-hidden="true"><use href="#i-truck"/></svg> Free delivery over ₹25,000</span>
+        <span class="hero__proof-item"><svg aria-hidden="true"><use href="#i-rotate"/></svg> 30-day returns</span>
+      </div>
+    </div>
+    <div class="hero__media">
+      <img src="https://images.unsplash.com/photo-1550581190-9c1c48d21d6c?w=1500&q=75" alt="Showroom">
+      <a href="#" class="hotspot" style="left:38%;top:52%" aria-label="Shop product"></a>
+      <a href="#" class="hotspot" style="left:62%;top:64%" aria-label="Shop product"></a>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════ 2. COLLECTION BANNER ══════════════ -->
+<div class="demo" id="d2">
+  <div class="lbl">Collection / search / list-collections — .chero (main-collection-banner.liquid)</div>
+  <div class="shopify-section collection-banner-section">
+    <div class="page-head">
+      <div class="container">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb">
+            <li><a href="#">Home</a></li><li><a href="#">Collections</a></li>
+            <li><span aria-current="page">Beds</span></li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <section class="section collection-banner">
+      <div class="container">
+        <div class="chero">
+          <div class="chero__text">
+            <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Solid sheesham</p>
+            <h1>Beds</h1>
+            <div class="chero__desc"><p>Every frame is cut, joined and finished by hand — no shortcuts, no staples pretending to be joinery.</p></div>
+            <div class="chero__meta">
+              <div><svg aria-hidden="true"><use href="#i-hammer"/></svg> Hand-woven cane</div>
+              <div><svg aria-hidden="true"><use href="#i-truck"/></svg> Kiln-dried timber</div>
+              <div><svg aria-hidden="true"><use href="#i-rotate"/></svg> 30-day returns</div>
+            </div>
+          </div>
+          <div class="chero__media">
+            <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200&q=75" alt="Beds">
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ══════════════ 3. PDP ══════════════ -->
+<div class="demo" id="d3">
+  <div class="lbl">Product page — .pdp (sections/main-product.liquid) · .gallery sticky hai, animate nahi hota</div>
+  <div class="shopify-section">
+    <div class="page-head">
+      <div class="container">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb">
+            <li><a href="#">Home</a></li><li><a href="#">Beds</a></li>
+            <li><span aria-current="page">Sheesham Queen Bed</span></li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <section class="section section--tight">
+      <div class="container">
+        <div class="pdp">
+          <div class="gallery" id="gallery">
+            <div class="gallery__thumbs" role="tablist">
+              <button class="gallery__thumb is-active"><img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=180&q=70" alt="" width="86" height="86"></button>
+              <button class="gallery__thumb"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=180&q=70" alt="" width="86" height="86"></button>
+              <button class="gallery__thumb"><img src="https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=180&q=70" alt="" width="86" height="86"></button>
+            </div>
+            <div class="gallery__main" id="galleryMain">
+              <img id="galleryImg" src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200&q=75" alt="Bed" width="900" height="900">
+            </div>
+          </div>
+
+          <div class="pdp__info">
+            <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Solid sheesham</p>
+            <h1 id="p-title">Sheesham Wood Queen Bed With Box Storage</h1>
+            <div id="price-demo" class="pdp__price" role="status">
+              <span class="price">₹ 42,999.00</span>
+              <span class="price--was">₹ 51,999.00</span>
+              <span class="price--save">Save ₹ 9,000.00</span>
+            </div>
+            <div class="no-js-hidden"><p class="pdp__stock"><i aria-hidden="true"></i> In stock</p></div>
+            <div style="padding:14px 0;border-block:1px solid var(--line)">
+              <label style="font-size:.8rem;color:var(--muted);display:block;margin-bottom:8px">Finish</label>
+              <span style="display:inline-block;width:34px;height:34px;border-radius:999px;background:#6b4a33;border:2px solid var(--ink)"></span>
+              <span style="display:inline-block;width:34px;height:34px;border-radius:999px;background:#c99a5f"></span>
+            </div>
+            <div style="margin-top:14px">
+              <a class="btn" href="#">Add to cart</a>
+            </div>
+            <div class="faq faq--flush" style="margin-top:18px">
+              <details><summary>Dimensions</summary><div style="padding:10px 0;color:var(--muted);font-size:.9rem">212 × 168 × 105 cm</div></details>
+              <details><summary>Delivery &amp; returns</summary><div style="padding:10px 0;color:var(--muted);font-size:.9rem">Free delivery, 30-day returns.</div></details>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ══════════════ 4. PAGE HERO ══════════════ -->
+<div class="demo" id="d4">
+  <div class="lbl">Content page — .phero (sections/custom-page-banner.liquid) · pichhle commit se</div>
+  <div class="shopify-section collection-banner-section">
+    <div class="page-head">
+      <div class="container">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><span aria-current="page">Our Craft</span></li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <section class="section collection-banner page-hero-section">
+      <div class="container">
+        <div class="phero">
+          <div class="phero__text">
+            <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Our craft</p>
+            <h1 id="ph-title">Made by hand,<br>built to outlive us</h1>
+            <div class="phero__desc"><p>Every frame is cut, joined and finished by hand — no shortcuts, no staples pretending to be joinery.</p></div>
+            <div class="phero__meta">
+              <div><svg aria-hidden="true"><use href="#i-hammer"/></svg> Hand-woven cane</div>
+              <div><svg aria-hidden="true"><use href="#i-truck"/></svg> Kiln-dried solid timber</div>
+              <div><svg aria-hidden="true"><use href="#i-rotate"/></svg> 30-day returns</div>
+            </div>
+            <a class="btn phero__cta" href="#">Explore the collection <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+          <div class="phero__media">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=75" alt="Craft" width="1000" height="625">
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+</div><!-- /stage -->
+
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M1 3h13v13H1zM14 8h4l3 3v5h-7zM5.5 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM17.5 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></symbol>
+  <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></symbol>
+  <symbol id="i-hammer" viewBox="0 0 24 24"><path d="M2 22h20M5 18l6-6M14.5 5.5l4 4L21 7l-4-4z"/></symbol>
+</svg>
+<style>
+  svg use, svg[aria-hidden="true"]{fill:currentColor}
+  .hero__proof-item svg,.chero__meta svg,.phero__meta svg{width:17px;height:17px}
+</style>
+
+<script>
+  var stage = document.getElementById('stage');
+
+  document.getElementById('btnReplay').onclick = function () {
+    stage.classList.add('replay');
+    void stage.offsetWidth;
+    stage.classList.remove('replay');
+  };
+
+  var slow = false;
+  document.getElementById('btnSlow').onclick = function () {
+    slow = !slow;
+    this.classList.toggle('on', slow);
+    document.body.classList.toggle('slow', slow);
+  };
+
+  document.querySelectorAll('.tab').forEach(function (t) {
+    t.onclick = function () {
+      document.querySelectorAll('.tab').forEach(function (x) { x.classList.remove('on'); });
+      document.querySelectorAll('.demo').forEach(function (x) { x.classList.remove('on'); });
+      t.classList.add('on');
+      document.getElementById(t.dataset.d).classList.add('on');
+      // replay so the fade is visible on the newly shown tab
+      stage.classList.add('replay');
+      void stage.offsetWidth;
+      stage.classList.remove('replay');
+    };
+  });
+</script>
+</body>
+</html>
