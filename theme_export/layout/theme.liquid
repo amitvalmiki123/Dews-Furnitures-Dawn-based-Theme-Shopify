@@ -407,5 +407,117 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
-  </body>
+  
+{%- comment -%}
+  ==========================================================================
+  Dew's — reveal the homepage sections on scroll
+  --------------------------------------------------------------------------
+  Shop by room, Our craft, Shop the look, Materials, Testimonials, New
+  arrivals, More collections and the FAQ rows never received the theme's
+  .reveal class, so they appeared with no transition. This claims them at
+  runtime instead of editing eight section files.
+
+  The matching CSS lives at the end of assets/style.css (.dews-reveal).
+
+  Two safety rules:
+    1. The hidden state is set HERE (the data-dews-reveal attribute), never in
+       the stylesheet. If this script is missing or throws, nothing is hidden
+       and the page just renders without animation.
+    2. Elements already carrying .reveal / .reveal-img are skipped, so nothing
+       can be hidden by both systems at once.
+  ==========================================================================
+{%- endcomment -%}
+<script>
+(function () {
+  'use strict';
+
+  var SELECTORS = [
+    '.section-head__text > *',   /* eyebrow / heading / description of every section */
+    '.rooms__list > *',          /* Shop by room                                    */
+    '.looks > *',                /* Shop the look                                   */
+    '.materials > *',            /* Materials strip                                 */
+    '.reviews > .review',        /* Testimonials                                    */
+    '.arrivals > *',             /* New arrivals                                    */
+    '.coll-tiles > *',           /* More collections                                */
+    '.faq > .faq__item'          /* FAQ rows                                        */
+  ];
+
+  var els = [];
+  SELECTORS.forEach(function (sel) {
+    Array.prototype.forEach.call(document.querySelectorAll(sel), function (el) {
+      /* never touch anything the theme already animates */
+      if (el.classList.contains('reveal') || el.classList.contains('reveal-img')) return;
+      if (el.classList.contains('dews-reveal')) return;
+      if (els.indexOf(el) !== -1) return;
+      els.push(el);
+    });
+  });
+  if (!els.length) return;
+
+  var reduce = window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    : false;
+
+  if (reduce || !('IntersectionObserver' in window)) {
+    els.forEach(function (el) { el.classList.add('dews-reveal', 'is-in'); });
+    return;
+  }
+
+  els.forEach(function (el) {
+    el.classList.add('dews-reveal');
+    el.setAttribute('data-dews-reveal', 'pending');
+  });
+
+  /* stagger siblings inside each group, capped so a long row never crawls */
+  var counts = new Map();
+  els.forEach(function (el) {
+    var i = counts.get(el.parentNode) || 0;
+    counts.set(el.parentNode, i + 1);
+    el.style.setProperty('--d', (Math.min(i, 6) * 0.08).toFixed(2) + 's');
+  });
+
+  function show(el) {
+    el.removeAttribute('data-dews-reveal');
+    el.classList.add('is-in');
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      show(entry.target);
+      io.unobserve(entry.target);
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+  els.forEach(function (el) { io.observe(el); });
+
+  /* fallback sweep — mirrors the one in script.js */
+  function sweep() {
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    els.forEach(function (el) {
+      if (el.classList.contains('is-in')) return;
+      var r = el.getBoundingClientRect();
+      if (r.top < vh * 0.92 && r.bottom > 0) { show(el); io.unobserve(el); }
+    });
+  }
+  window.addEventListener('scroll', sweep, { passive: true });
+  window.addEventListener('resize', sweep);
+  window.addEventListener('load', sweep);
+  sweep();
+
+  /* last resort: nothing is allowed to stay hidden */
+  setTimeout(function () {
+    els.forEach(function (el) {
+      if (r0(el)) show(el);
+    });
+    function r0(el) {
+      var r = el.getBoundingClientRect();
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      return !el.classList.contains('is-in') && r.top < vh && r.bottom > 0;
+    }
+  }, 2500);
+})();
+</script>
+
+</body>
 </html>

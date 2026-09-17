@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" class="js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scroll reveal — homepage sections</title>
+<link rel="stylesheet" href="/theme_export/assets/style.css">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#fbfaf8}
+  .bar{position:fixed;top:0;left:0;right:0;z-index:300;background:#171310;color:#fbfaf8;
+       display:flex;gap:9px;align-items:center;padding:9px 16px;flex-wrap:wrap;
+       font-family:Archivo,-apple-system,sans-serif}
+  .bar b{font-size:.8rem;font-weight:600}
+  button{background:#2a221c;color:#fbfaf8;border:1px solid #4a3f37;border-radius:999px;
+         padding:6px 13px;font-size:.74rem;cursor:pointer;font-weight:600;font-family:inherit}
+  button:hover{background:#e01b22;border-color:#e01b22}
+  button.on{background:#e01b22;border-color:#e01b22}
+  .hint{font-size:.7rem;color:#9a9089;margin-left:auto}
+  .sp{height:46px}
+
+  /* ---- demo scaffolding (not part of the shipped code) ---- */
+  .room,.look,.material,.review,.arrivals__card,.coll-tile,.faq__item{
+    background:#fff;border:1px solid var(--line,#e2dcd3);border-radius:12px;padding:16px;
+  }
+  .rooms__list,.looks,.materials,.reviews,.arrivals,.coll-tiles{
+    list-style:none;margin:0;padding:0;
+    display:grid;gap:14px;grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+  .materials{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .reviews{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .arrivals{grid-template-columns:1.05fr .95fr}
+  .coll-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .faq__item{margin:0}
+  .ph{background:#e9e3da;border-radius:8px;aspect-ratio:16/10;display:grid;place-items:center;
+      color:#9a9089;font-size:.7rem;margin-bottom:10px}
+  @media (max-width:749px){
+    .rooms__list,.looks,.materials,.reviews,.coll-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .arrivals{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <b>Scroll reveal — Shop by room / Our craft / Shop the look …</b>
+  <button id="btnReset">↻ Reset (scroll dobara)</button>
+  <button id="btnAll">Sab dikhao</button>
+  <span class="hint">Neeche scroll karo — sections fade hote hue aayenge</span>
+</div>
+<div class="sp"></div>
+
+<!-- ════════ SHOP BY ROOM ════════ -->
+<section class="section" id="rooms">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Shop by room</p>
+        <h2>Find your room</h2>
+        <p>Start where you live. Every piece is built to sit comfortably beside the last.</p>
+      </div>
+      <a class="link-arrow" href="#">View all rooms</a>
+    </div>
+    <ul class="rooms__list">
+      <li class="rooms__item"><div class="ph">Living room</div><h3>Living room</h3><span class="rooms__meta">48 pieces</span></li>
+      <li class="rooms__item"><div class="ph">Bedroom</div><h3>Bedroom</h3><span class="rooms__meta">36 pieces</span></li>
+      <li class="rooms__item"><div class="ph">Dining</div><h3>Dining</h3><span class="rooms__meta">22 pieces</span></li>
+      <li class="rooms__item"><div class="ph">Study</div><h3>Study</h3><span class="rooms__meta">19 pieces</span></li>
+      <li class="rooms__item"><div class="ph">Balcony</div><h3>Balcony</h3><span class="rooms__meta">14 pieces</span></li>
+      <li class="rooms__item"><div class="ph">Entryway</div><h3>Entryway</h3><span class="rooms__meta">9 pieces</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════ OUR CRAFT ════════ -->
+<section class="section section--ink" id="craft">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Our craft</p>
+        <h2>Made by hand, built to outlive us</h2>
+        <p>Every frame is cut, joined and finished by hand — no shortcuts, no staples pretending to be joinery.</p>
+      </div>
+      <a class="link-arrow" href="#">The workshop</a>
+    </div>
+    <div class="materials">
+      <div class="material"><div class="ph">01</div><span>Kiln-dried timber</span></div>
+      <div class="material"><div class="ph">02</div><span>Hand-woven cane</span></div>
+      <div class="material"><div class="ph">03</div><span>Mortise &amp; tenon</span></div>
+      <div class="material"><div class="ph">04</div><span>Hand-rubbed finish</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ SHOP THE LOOK ════════ -->
+<section class="section section--bone" id="looks">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Shop the look</p>
+        <h2>Three rooms, one afternoon</h2>
+      </div>
+    </div>
+    <div class="looks">
+      <article class="look"><div class="ph">Look 01</div><div class="look__body"><h3>Sunday morning</h3></div></article>
+      <article class="look"><div class="ph">Look 02</div><div class="look__body"><h3>Quiet corner</h3></div></article>
+      <article class="look"><div class="ph">Look 03</div><div class="look__body"><h3>Late dinner</h3></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ NEW ARRIVALS ════════ -->
+<section class="section" id="arrivals">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Just landed</p>
+        <h2>New arrivals</h2>
+      </div>
+      <a class="link-arrow" href="#">View all new</a>
+    </div>
+    <div class="arrivals">
+      <div class="arrivals__card"><div class="ph">Featured</div><h3>Sheesham Queen Bed</h3></div>
+      <div class="arrivals__card"><div class="ph">Stacked</div><h3>Cane Sofa</h3></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ TESTIMONIALS ════════ -->
+<section class="section" id="testimonials">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Testimonials</p>
+        <h2>What owners say</h2>
+      </div>
+    </div>
+    <div class="reviews">
+      <div class="review"><p class="stars">★★★★★</p><p class="ph">Review</p></div>
+      <div class="review"><p class="stars">★★★★★</p><p class="ph">Review</p></div>
+      <div class="review"><p class="stars">★★★★★</p><p class="ph">Review</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ MORE COLLECTIONS ════════ -->
+<section class="section section--bone" id="more">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Keep browsing</p>
+        <h2>More collections</h2>
+      </div>
+    </div>
+    <div class="coll-tiles">
+      <div class="coll-tile"><div class="ph">Tile</div><h3>Chairs</h3></div>
+      <div class="coll-tile"><div class="ph">Tile</div><h3>Tables</h3></div>
+      <div class="coll-tile"><div class="ph">Tile</div><h3>Storage</h3></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FAQ ════════ -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-head__text">
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Answers</p>
+        <h2>Frequently asked</h2>
+      </div>
+    </div>
+    <div class="faq">
+      <div class="faq__item"><div class="faq__q">Do you deliver across India?</div></div>
+      <div class="faq__item"><div class="faq__q">How long does dispatch take?</div></div>
+      <div class="faq__item"><div class="faq__q">Can I return a made-to-order piece?</div></div>
+      <div class="faq__item"><div class="faq__q">Do you offer assembly?</div></div>
+    </div>
+  </div>
+</section>
+
+<div style="height:60vh"></div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     THE SHIPPED SCRIPT — identical to what goes in layout/theme.liquid
+     ══════════════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  'use strict';
+
+  var SELECTORS = [
+    '.section-head__text > *',
+    '.rooms__list > *',
+    '.looks > *',
+    '.materials > *',
+    '.reviews > .review',
+    '.arrivals > *',
+    '.coll-tiles > *',
+    '.faq > .faq__item'
+  ];
+
+  window.__dewsDemo = { boot: boot, els: [] };
+
+  function collect() {
+    var out = [];
+    SELECTORS.forEach(function (sel) {
+      Array.prototype.forEach.call(document.querySelectorAll(sel), function (el) {
+        if (el.classList.contains('reveal') || el.classList.contains('reveal-img')) return;
+        if (el.classList.contains('dews-reveal')) return;
+        if (out.indexOf(el) !== -1) return;
+        out.push(el);
+      });
+    });
+    return out;
+  }
+
+  var io = null;
+
+  function boot() {
+    var els = collect();
+    window.__dewsDemo.els = els;
+    if (!els.length) return;
+
+    var reduce = window.matchMedia
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false;
+
+    if (reduce || !('IntersectionObserver' in window)) {
+      els.forEach(function (el) { el.classList.add('dews-reveal', 'is-in'); });
+      return;
+    }
+
+    els.forEach(function (el) {
+      el.classList.add('dews-reveal');
+      el.setAttribute('data-dews-reveal', 'pending');
+    });
+
+    var counts = new Map();
+    els.forEach(function (el) {
+      var i = counts.get(el.parentNode) || 0;
+      counts.set(el.parentNode, i + 1);
+      el.style.setProperty('--d', (Math.min(i, 6) * 0.08).toFixed(2) + 's');
+    });
+
+    function show(el) {
+      el.removeAttribute('data-dews-reveal');
+      el.classList.add('is-in');
+    }
+
+    io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        show(entry.target);
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+    els.forEach(function (el) { io.observe(el); });
+
+    function sweep() {
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      els.forEach(function (el) {
+        if (el.classList.contains('is-in')) return;
+        var r = el.getBoundingClientRect();
+        if (r.top < vh * 0.92 && r.bottom > 0) { show(el); io.unobserve(el); }
+      });
+    }
+    window.addEventListener('scroll', sweep, { passive: true });
+    window.addEventListener('resize', sweep);
+    window.addEventListener('load', sweep);
+    sweep();
+  }
+
+  boot();
+
+  /* ---- demo-only controls ---- */
+  document.getElementById('btnReset').onclick = function () {
+    if (io) io.disconnect();
+    window.__dewsDemo.els.forEach(function (el) {
+      el.classList.remove('dews-reveal', 'is-in');
+      el.removeAttribute('data-dews-reveal');
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(boot, 400);
+  };
+  document.getElementById('btnAll').onclick = function () {
+    window.__dewsDemo.els.forEach(function (el) {
+      el.classList.add('dews-reveal');
+      el.removeAttribute('data-dews-reveal');
+      el.classList.add('is-in');
+    });
+  };
+})();
+</script>
+</body>
+</html>

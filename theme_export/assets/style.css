@@ -2491,3 +2491,44 @@ section#shopify-section-template--28486573293749__judgeme-reviews {
     transform: none !important;
   }
 }
+
+/* ==========================================================================
+   SCROLL REVEAL — homepage sections (Shop by room, Our craft, Shop the look…)
+   --------------------------------------------------------------------------
+   The theme ships a .reveal system (see the "Reveal on scroll" rules above and
+   the IntersectionObserver in script.js), but most sections were never given
+   the class, so their headings and card grids simply appear.
+
+   This covers them without editing a single section file: the small script at
+   the bottom of layout/theme.liquid claims the elements in its SELECTORS array
+   and this block animates whatever that script claims.
+
+   SAFETY — the hidden state is applied by the script, through the
+   [data-dews-reveal="pending"] attribute, never by this stylesheet. If the
+   script is missing, fails, or runs before the elements exist, nothing is
+   hidden and the page simply renders with no animation. The script also skips
+   anything already carrying .reveal or .reveal-img, so an element is never
+   hidden by both systems at once.
+   ========================================================================== */
+
+.dews-reveal {
+  transition: opacity 0.85s var(--ease-out, ease), transform 0.85s var(--ease-out, ease);
+  transition-delay: var(--d, 0s);
+}
+.dews-reveal[data-dews-reveal="pending"] {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+}
+.dews-reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dews-reveal,
+  .dews-reveal[data-dews-reveal="pending"] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
