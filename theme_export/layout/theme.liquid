@@ -432,14 +432,33 @@
   'use strict';
 
   var SELECTORS = [
-    '.section-head__text > *',   /* eyebrow / heading / description of every section */
-    '.rooms__list > *',          /* Shop by room                                    */
-    '.looks > *',                /* Shop the look                                   */
-    '.materials > *',            /* Materials strip                                 */
-    '.reviews > .review',        /* Testimonials                                    */
-    '.arrivals > *',             /* New arrivals                                    */
-    '.coll-tiles > *',           /* More collections                                */
-    '.faq > .faq__item'          /* FAQ rows                                        */
+    /* every section's heading block — eyebrow, heading, description */
+    '.section-head__text > *',
+
+    /* ---- homepage ---- */
+    '.rooms__list > *',          /* Shop by room                     */
+    '.looks > *',                /* Shop the look                    */
+    '.materials > *',            /* Materials strip                  */
+    '.reviews > .review',        /* Testimonials                     */
+    '.arrivals > *',             /* New arrivals                     */
+    '.coll-tiles > *',           /* More collections                 */
+    '.faq > .faq__item',         /* FAQ rows (homepage and product)  */
+
+    /* ---- collection page ----
+       The product grid itself is left alone: Dawn's own cascade is switched
+       on (animations_reveal_on_scroll: true) and dews-product-card already
+       carries .reveal, so those cards are animated by the theme already. */
+    '.seo-copy > *',             /* About the collection             */
+
+    /* ---- content pages: the left / right story blocks ---- */
+    '.craft-story__grid > *',    /* craft story: image + copy        */
+    '.craft-row',                /* craft split: each left-right row */
+    '.craft-features__grid > *', /* craft features grid              */
+
+    /* ---- footer ---- */
+    '.footer__grid > *',         /* the four footer columns          */
+    '.footer__signup',           /* newsletter block                 */
+    '.footer__bottom'            /* fine print row                   */
   ];
 
   var els = [];

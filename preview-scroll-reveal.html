@@ -3,148 +3,147 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Scroll reveal — homepage sections</title>
+<title>Scroll reveal — footer / collection / PDP / content pages</title>
 <link rel="stylesheet" href="/theme_export/assets/style.css">
 <style>
   *{box-sizing:border-box}
   body{margin:0;background:#fbfaf8}
   .bar{position:fixed;top:0;left:0;right:0;z-index:300;background:#171310;color:#fbfaf8;
-       display:flex;gap:9px;align-items:center;padding:9px 16px;flex-wrap:wrap;
+       display:flex;gap:8px;align-items:center;padding:9px 16px;flex-wrap:wrap;
        font-family:Archivo,-apple-system,sans-serif}
-  .bar b{font-size:.8rem;font-weight:600}
+  .bar b{font-size:.78rem;font-weight:600}
   button{background:#2a221c;color:#fbfaf8;border:1px solid #4a3f37;border-radius:999px;
-         padding:6px 13px;font-size:.74rem;cursor:pointer;font-weight:600;font-family:inherit}
-  button:hover{background:#e01b22;border-color:#e01b22}
-  button.on{background:#e01b22;border-color:#e01b22}
-  .hint{font-size:.7rem;color:#9a9089;margin-left:auto}
+         padding:6px 12px;font-size:.72rem;cursor:pointer;font-weight:600;font-family:inherit}
+  button:hover,button.on{background:#e01b22;border-color:#e01b22}
+  .hint{font-size:.68rem;color:#9a9089;margin-left:auto}
   .sp{height:46px}
 
-  /* ---- demo scaffolding (not part of the shipped code) ---- */
-  .room,.look,.material,.review,.arrivals__card,.coll-tile,.faq__item{
-    background:#fff;border:1px solid var(--line,#e2dcd3);border-radius:12px;padding:16px;
-  }
-  .rooms__list,.looks,.materials,.reviews,.arrivals,.coll-tiles{
-    list-style:none;margin:0;padding:0;
-    display:grid;gap:14px;grid-template-columns:repeat(3,minmax(0,1fr));
-  }
-  .materials{grid-template-columns:repeat(4,minmax(0,1fr))}
-  .reviews{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .arrivals{grid-template-columns:1.05fr .95fr}
-  .coll-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .faq__item{margin:0}
+  /* ---- demo scaffolding (NOT part of the shipped code) ---- */
+  .card{background:#fff;border:1px solid var(--line,#e2dcd3);border-radius:12px;padding:16px}
   .ph{background:#e9e3da;border-radius:8px;aspect-ratio:16/10;display:grid;place-items:center;
       color:#9a9089;font-size:.7rem;margin-bottom:10px}
+  .rooms__list,.looks,.materials,.reviews,.arrivals,.coll-tiles,.craft-features__grid{
+    list-style:none;margin:0;padding:0;display:grid;gap:14px;
+    grid-template-columns:repeat(3,minmax(0,1fr))}
+  .materials,.craft-features__grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .arrivals{grid-template-columns:1.05fr .95fr}
+  .craft-story__grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}
+  .craft-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}
+  .craft-row{padding-block:2rem;border-bottom:1px solid var(--line,#e2dcd3)}
+  .craft-row.image-right .craft-img{order:2}
+  .craft-img .ph,.craft-story__img .ph{aspect-ratio:4/3}
+  .seo-copy{max-width:76ch}
+  .seo-copy h2{font-size:1.6rem;margin-bottom:1rem}
+  .seo-copy__body{color:var(--muted);line-height:1.8}
+
+  /* footer demo */
+  .footer{background:#171310;color:#c9c0b8;padding-block:3rem;margin-top:0}
+  .footer h4{color:#fff;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;margin:0 0 1rem}
+  .footer ul{list-style:none;margin:0;padding:0;font-size:.85rem;line-height:2}
+  .footer__grid{display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:2rem;margin-bottom:2rem}
+  .footer__brand .logo__word{font-family:"Instrument Serif",Georgia,serif;font-size:1.5rem;color:#fff}
+  .footer__signup,.footer__bottom{padding-block:1.2rem;border-top:1px solid #3a2f27;font-size:.82rem}
+  .footer__bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+                  border-bottom:1px solid #3a2f27;font-size:.75rem;color:#9a9089}
+  .footer input{padding:.6rem .9rem;border-radius:999px;border:1px solid #4a3f37;
+                background:#2a221c;color:#fff;margin-right:.5rem}
   @media (max-width:749px){
-    .rooms__list,.looks,.materials,.reviews,.coll-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .arrivals{grid-template-columns:1fr}
+    .rooms__list,.looks,.materials,.reviews,.coll-tiles,.craft-features__grid
+      {grid-template-columns:repeat(2,minmax(0,1fr))}
+    .arrivals,.craft-story__grid,.craft-grid,.footer__grid{grid-template-columns:1fr}
+    .craft-row.image-right .craft-img{order:0}
   }
 </style>
 </head>
 <body>
 
 <div class="bar">
-  <b>Scroll reveal — Shop by room / Our craft / Shop the look …</b>
-  <button id="btnReset">↻ Reset (scroll dobara)</button>
+  <b>Scroll reveal — footer / collection / PDP / content pages</b>
+  <button id="btnReset">↻ Reset</button>
   <button id="btnAll">Sab dikhao</button>
-  <span class="hint">Neeche scroll karo — sections fade hote hue aayenge</span>
+  <span class="hint">Neeche scroll karo — har section fade hote hue aayega</span>
 </div>
 <div class="sp"></div>
 
-<!-- ════════ SHOP BY ROOM ════════ -->
-<section class="section" id="rooms">
-  <div class="container">
-    <div class="section-head">
-      <div class="section-head__text">
-        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Shop by room</p>
-        <h2>Find your room</h2>
-        <p>Start where you live. Every piece is built to sit comfortably beside the last.</p>
-      </div>
-      <a class="link-arrow" href="#">View all rooms</a>
-    </div>
-    <ul class="rooms__list">
-      <li class="rooms__item"><div class="ph">Living room</div><h3>Living room</h3><span class="rooms__meta">48 pieces</span></li>
-      <li class="rooms__item"><div class="ph">Bedroom</div><h3>Bedroom</h3><span class="rooms__meta">36 pieces</span></li>
-      <li class="rooms__item"><div class="ph">Dining</div><h3>Dining</h3><span class="rooms__meta">22 pieces</span></li>
-      <li class="rooms__item"><div class="ph">Study</div><h3>Study</h3><span class="rooms__meta">19 pieces</span></li>
-      <li class="rooms__item"><div class="ph">Balcony</div><h3>Balcony</h3><span class="rooms__meta">14 pieces</span></li>
-      <li class="rooms__item"><div class="ph">Entryway</div><h3>Entryway</h3><span class="rooms__meta">9 pieces</span></li>
-    </ul>
-  </div>
-</section>
+<!-- ════════ CONTENT PAGES — left / right story blocks ════════ -->
+<div class="lbl" style="background:#171310;color:#d8b489;font-size:.66rem;letter-spacing:.14em;
+     text-transform:uppercase;font-weight:700;padding:6px 16px;font-family:Archivo,sans-serif">
+  Content pages — .craft-story__grid / .craft-row / .craft-features__grid
+</div>
 
-<!-- ════════ OUR CRAFT ════════ -->
-<section class="section section--ink" id="craft">
+<section class="section">
   <div class="container">
-    <div class="section-head">
-      <div class="section-head__text">
-        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Our craft</p>
-        <h2>Made by hand, built to outlive us</h2>
-        <p>Every frame is cut, joined and finished by hand — no shortcuts, no staples pretending to be joinery.</p>
+    <div class="craft-story__grid">
+      <div class="craft-story__img"><div class="ph">Story image</div></div>
+      <div class="craft-story__content">
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Our story</p>
+        <h2>Three generations at one bench</h2>
+        <div class="rte"><p>Our workshop has stood in the same lane in Jodhpur since 1974. The tools have changed; the joints have not.</p></div>
       </div>
-      <a class="link-arrow" href="#">The workshop</a>
-    </div>
-    <div class="materials">
-      <div class="material"><div class="ph">01</div><span>Kiln-dried timber</span></div>
-      <div class="material"><div class="ph">02</div><span>Hand-woven cane</span></div>
-      <div class="material"><div class="ph">03</div><span>Mortise &amp; tenon</span></div>
-      <div class="material"><div class="ph">04</div><span>Hand-rubbed finish</span></div>
     </div>
   </div>
 </section>
 
-<!-- ════════ SHOP THE LOOK ════════ -->
-<section class="section section--bone" id="looks">
+<section class="section section--bone">
   <div class="container">
-    <div class="section-head">
-      <div class="section-head__text">
-        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Shop the look</p>
-        <h2>Three rooms, one afternoon</h2>
+    <div class="craft-split">
+      <div class="craft-row">
+        <div class="container"><div class="craft-grid">
+          <div class="craft-img"><div class="ph">Timber</div></div>
+          <div class="craft-content"><h3>Kiln-dried timber</h3><div class="rte"><p>Moisture brought down to 8–10% before a single cut, so the frame will not move in the monsoon.</p></div></div>
+        </div></div>
       </div>
-    </div>
-    <div class="looks">
-      <article class="look"><div class="ph">Look 01</div><div class="look__body"><h3>Sunday morning</h3></div></article>
-      <article class="look"><div class="ph">Look 02</div><div class="look__body"><h3>Quiet corner</h3></div></article>
-      <article class="look"><div class="ph">Look 03</div><div class="look__body"><h3>Late dinner</h3></div></article>
+      <div class="craft-row image-right">
+        <div class="container"><div class="craft-grid">
+          <div class="craft-img"><div class="ph">Cane</div></div>
+          <div class="craft-content"><h3>Hand-woven cane</h3><div class="rte"><p>Every panel is woven by hand on the frame itself — which is why it sits tight twenty years later.</p></div></div>
+        </div></div>
+      </div>
+      <div class="craft-row">
+        <div class="container"><div class="craft-grid">
+          <div class="craft-img"><div class="ph">Joinery</div></div>
+          <div class="craft-content"><h3>Mortise &amp; tenon</h3><div class="rte"><p>No staples, no cam locks. Joints that are cut to fit, glued, and left to cure for two days.</p></div></div>
+        </div></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ════════ NEW ARRIVALS ════════ -->
-<section class="section" id="arrivals">
+<section class="section">
   <div class="container">
     <div class="section-head">
       <div class="section-head__text">
-        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Just landed</p>
-        <h2>New arrivals</h2>
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> What you get</p>
+        <h2>Built into every piece</h2>
       </div>
-      <a class="link-arrow" href="#">View all new</a>
     </div>
-    <div class="arrivals">
-      <div class="arrivals__card"><div class="ph">Featured</div><h3>Sheesham Queen Bed</h3></div>
-      <div class="arrivals__card"><div class="ph">Stacked</div><h3>Cane Sofa</h3></div>
+    <div class="craft-features__grid">
+      <div class="feature-item"><div class="ph">01</div><span>Solid timber</span></div>
+      <div class="feature-item"><div class="ph">02</div><span>Hand-woven cane</span></div>
+      <div class="feature-item"><div class="ph">03</div><span>10-year frame warranty</span></div>
+      <div class="feature-item"><div class="ph">04</div><span>Free assembly</span></div>
     </div>
   </div>
 </section>
 
-<!-- ════════ TESTIMONIALS ════════ -->
-<section class="section" id="testimonials">
+<!-- ════════ COLLECTION PAGE ════════ -->
+<div class="lbl" style="background:#171310;color:#d8b489;font-size:.66rem;letter-spacing:.14em;
+     text-transform:uppercase;font-weight:700;padding:6px 16px;font-family:Archivo,sans-serif">
+  Collection page — .seo-copy (product grid has Dawn's own cascade + .reveal cards)
+</div>
+
+<section class="section section--bone">
   <div class="container">
-    <div class="section-head">
-      <div class="section-head__text">
-        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Testimonials</p>
-        <h2>What owners say</h2>
+    <div class="seo-copy">
+      <h2>About our beds</h2>
+      <div class="seo-copy__body">
+        <p>Every bed is built from kiln-dried sheesham, joined with mortise and tenon, and finished by hand with a natural hard wax oil. Storage variants use a gas-lift mechanism rated to 40,000 cycles, and the slats are solid timber — never ply.</p>
       </div>
-    </div>
-    <div class="reviews">
-      <div class="review"><p class="stars">★★★★★</p><p class="ph">Review</p></div>
-      <div class="review"><p class="stars">★★★★★</p><p class="ph">Review</p></div>
-      <div class="review"><p class="stars">★★★★★</p><p class="ph">Review</p></div>
     </div>
   </div>
 </section>
 
-<!-- ════════ MORE COLLECTIONS ════════ -->
-<section class="section section--bone" id="more">
+<section class="section">
   <div class="container">
     <div class="section-head">
       <div class="section-head__text">
@@ -153,35 +152,70 @@
       </div>
     </div>
     <div class="coll-tiles">
-      <div class="coll-tile"><div class="ph">Tile</div><h3>Chairs</h3></div>
-      <div class="coll-tile"><div class="ph">Tile</div><h3>Tables</h3></div>
-      <div class="coll-tile"><div class="ph">Tile</div><h3>Storage</h3></div>
+      <div class="coll-tile card"><div class="ph">Tile</div><h3>Chairs</h3></div>
+      <div class="coll-tile card"><div class="ph">Tile</div><h3>Tables</h3></div>
+      <div class="coll-tile card"><div class="ph">Tile</div><h3>Storage</h3></div>
     </div>
   </div>
 </section>
 
-<!-- ════════ FAQ ════════ -->
-<section class="section" id="faq">
+<!-- ════════ PDP — below the fold ════════ -->
+<div class="lbl" style="background:#171310;color:#d8b489;font-size:.66rem;letter-spacing:.14em;
+     text-transform:uppercase;font-weight:700;padding:6px 16px;font-family:Archivo,sans-serif">
+  Product page — .faq &gt; .faq__item (accordion rows) · cards already carry .reveal
+</div>
+
+<section class="section section--bone">
   <div class="container">
     <div class="section-head">
       <div class="section-head__text">
-        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Answers</p>
+        <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Details</p>
         <h2>Frequently asked</h2>
       </div>
     </div>
-    <div class="faq">
-      <div class="faq__item"><div class="faq__q">Do you deliver across India?</div></div>
-      <div class="faq__item"><div class="faq__q">How long does dispatch take?</div></div>
-      <div class="faq__item"><div class="faq__q">Can I return a made-to-order piece?</div></div>
-      <div class="faq__item"><div class="faq__q">Do you offer assembly?</div></div>
+    <div class="faq faq--flush">
+      <div class="faq__item card"><h3>Do you deliver across India?</h3></div>
+      <div class="faq__item card"><h3>How long does dispatch take?</h3></div>
+      <div class="faq__item card"><h3>Can I return a made-to-order piece?</h3></div>
+      <div class="faq__item card"><h3>Do you offer assembly?</h3></div>
     </div>
   </div>
 </section>
 
-<div style="height:60vh"></div>
+<!-- ════════ FOOTER ════════ -->
+<div class="lbl" style="background:#171310;color:#d8b489;font-size:.66rem;letter-spacing:.14em;
+     text-transform:uppercase;font-weight:700;padding:6px 16px;font-family:Archivo,sans-serif">
+  Footer — .footer__grid &gt; * / .footer__signup / .footer__bottom
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <div class="logo__word">Dew's Furniture</div>
+        <p style="font-size:.85rem;line-height:1.7">Solid wood furniture, made by hand in Jodhpur since 1974.</p>
+      </div>
+      <div class="footer__col"><h4>Shop</h4><ul><li>Beds</li><li>Sofas</li><li>Dining</li><li>Study</li></ul></div>
+      <div class="footer__col"><h4>Help</h4><ul><li>Delivery</li><li>Returns</li><li>Care guide</li><li>Contact</li></ul></div>
+      <div class="footer__col footer__col--last"><h4>About</h4><ul><li>Our craft</li><li>Materials</li><li>Sustainability</li></ul></div>
+    </div>
+
+    <div class="footer__signup">
+      <strong style="color:#fff">Get 10% off your first order</strong>
+      <div style="margin-top:.7rem"><input type="email" placeholder="you@example.com"><button>Sign up</button></div>
+    </div>
+
+    <div class="footer__bottom">
+      <span>© 2026 Dew's Furniture</span>
+      <span>Privacy · Terms · Refund · Shipping</span>
+    </div>
+  </div>
+</footer>
+
+<div style="height:40vh"></div>
 
 <!-- ══════════════════════════════════════════════════════════════════════
-     THE SHIPPED SCRIPT — identical to what goes in layout/theme.liquid
+     THE SHIPPED SCRIPT — identical to layout/theme.liquid
      ══════════════════════════════════════════════════════════════════════ -->
 <script>
 (function () {
@@ -195,7 +229,14 @@
     '.reviews > .review',
     '.arrivals > *',
     '.coll-tiles > *',
-    '.faq > .faq__item'
+    '.faq > .faq__item',
+    '.seo-copy > *',
+    '.craft-story__grid > *',
+    '.craft-row',
+    '.craft-features__grid > *',
+    '.footer__grid > *',
+    '.footer__signup',
+    '.footer__bottom'
   ];
 
   window.__dewsDemo = { boot: boot, els: [] };
@@ -218,16 +259,6 @@
   function boot() {
     var els = collect();
     window.__dewsDemo.els = els;
-    if (!els.length) return;
-
-    var reduce = window.matchMedia
-      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      : false;
-
-    if (reduce || !('IntersectionObserver' in window)) {
-      els.forEach(function (el) { el.classList.add('dews-reveal', 'is-in'); });
-      return;
-    }
 
     els.forEach(function (el) {
       el.classList.add('dews-reveal');
@@ -272,7 +303,6 @@
 
   boot();
 
-  /* ---- demo-only controls ---- */
   document.getElementById('btnReset').onclick = function () {
     if (io) io.disconnect();
     window.__dewsDemo.els.forEach(function (el) {
