@@ -1,63 +1,92 @@
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'section-collection-list.css' | asset_url | stylesheet_tag }}
+{{ 'dews-collection.css' | asset_url | stylesheet_tag }}
 
-<div class="page-width">
-  <h1 class="title title--primary inline-richtext{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-    {{ section.settings.title }}
-  </h1>
-  {%- liquid
-    case section.settings.sort
-      when 'products_high', 'products_low'
-        assign collections = collections | sort: 'all_products_count'
-      when 'date', 'date_reversed'
-        assign collections = collections | sort: 'published_at'
-    endcase
+{%- comment -%}
+  Dew's Furniture — collections list (/collections)
 
-    if section.settings.sort == 'products_high' or section.settings.sort == 'date_reversed' or section.settings.sort == 'alphabetical_reversed'
-      assign collections = collections | reverse
-    endif
+  THE DUPLICATE HEADING
+  ---------------------
+  Dawn's original file opened with:
+      <h1 class="title title--primary">{{ section.settings.title }}</h1>
+  The banner above this section (main-list-collections-banner) already prints
+  the page <h1>, so that produced a second "Collections" heading sitting under
+  the hero. This version prints no heading at all — the banner owns it. There
+  is also a CSS guard (.dews-collection-list .title--primary) that hides it if
+  an older copy of this section is ever restored.
 
-    assign moduloResult = 28 | modulo: section.settings.columns_desktop
-    assign paginate_by = 30
-    if moduloResult == 0
-      assign paginate_by = 28
-    endif
-  -%}
-  {%- paginate collections by paginate_by -%}
-    <ul
-      class="collection-list grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
-      role="list"
-    >
-      {%- for collection in collections -%}
-        <li
-          class="collection-list__item grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          {% if settings.animations_reveal_on_scroll %}
-            data-cascade
-            style="--animation-order: {{ forloop.index }};"
-          {% endif %}
-        >
-          {% render 'card-collection',
-            card_collection: collection,
-            media_aspect_ratio: section.settings.image_ratio,
-            columns: 3
-          %}
-        </li>
-      {%- endfor -%}
-    </ul>
-    {% render 'pagination', paginate: paginate %}
-  {%- endpaginate -%}
+  THE CARDS
+  ---------
+  Reuse the .coll-tiles / .coll-tile pattern from custom-more-collections, so
+  the list matches the rest of the store instead of Dawn's default card grid.
+  Only the label rows and the column count are new (see dews-collection.css).
+
+  Kept from Dawn: the sort options, the pagination and the columns_desktop /
+  columns_mobile settings, which now drive --cols / --cols-mob.
+{%- endcomment -%}
+
+{%- liquid
+  case section.settings.sort
+    when 'products_high', 'products_low'
+      assign collections = collections | sort: 'all_products_count'
+    when 'date', 'date_reversed'
+      assign collections = collections | sort: 'published_at'
+  endcase
+
+  if section.settings.sort == 'products_high' or section.settings.sort == 'date_reversed' or section.settings.sort == 'alphabetical_reversed'
+    assign collections = collections | reverse
+  endif
+
+  assign moduloResult = 28 | modulo: section.settings.columns_desktop
+  assign paginate_by = 30
+  if moduloResult == 0
+    assign paginate_by = 28
+  endif
+-%}
+
+<div class="section dews-collection-list">
+  <div class="container">
+
+    {%- paginate collections by paginate_by -%}
+
+      <div
+        class="coll-tiles coll-tiles--list"
+        style="--cols: {{ section.settings.columns_desktop }}; --cols-mob: {{ section.settings.columns_mobile }};"
+      >
+        {%- for collection in collections -%}
+          {%- comment -%} fall back to the first product image when the collection has none {%- endcomment -%}
+          {%- assign card_image = collection.featured_image -%}
+          {%- if card_image == blank and collection.products.first.featured_image != blank -%}
+            {%- assign card_image = collection.products.first.featured_image -%}
+          {%- endif -%}
+
+          <a class="coll-tile" href="{{ collection.url | default: '#' }}">
+            {%- if card_image != blank -%}
+              {{ card_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: collection.title | escape }}
+            {%- else -%}
+              {{ 'collection-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+
+            <span class="coll-tile__label">
+              <b>{{ collection.title | escape }}</b>
+              {%- if section.settings.show_count -%}
+                <small>{{ collection.all_products_count }} {{ section.settings.count_label }}</small>
+              {%- endif -%}
+            </span>
+          </a>
+        {%- endfor -%}
+      </div>
+
+      {% render 'pagination', paginate: paginate %}
+
+    {%- endpaginate -%}
+
+  </div>
 </div>
+
 {% schema %}
 {
   "name": "t:sections.main-list-collections.name",
   "class": "section",
   "settings": [
-    {
-      "type": "inline_richtext",
-      "id": "title",
-      "label": "t:sections.main-list-collections.settings.title.label",
-      "default": "t:sections.main-list-collections.settings.title.default"
-    },
     {
       "type": "select",
       "id": "sort",
@@ -91,33 +120,26 @@
       "label": "t:sections.main-list-collections.settings.sort.label"
     },
     {
-      "type": "select",
-      "id": "image_ratio",
-      "options": [
-        {
-          "value": "adapt",
-          "label": "t:sections.main-list-collections.settings.image_ratio.options__1.label"
-        },
-        {
-          "value": "portrait",
-          "label": "t:sections.main-list-collections.settings.image_ratio.options__2.label"
-        },
-        {
-          "value": "square",
-          "label": "t:sections.main-list-collections.settings.image_ratio.options__3.label"
-        }
-      ],
-      "default": "adapt",
-      "label": "t:sections.main-list-collections.settings.image_ratio.label"
+      "type": "checkbox",
+      "id": "show_count",
+      "label": "Show product count",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "count_label",
+      "label": "Product count wording",
+      "info": "Shown after the number, e.g. \"pieces\" renders as \"24 pieces\".",
+      "default": "pieces"
     },
     {
       "type": "range",
       "id": "columns_desktop",
-      "min": 1,
-      "max": 6,
+      "min": 2,
+      "max": 5,
       "step": 1,
-      "default": 3,
-      "label": "t:sections.main-list-collections.settings.columns_desktop.label"
+      "default": 4,
+      "label": "Columns on desktop"
     },
     {
       "type": "select",

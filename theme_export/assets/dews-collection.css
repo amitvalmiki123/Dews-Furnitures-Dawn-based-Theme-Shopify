@@ -339,3 +339,70 @@ span.mobile-facets__open-label.button-label {
   .search-page__input { width: 100%; }
   .search-page__submit { width: 100%; }
 }
+/* =============================================================================
+   COLLECTIONS LIST (/collections) — sections/main-list-collections.liquid
+   -----------------------------------------------------------------------------
+   Dawn's original section opened with a second <h1 class="title title--primary">
+   while the banner above it already prints the page heading, which is where the
+   duplicate "Collections" title under the hero came from. The rewritten section
+   prints no heading; the guard below hides it anyway, so this CSS alone fixes
+   the duplicate even if the older section file is still in place.
+
+   The cards reuse .coll-tiles / .coll-tile from the "More collections" section,
+   so only the label rows and the column count are new here.
+   ============================================================================= */
+.dews-collection-list {
+  padding-block: clamp(1.5rem, 3vw, 2.5rem) clamp(3rem, 6vw, 5rem);
+}
+/* guard: kill the duplicate heading if the old section is ever restored */
+.dews-collection-list .title--primary,
+.dews-collection-list h1.title {
+  display: none !important;
+}
+
+.dews-collection-list .coll-tiles--list {
+  grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr));
+}
+.dews-collection-list .coll-tile {
+  aspect-ratio: 4 / 5;
+}
+
+/* label: name on one line, product count underneath.
+   <b> and <small> are used rather than nested <span>s because .coll-tile span
+   already carries the 1.25rem padding and would pad every nested element too. */
+.dews-collection-list .coll-tile__label {
+  width: 100%;
+}
+.dews-collection-list .coll-tile__label b {
+  display: block;
+  font-weight: 600;
+}
+.dews-collection-list .coll-tile__label small {
+  display: block;
+  margin-top: 0.25rem;
+  font-weight: 400;
+  font-size: 0.82rem;
+  opacity: 0.85;
+}
+
+/* pagination sits below the grid, not hard against it */
+.dews-collection-list .pagination-wrapper {
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+@media screen and (max-width: 989px) {
+  .dews-collection-list .coll-tiles--list {
+    grid-template-columns: repeat(var(--cols-mob, 2), minmax(0, 1fr));
+  }
+}
+@media screen and (max-width: 560px) {
+  .dews-collection-list .coll-tile {
+    aspect-ratio: 1 / 1;
+  }
+  .dews-collection-list .coll-tile__label {
+    padding: 1rem;
+  }
+  .dews-collection-list .coll-tile__label b {
+    font-size: 0.9rem;
+  }
+}
