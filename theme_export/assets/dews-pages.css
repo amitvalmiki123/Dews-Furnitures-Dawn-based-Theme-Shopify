@@ -108,3 +108,68 @@
   .craft-features__grid { grid-template-columns: minmax(0, 1fr); }
   .phero__meta { gap: 2px 10px; }
 }
+/* =============================================================================
+   6. PAGE HERO — LOAD-IN FADE
+   Fades the hero in on first paint and on every refresh.
+
+   Pure CSS, no JS: the animation is attached to the elements themselves, so it
+   plays as soon as they render and it cannot break if a script fails.
+
+   IMPORTANT — the hidden state is written ONLY inside the `from` keyframe,
+   never as a base rule. With animation-fill-mode:both the `from` state holds
+   during the delay and the `to` state holds afterwards. If this stylesheet
+   ever fails to load, no rule applies at all and the hero simply stays
+   visible instead of being stuck invisible.
+
+   Scoped to .page-hero-section, which only sections/custom-page-banner.liquid
+   emits. .page-head is shared by the collection, list-collections, search and
+   product templates, so the breadcrumb rule is guarded with :has() rather than
+   targeting .page-head directly.
+   ============================================================================= */
+
+@keyframes pheroFadeUp {
+  from { opacity: 0; transform: translate3d(0, 24px, 0) }
+  to   { opacity: 1; transform: translate3d(0, 0, 0) }
+}
+@keyframes pheroFade {
+  from { opacity: 0 }
+  to   { opacity: 1 }
+}
+@keyframes pheroMediaIn {
+  from { opacity: 0; transform: scale(1.035) }
+  to   { opacity: 1; transform: scale(1) }
+}
+
+/* breadcrumb strip sitting directly above the hero */
+@supports selector(:has(*)) {
+  .shopify-section.collection-banner-section:has(.page-hero-section) .page-head {
+    animation: pheroFade 0.7s var(--ease-out, ease) 0.05s both;
+  }
+}
+
+/* hero text — each line rises in, one after the other */
+.page-hero-section .phero__text > * {
+  animation: pheroFadeUp 0.85s var(--ease-out, ease) both;
+}
+.page-hero-section .phero__text > *:nth-child(1) { animation-delay: 0.10s }
+.page-hero-section .phero__text > *:nth-child(2) { animation-delay: 0.20s }
+.page-hero-section .phero__text > *:nth-child(3) { animation-delay: 0.30s }
+.page-hero-section .phero__text > *:nth-child(4) { animation-delay: 0.40s }
+.page-hero-section .phero__text > *:nth-child(5) { animation-delay: 0.50s }
+.page-hero-section .phero__text > *:nth-child(n + 6) { animation-delay: 0.58s }
+
+/* hero image — slower fade with a gentle un-zoom */
+.page-hero-section .phero__media {
+  animation: pheroMediaIn 1.15s var(--ease-out, ease) 0.15s both;
+}
+
+/* respect the OS "reduce motion" setting: show it all at once, no movement */
+@media (prefers-reduced-motion: reduce) {
+  .page-hero-section .phero__text > *,
+  .page-hero-section .phero__media,
+  .shopify-section.collection-banner-section .page-head {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

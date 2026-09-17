@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Page hero — load-in fade</title>
+<link rel="stylesheet" href="/theme_export/assets/style.css">
+<link rel="stylesheet" href="/theme_export/assets/dews-pages.css">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#fbfaf8}
+  .bar{position:fixed;top:0;left:0;right:0;z-index:99;background:#171310;color:#fbfaf8;
+       display:flex;gap:10px;align-items:center;padding:10px 16px;flex-wrap:wrap;
+       font-family:Archivo,-apple-system,sans-serif}
+  .bar b{font-size:.82rem;font-weight:600;letter-spacing:.02em}
+  button{background:#2a221c;color:#fbfaf8;border:1px solid #4a3f37;border-radius:999px;
+         padding:7px 15px;font-size:.78rem;cursor:pointer;font-weight:600;letter-spacing:.03em;
+         font-family:inherit}
+  button:hover{background:#e01b22;border-color:#e01b22}
+  button.on{background:#e01b22;border-color:#e01b22}
+  .spacer{height:52px}
+  .hint{font-size:.72rem;color:#9a9089}
+  /* the demo shell: a wrapper we can toggle to re-trigger the animation */
+  .stage{position:relative}
+  .stage.replay .page-head,
+  .stage.replay .phero__text > *,
+  .stage.replay .phero__media { animation-name: none; }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <b>Page hero — load-in fade</b>
+  <button id="btnReplay">↻ Replay animation</button>
+  <button id="btnSlow">Slow motion (0.25×)</button>
+  <span class="hint">Page reload par bhi automatic chalega — pure CSS hai, JS nahi</span>
+</div>
+<div class="spacer"></div>
+
+<div class="stage" id="stage">
+  <div class="shopify-section collection-banner-section">
+
+    <div class="page-head">
+      <div class="container">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><span aria-current="page">Our Craft</span></li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <section class="section collection-banner page-hero-section" aria-labelledby="page-hero-demo">
+      <div class="container">
+        <div class="phero">
+          <div class="phero__text">
+            <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Our craft</p>
+            <h1 id="page-hero-demo">Made by hand,<br>built to outlive us</h1>
+            <div class="phero__desc">
+              <p>Every frame is cut, joined and finished by hand — no shortcuts, no staples pretending to be joinery.</p>
+            </div>
+            <div class="phero__meta">
+              <div><svg aria-hidden="true"><use href="#i-hammer"/></svg> Hand-woven cane</div>
+              <div><svg aria-hidden="true"><use href="#i-truck"/></svg> Kiln-dried solid timber</div>
+              <div><svg aria-hidden="true"><use href="#i-rotate"/></svg> 30-day returns</div>
+            </div>
+            <a class="btn phero__cta" href="#">Explore the collection <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+          <div class="phero__media">
+            <img src="https://images.unsplash.com/photo-1550581190-9c1c48d21d6c?w=1200&q=75"
+                 alt="Craftsman at work" width="1000" height="625" loading="eager" decoding="async">
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- icon sprite (uses the same #i-* ids the theme ships) -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-hammer" viewBox="0 0 24 24"><path d="M2 22h20M5 18l6-6M14.5 5.5l4 4L21 7l-4-4z"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M1 3h13v13H1zM14 8h4l3 3v5h-7zM5.5 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM17.5 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></symbol>
+  <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+</svg>
+
+<script>
+  var stage = document.getElementById('stage');
+
+  // Re-trigger: strip the animation, force a reflow, put it back.
+  document.getElementById('btnReplay').onclick = function () {
+    stage.classList.add('replay');
+    void stage.offsetWidth;              // reflow
+    stage.classList.remove('replay');
+  };
+
+  // Slow motion: temporarily stretch every animation 4x so the stagger is legible.
+  var slow = false;
+  document.getElementById('btnSlow').onclick = function () {
+    slow = !slow;
+    this.classList.toggle('on', slow);
+    var s = document.getElementById('slowmo');
+    if (!s) {
+      s = document.createElement('style');
+      s.id = 'slowmo';
+      document.head.appendChild(s);
+    }
+    s.textContent = slow
+      ? '.page-hero-section .phero__text > *{animation-duration:3.4s!important}' +
+        '.page-hero-section .phero__media{animation-duration:4.6s!important}' +
+        '.shopify-section.collection-banner-section:has(.page-hero-section) .page-head{animation-duration:2.8s!important}'
+      : '';
+  };
+
+  // Auto-replay once on load so the visitor sees it even if they missed first paint.
+  window.addEventListener('load', function () { /* CSS already played it */ });
+</script>
+</body>
+</html>
