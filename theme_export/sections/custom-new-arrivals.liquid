@@ -4,6 +4,9 @@
       <div class="section-head__text">
         <p class="eyebrow"><i class="dew" aria-hidden="true"></i> {{ section.settings.eyebrow }}</p>
         <h2 id="arrivals-title">{{ section.settings.heading }}</h2>
+        {%- if section.settings.description != blank -%}
+          <p>{{ section.settings.description }}</p>
+        {%- endif -%}
       </div>
       {%- if section.settings.collection != blank -%}
         <a class="link-arrow" href="{{ section.settings.collection.url }}">{{ section.settings.link_text }} <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
@@ -46,6 +49,11 @@
       "id": "heading",
       "label": "Heading",
       "default": "New arrivals"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
     },
     {
       "type": "text",
