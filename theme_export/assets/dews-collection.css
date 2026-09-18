@@ -435,6 +435,28 @@ span.mobile-facets__open-label.button-label {
    empty block. It never spins and only gets in the way, so it is hidden.
    ============================================================================= */
 
+/* -----------------------------------------------------------------------------
+   THE REAL BUG — why the message sat on the LEFT, where the facets used to be.
+
+   .shop is a 2-column grid:  262px (filter rail) + minmax(0, 1fr) (results).
+   The rail is an <aside class="filters filters--rail"> and it is CONDITIONAL:
+
+     main-search.liquid              -> if enable_filtering and search.filters.size > 0
+     main-collection-product-grid    -> if enable_filtering
+
+   A search that returns nothing has NO filters, so search.filters.size == 0,
+   the <aside> is never printed, and .results becomes the ONLY grid child —
+   so the browser drops it into the FIRST column, which is the 262px rail
+   column. That is why "No products found" was squeezed onto the left.
+
+   Fix: when .results is the only child, let it span the whole grid. This also
+   protects any collection where filtering is switched off.
+   Class-based, no IDs, so it is safe on all three stores.
+   ----------------------------------------------------------------------------- */
+.shop > .results:only-child {
+  grid-column: 1 / -1;
+}
+
 /* the message wrapper fills the content column so the text can centre in it */
 .collection--empty {
   width: 100%;
@@ -446,10 +468,16 @@ span.mobile-facets__open-label.button-label {
 }
 
 .collection--empty .empty {
+  display: block;              /* reset: never a flex/grid box */
   width: 100%;
   box-sizing: border-box;
   text-align: center;
   padding: clamp(2rem, 5vw, 3.5rem) 1rem clamp(2.5rem, 6vw, 4rem);
+  min-height: 0;               /* resets the card version */
+  background: none;            /* no box */
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 /* search icon */
@@ -457,7 +485,10 @@ span.mobile-facets__open-label.button-label {
   display: block;
   width: 34px;
   height: 34px;
+  padding: 0;                  /* resets the circle version */
   margin: 0 auto 1.1rem;
+  background: none;
+  border-radius: 0;
   color: var(--muted-2, #9a9089);
 }
 
@@ -481,15 +512,30 @@ span.mobile-facets__open-label.button-label {
   color: var(--muted, #7c716a);
 }
 
-/* "remove all" stays a plain underlined link, just a bit stronger */
+/* "remove all" stays a plain underlined link, just a bit stronger.
+   (The display/padding/background resets kill the button look from the
+   earlier card version, in case that block is still in the file above.) */
 .collection--empty .empty p a {
+  display: inline;
+  align-items: baseline;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
   color: var(--ink, #171310);
+  font-size: inherit;
   font-weight: 600;
+  letter-spacing: normal;
+  text-transform: none;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 .collection--empty .empty p a:hover {
+  background: none;
   color: var(--red, #e01b22);
+  text-decoration: underline;
 }
 
 @media screen and (max-width: 749px) {

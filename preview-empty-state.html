@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Empty state text — before &amp; after</title>
+<title>"No products found" — left-chipka hua (before) vs fixed (after)</title>
 <link rel="stylesheet" href="/theme_export/assets/style.css">
 <link rel="stylesheet" href="/theme_export/assets/dews-collection.css">
 <style>
@@ -17,36 +17,43 @@
   button:hover,button.on{background:#e01b22;border-color:#e01b22}
   .hint{font-size:.68rem;color:#9a9089;margin-left:auto}
   .grid2{display:grid;grid-template-columns:1fr 1fr}
-  @media (max-width:1100px){.grid2{grid-template-columns:1fr}}
+  @media (max-width:1200px){.grid2{grid-template-columns:1fr}}
   .lbl{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;padding:7px 16px}
   .lbl.bad{background:#3a1414;color:#ff9b9b}
   .lbl.good{background:#12301a;color:#7bd88f}
-  .lbl.same{background:#12301a;color:#7bd88f}
+  .lbl.info{background:#1d2430;color:#9fc4ff}
   .vr{width:2px;background:#3a2f27}
-
-  .demo{padding:0 clamp(1rem,3vw,2rem) 3rem}
+  .demo{padding:0 clamp(1rem,2vw,1.5rem) 2.5rem}
   .ph{background:#e9e3da;border-radius:6px}
+  .railghost{border:1px dashed #c9bfb2;border-radius:8px;height:120px;display:grid;place-items:center;
+             font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#a89c90}
 
-  /* ---- BEFORE: new rules undone, so the old bare version shows ---- */
-  .before .collection--empty .empty{
-    all: revert; display:block;
-    text-align:center; padding: clamp(3rem, 6vw, 5rem) 1rem;
+  /* ---- BEFORE simulation: the OLD card block, as it is on the live store ---- */
+  .old .collection--empty .empty{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    width:100%; box-sizing:border-box; text-align:center;
+    min-height:clamp(320px,42vh,460px);
+    padding:clamp(2.5rem,6vw,4.5rem) clamp(1.25rem,4vw,2.5rem);
+    background:var(--paper,#fbfaf8); border:1px solid var(--line,#e2dcd3);
+    border-radius:var(--r-lg,20px); box-shadow:var(--shadow-sm,0 4px 18px rgba(23,19,16,.06));
   }
-  .before .collection--empty .empty > svg{
-    all: revert; display:block;
-    width:38px;height:38px;color:var(--muted-2);margin:0 auto;
+  .old .collection--empty .empty > svg{
+    display:block; width:30px; height:30px; box-sizing:content-box; padding:18px;
+    margin:0 auto 1.5rem; border-radius:50%; background:var(--bone,#f3efe9); color:var(--ink-3,#4a3f37);
   }
-  .before .collection--empty .empty h3{
-    all: revert; display:block;
-    margin-top:1.25rem; font-size:1.3rem; color:var(--ink);
-    font-family:var(--font); font-weight:600; letter-spacing:normal; line-height:1.4;
+  .old .collection--empty .empty h3{
+    font-family:var(--font-accent,"Instrument Serif",Georgia,serif);
+    font-size:clamp(1.5rem,3vw,2.1rem); font-weight:400; color:var(--ink);
   }
-  .before .collection--empty .empty p{
-    all: revert; display:block; margin-top:.75rem; color:var(--muted); max-width:none;
+  .old .collection--empty .empty p{ max-width:46ch; font-size:var(--t-lead,1rem); color:var(--muted); }
+  .old .collection--empty .empty p a{
+    display:inline-flex; align-items:center; gap:.45rem; margin-top:1.4rem; padding:.7rem 1.4rem;
+    border-radius:var(--r-pill,999px); background:var(--ink,#171310); color:#fff;
+    font-size:.8rem; font-weight:600; letter-spacing:.05em; text-transform:uppercase; text-decoration:none;
   }
-  .before .collection--empty .empty p a{ all: revert; display:inline; text-decoration:underline; }
+  .old .collection--empty .empty p a:hover{ background:var(--red,#e01b22); color:#fff; text-decoration:none; }
 
-  /* ---- untouched product grid demo (proves cards are not affected) ---- */
+  /* ---- untouched product grid demo ---- */
   .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem}
   @media (max-width:700px){.cards{grid-template-columns:1fr 1fr}}
   .cardx{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:.75rem}
@@ -58,23 +65,19 @@
 <body>
 
 <div class="bar">
-  <b>Empty state — "No products found" — SIRF TEXT, koi card/box nahi</b>
+  <b>"No products found" — left me chipka hua : BEFORE vs AFTER</b>
   <button id="btnM">Mobile width (390px)</button>
-  <span class="hint">Dono taraf .shop grid hai: filter rail (262px) + results column</span>
+  <span class="hint">Search = 0 results → <code>search.filters.size == 0</code> → &lt;aside&gt; print hi nahi hota</span>
 </div>
 
 <div class="grid2" id="g">
 
   <!-- ══════════════ BEFORE ══════════════ -->
   <div>
-    <div class="lbl bad">Before — chhota text, content column me bhi theek se centred nahi</div>
-    <div class="demo before">
+    <div class="lbl bad">Before — 262px rail column me phansa hua, left me chipka, "remove all" button</div>
+    <div class="demo old">
       <div class="shop">
-        <aside class="filters filters--rail">
-          <div class="filters__head"><h2>Filter</h2><a class="filters__clear" href="#">Clear all</a></div>
-          <div class="ph" style="aspect-ratio:auto;height:150px"></div>
-          <div class="ph" style="aspect-ratio:auto;height:110px;margin-top:1rem"></div>
-        </aside>
+        <!-- aside NAHI hai (search me 0 filters) -->
         <div class="results">
           <div class="collection collection--empty">
             <div class="loading-overlay gradient"></div>
@@ -93,14 +96,10 @@
 
   <!-- ══════════════ AFTER ══════════════ -->
   <div>
-    <div class="lbl good">After — text centred + heading font bada. Koi box/button nahi</div>
-    <div class="demo after">
+    <div class="lbl good">After — poori width, text centred, "remove all" plain link (koi box/button nahi)</div>
+    <div class="demo">
       <div class="shop">
-        <aside class="filters filters--rail">
-          <div class="filters__head"><h2>Filter</h2><a class="filters__clear" href="#">Clear all</a></div>
-          <div class="ph" style="aspect-ratio:auto;height:150px"></div>
-          <div class="ph" style="aspect-ratio:auto;height:110px;margin-top:1rem"></div>
-        </aside>
+        <!-- aside NAHI hai, lekin .results:only-child ab poora grid leta hai -->
         <div class="results">
           <div class="collection collection--empty">
             <div class="loading-overlay gradient"></div>
@@ -117,14 +116,38 @@
 
 </div>
 
-<!-- ══════════════ PRODUCT GRID — UNTOUCHED ══════════════ -->
+<!-- ══════════════ WITH RAIL (collection with filters) ══════════════ -->
 <div style="border-top:2px solid #3a2f27">
-  <div class="lbl same">Product grid (jab products milte hain) — ZERO CHANGE, upar wali CSS isse chhuti bhi nahi</div>
+  <div class="lbl info">Collection jahan filter rail HAI — rail waise hi left me, text results column ke beech me (koi change nahi)</div>
   <div class="demo">
     <div class="shop">
       <aside class="filters filters--rail">
         <div class="filters__head"><h2>Filter</h2><a class="filters__clear" href="#">Clear all</a></div>
-        <div class="ph" style="aspect-ratio:auto;height:150px"></div>
+        <div class="ph" style="aspect-ratio:auto;height:120px"></div>
+        <div class="ph" style="aspect-ratio:auto;height:90px;margin-top:1rem"></div>
+      </aside>
+      <div class="results">
+        <div class="collection collection--empty">
+          <div class="loading-overlay gradient"></div>
+          <div class="empty">
+            <svg aria-hidden="true"><use href="#i-search"/></svg>
+            <h3>No products found</h3>
+            <p>Use fewer filters or <a href="#">remove all</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ PRODUCT GRID — UNTOUCHED ══════════════ -->
+<div style="border-top:2px solid #3a2f27">
+  <div class="lbl good">Product grid (jab products milte hain) — ZERO CHANGE</div>
+  <div class="demo">
+    <div class="shop">
+      <aside class="filters filters--rail">
+        <div class="filters__head"><h2>Filter</h2><a class="filters__clear" href="#">Clear all</a></div>
+        <div class="ph" style="aspect-ratio:auto;height:120px"></div>
       </aside>
       <div class="results">
         <div class="toolbar" style="display:flex;justify-content:space-between;padding:.75rem 0">
