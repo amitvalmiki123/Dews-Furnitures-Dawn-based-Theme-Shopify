@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PDP image zoom — Desktop (click/hover) vs Mobile (hold &amp; slide)</title>
+<link rel="stylesheet" href="/theme_export/assets/style.css">
+<link rel="stylesheet" href="/theme_export/assets/component-dews-product.css">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#fbfaf8;font-family:Archivo,-apple-system,sans-serif;color:#171310}
+  .bar{position:sticky;top:0;z-index:9999;background:#171310;color:#fbfaf8;display:flex;gap:9px;
+       align-items:center;padding:9px 16px;flex-wrap:wrap}
+  .bar b{font-size:.78rem;font-weight:600}
+  .hint{font-size:.68rem;color:#9a9089;margin-left:auto}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:#3a2f27}
+  @media (max-width:900px){.grid2{grid-template-columns:1fr}}
+  .pane{background:#fbfaf8;padding:0 0 1.5rem}
+  .lbl{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;padding:7px 16px}
+  .lbl.old{background:#3a1414;color:#ff9b9b}
+  .lbl.new{background:#12301a;color:#7bd88f}
+  .wrap{padding:1.25rem clamp(1rem,2vw,2rem) 0}
+  .demo{max-width:380px;margin:0 auto}
+  .status{margin:.8rem auto 0;max-width:380px;font-size:.72rem;color:#7c716a;text-align:center;
+          font-family:ui-monospace,SFMono-Regular,Menlo,monospace;min-height:1.1em}
+  .note{font-size:.72rem;color:#7c716a;line-height:1.6;padding:.6rem clamp(1rem,2vw,2rem) 0;max-width:420px;margin:0 auto}
+  .note b{color:#171310}
+  /* the mouse pointer is standing in for a finger in the phone pane */
+  .demo--phone .gallery__main{cursor:grab}
+  .demo--phone .gallery__main.is-zoomed{cursor:grabbing}
+  .fake-finger{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;
+    background:rgba(224,27,34,.28);border:2px solid #e01b22;pointer-events:none;opacity:0;
+    transition:opacity .15s;z-index:5}
+  .fake-finger.on{opacity:1}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <b>PDP main image zoom</b>
+  <span class="hint">Mouse = aapki ungli. Phone pane me: image par mouse dabayein (hold) → slide karein → chhodein.</span>
+</div>
+
+<div class="grid2">
+
+  <!-- ══════════════ DESKTOP (current behaviour, untouched) ══════════════ -->
+  <div class="pane">
+    <div class="lbl old">Desktop — mouse: click to zoom, hover to pan (waise hi rahega)</div>
+    <div class="wrap">
+      <div class="demo">
+        <div class="gallery" id="gallery">
+          <div class="gallery__main" id="deskMain">
+            <img id="deskImg" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt="Product">
+            <span class="gallery__hint">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8.5v5M8.5 11h5" stroke-linecap="round"/></svg>
+              <span class="gallery__hint-text gallery__hint-text--mouse">Click to zoom</span>
+              <span class="gallery__hint-text gallery__hint-text--touch">Hold &amp; slide to zoom</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="status" id="deskStatus">zoom: off</div>
+    </div>
+    <p class="note">
+      <b>Kya karein:</b> image par click karein (zoom on) → mouse ghumaayein (zoomed area follow karta hai) →
+      bahar le jayein to zoom band.
+    </p>
+  </div>
+
+  <!-- ══════════════ MOBILE (new: hold & slide) ══════════════ -->
+  <div class="pane">
+    <div class="lbl new">Mobile — finger: hold &amp; slide to zoom (naya behaviour)</div>
+    <div class="wrap">
+      <div class="demo demo--phone">
+        <div class="gallery" id="gallery2">
+          <div class="gallery__main" id="phoneMain" style="position:relative">
+            <img id="phoneImg" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt="Product">
+            <span class="gallery__hint">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8.5v5M8.5 11h5" stroke-linecap="round"/></svg>
+              <span class="gallery__hint-text gallery__hint-text--mouse">Click to zoom</span>
+              <span class="gallery__hint-text gallery__hint-text--touch">Hold &amp; slide to zoom</span>
+            </span>
+            <span class="fake-finger" id="finger"></span>
+          </div>
+        </div>
+      </div>
+      <div class="status" id="phoneStatus">zoom: off</div>
+    </div>
+    <p class="note">
+      <b>Kya karein (mouse = ungli):</b> image par mouse dabayein aur jahan zoom chahiye wahin
+      <b>180ms hold</b> karein → zoom khul jayega → <b>dabaye hue hi slide</b> karein, zoomed hissa ungli ke
+      saath chalega → <b>chhod dein</b> to zoom band. Ek quick tap (bina slide) abhi bhi zoom on/off karta hai.
+    </p>
+  </div>
+
+</div>
+
+<script>
+/* ---------------------------------------------------------------------------
+   Both panes below are the exact logic that ships in assets/dews-pdp.js.
+   The desktop pane keeps the old mouse handlers; the phone pane is the new
+   touch handler, re-wired to mouse events so it can be tried without a phone.
+   --------------------------------------------------------------------------- */
+(function () {
+  var HOLD_MS = 180, MOVE_TOL = 10;
+
+  function setOrigin(img, main, clientX, clientY) {
+    var r = main.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    var x = ((clientX - r.left) / r.width) * 100;
+    var y = ((clientY - r.top) / r.height) * 100;
+    x = Math.max(0, Math.min(100, x));
+    y = Math.max(0, Math.min(100, y));
+    img.style.transformOrigin = x + '% ' + y + '%';
+  }
+
+  /* ---------- desktop: unchanged ---------- */
+  (function () {
+    var main = document.getElementById('deskMain');
+    var img  = document.getElementById('deskImg');
+    var out  = document.getElementById('deskStatus');
+
+    main.addEventListener('click', function () {
+      if (main.classList.contains('is-zoomed')) {
+        main.classList.remove('is-zoomed');
+        img.style.transformOrigin = 'center';
+        out.textContent = 'zoom: off';
+      } else {
+        main.classList.add('is-zoomed');
+        out.textContent = 'zoom: on — mouse ghumaayein';
+      }
+    });
+    main.addEventListener('mousemove', function (e) {
+      if (!main.classList.contains('is-zoomed')) return;
+      setOrigin(img, main, e.clientX, e.clientY);
+      out.textContent = 'zoom: on — origin ' + img.style.transformOrigin;
+    });
+    main.addEventListener('mouseleave', function () {
+      main.classList.remove('is-zoomed');
+      img.style.transformOrigin = 'center';
+      out.textContent = 'zoom: off';
+    });
+  })();
+
+  /* ---------- phone: hold to zoom, slide to pan, lift to close ---------- */
+  (function () {
+    var main   = document.getElementById('phoneMain');
+    var img    = document.getElementById('phoneImg');
+    var out    = document.getElementById('phoneStatus');
+    var finger = document.getElementById('finger');
+
+    var holdTimer = null, sliding = false, skipNextClick = false;
+    var startX = 0, startY = 0;
+
+    function moveFinger(x, y) {
+      var r = main.getBoundingClientRect();
+      finger.style.left = (x - r.left) + 'px';
+      finger.style.top  = (y - r.top) + 'px';
+      finger.classList.add('on');
+    }
+    function openZoom(x, y) {
+      if (typeof x === 'number') setOrigin(img, main, x, y);
+      main.classList.add('is-zoomed');
+      out.textContent = 'zoom: on — slide karein (origin ' + img.style.transformOrigin + ')';
+    }
+    function closeZoom(msg) {
+      main.classList.remove('is-zoomed');
+      img.style.transformOrigin = 'center';
+      finger.classList.remove('on');
+      out.textContent = msg || 'zoom: off';
+    }
+    function cancelHold() {
+      if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
+    }
+
+    /* mousedown stands for touchstart */
+    main.addEventListener('mousedown', function (e) {
+      if (e.button !== 0) return;
+      skipNextClick = false;
+      startX = e.clientX;
+      startY = e.clientY;
+      moveFinger(e.clientX, e.clientY);
+      cancelHold();
+      holdTimer = setTimeout(function () {
+        holdTimer = null;
+        sliding = true;
+        openZoom(startX, startY);
+      }, HOLD_MS);
+    });
+
+    /* mousemove stands for touchmove */
+    document.addEventListener('mousemove', function (e) {
+      if (!finger.classList.contains('on')) return;
+      moveFinger(e.clientX, e.clientY);
+      var moved = Math.abs(e.clientX - startX) > MOVE_TOL || Math.abs(e.clientY - startY) > MOVE_TOL;
+      if (!sliding) {
+        if (moved) cancelHold();          // plain swipe → page scrolls, no zoom
+        return;
+      }
+      setOrigin(img, main, e.clientX, e.clientY);
+      out.textContent = 'zoom: on — pan (origin ' + img.style.transformOrigin + ')';
+    });
+
+    /* mouseup stands for touchend */
+    document.addEventListener('mouseup', function (e) {
+      if (!finger.classList.contains('on')) return;
+      cancelHold();
+      finger.classList.remove('on');
+      if (!sliding) return;
+      sliding = false;
+      closeZoom('zoom: off (ungli utha li)');
+      skipNextClick = true;
+    });
+
+    /* quick tap still toggles the zoom */
+    main.addEventListener('click', function () {
+      if (skipNextClick) { skipNextClick = false; return; }
+      if (main.classList.contains('is-zoomed')) closeZoom();
+      else openZoom();
+    });
+
+    main.addEventListener('mouseleave', function () {
+      cancelHold();
+      finger.classList.remove('on');
+    });
+  })();
+})();
+</script>
+</body>
+</html>

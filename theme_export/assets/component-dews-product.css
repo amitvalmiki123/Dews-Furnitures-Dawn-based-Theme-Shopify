@@ -291,3 +291,33 @@
   .buy__wishlist{ grid-column:2; }
   .sticky-atc__media{ display:none; }
 }
+
+/* =============================================================================
+   PDP IMAGE ZOOM — caption wording + long-press behaviour on touch devices
+   -----------------------------------------------------------------------------
+   On a phone the zoom is now driven by a finger (see dews-pdp.js): rest it on
+   the picture for a moment to open the zoom, slide to pan, lift to close.
+   Two small CSS jobs here:
+
+   1. the caption has to describe the gesture the device actually has —
+      "Click to zoom" on a mouse, "Hold & slide to zoom" on a finger;
+   2. iOS pops a "Save Image" callout after a long press, which would fight
+      the hold gesture, so the callout and text selection are switched off on
+      touch devices.
+
+   Note: `.gallery__main` deliberately does NOT get `touch-action: none`.
+   That is decided at the start of a gesture, so it would stop the page from
+   scrolling for every touch that begins on the image. Scrolling is blocked
+   with preventDefault() instead, and only while a zoom gesture is live.
+   ============================================================================= */
+.gallery__hint-text--touch { display: none; }
+
+@media (hover: none) and (pointer: coarse) {
+  .gallery__hint-text--mouse { display: none; }
+  .gallery__hint-text--touch { display: inline; }
+  .gallery__main {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}

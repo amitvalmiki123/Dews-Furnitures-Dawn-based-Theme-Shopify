@@ -121,19 +121,128 @@
       });
     });
 
+    /* ---------------- zoom ----------------
+       Desktop (mouse) is unchanged: click toggles the zoom and moving the
+       pointer around the frame moves the zoomed region with it.
+
+       Mobile (touch) used to be click-only, so the zoom always opened on the
+       exact spot that was tapped and seeing another part of the product meant
+       tapping to close and tapping again somewhere else. A finger now behaves
+       like the mouse: rest it on the picture for a moment and the zoom opens
+       on that spot, keep it down and slide and the zoom follows the finger,
+       lift it and the zoom closes. A quick tap still toggles the zoom on and
+       off, so nothing that worked before is lost. */
+
+    var HOLD_MS  = 180;   // how long a finger must rest before the zoom opens
+    var MOVE_TOL = 10;    // px of movement that counts as a slide, not a tap
+
+    var holdTimer     = null;
+    var sliding       = false;   // this gesture opened the zoom, so it closes it
+    var skipNextClick = false;   // swallow the click a browser fires after a slide
+    var startX = 0, startY = 0;
+
+    function setOrigin(clientX, clientY) {
+      var r = main.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      var x = ((clientX - r.left) / r.width) * 100;
+      var y = ((clientY - r.top) / r.height) * 100;
+      /* Keep the zoom window inside the picture instead of showing blank
+         space past the edges. */
+      x = Math.max(0, Math.min(100, x));
+      y = Math.max(0, Math.min(100, y));
+      img.style.transformOrigin = x + '% ' + y + '%';
+    }
+
+    function openZoom(clientX, clientY) {
+      if (typeof clientX === 'number' && typeof clientY === 'number') {
+        setOrigin(clientX, clientY);
+      }
+      main.classList.add('is-zoomed');
+    }
+
+    function closeZoom() {
+      main.classList.remove('is-zoomed');
+      img.style.transformOrigin = 'center';
+    }
+
+    /* ---- mouse ---- */
     main.addEventListener('click', function () {
-      main.classList.toggle('is-zoomed');
+      if (skipNextClick) {
+        skipNextClick = false;
+        return;
+      }
+      if (main.classList.contains('is-zoomed')) {
+        closeZoom();
+      } else {
+        openZoom();
+      }
     });
     main.addEventListener('mousemove', function (e) {
       if (!main.classList.contains('is-zoomed')) return;
-      var r = main.getBoundingClientRect();
-      var x = ((e.clientX - r.left) / r.width) * 100;
-      var y = ((e.clientY - r.top) / r.height) * 100;
-      img.style.transformOrigin = x + '% ' + y + '%';
+      setOrigin(e.clientX, e.clientY);
     });
     main.addEventListener('mouseleave', function () {
-      main.classList.remove('is-zoomed');
-      img.style.transformOrigin = 'center';
+      closeZoom();
+    });
+
+    /* ---- touch: hold to zoom, slide to pan, lift to close ---- */
+    function cancelHold() {
+      if (holdTimer) {
+        window.clearTimeout(holdTimer);
+        holdTimer = null;
+      }
+    }
+
+    main.addEventListener('touchstart', function (e) {
+      skipNextClick = false;
+      if (e.touches.length !== 1) {      // pinch or two fingers: never zoom
+        cancelHold();
+        if (sliding) {
+          sliding = false;
+          closeZoom();
+        }
+        return;
+      }
+      var t = e.touches[0];
+      startX = t.clientX;
+      startY = t.clientY;
+      cancelHold();
+      holdTimer = window.setTimeout(function () {
+        holdTimer = null;
+        sliding = true;
+        openZoom(t.clientX, t.clientY);
+      }, HOLD_MS);
+    }, { passive: true });
+
+    main.addEventListener('touchmove', function (e) {
+      if (e.touches.length !== 1) return;
+      var t = e.touches[0];
+      var moved = Math.abs(t.clientX - startX) > MOVE_TOL ||
+                  Math.abs(t.clientY - startY) > MOVE_TOL;
+
+      if (!sliding) {
+        /* A plain swipe: let the page scroll and drop the pending hold. */
+        if (moved) cancelHold();
+        return;
+      }
+      /* Zooming — the finger pans the picture, so the page must not scroll
+         underneath it. */
+      if (e.cancelable) e.preventDefault();
+      setOrigin(t.clientX, t.clientY);
+    }, { passive: false });
+
+    function endTouch() {
+      cancelHold();
+      if (!sliding) return;
+      sliding = false;
+      closeZoom();
+      skipNextClick = true;
+    }
+    main.addEventListener('touchend', endTouch);
+    main.addEventListener('touchcancel', endTouch);
+    main.addEventListener('contextmenu', function (e) {
+      /* no "save image" sheet while a long press is being used to zoom */
+      if (sliding) e.preventDefault();
     });
   }
 
