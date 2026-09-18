@@ -189,6 +189,107 @@
       track.addEventListener('scroll', update, { passive: true });
       window.addEventListener('resize', update);
       update();
+
+      /* ----------------------------------------------------------------
+         Auto-slide — ping-pong.
+
+         The rail drifts one card at a time, turns round when it reaches
+         the last card, slides all the way back to the first and starts
+         over. The only thing it ever writes to is `scrollLeft`, so card
+         widths, the flex track, the CSS scroll-snap points, the progress
+         bar and the arrows all keep behaving exactly as they do now —
+         no layout value is touched, so nothing can shift or break.
+
+         It pauses while the shopper is actually using the rail (press,
+         wheel, touch, keyboard focus) and while the browser tab is
+         hidden, and it only runs while the rail is on screen.
+         ---------------------------------------------------------------- */
+      if (rail.getAttribute('data-rail-auto') === 'false') return;
+      if (reduceMotion) return;
+
+      var DWELL       = 3000;  // ms a card sits still before the next move
+      var SLIDE       = 700;   // ms given to the browser to finish scrolling
+      var STEP_CARDS  = 1;     // cards per move (2 = two at a time)
+      var PAUSE_HOVER = false; // true = also stop while the mouse rests on it
+
+      var dir       = 1;      // 1 = towards the last card, -1 = back to the first
+      var timer     = null;
+      var wheelTimer = null;
+      var onScreen  = false;
+      var hovered   = false;
+      var held      = false;  // pointer down / wheel / touch — real interaction
+
+      /* one card + the gap between cards, measured live so it follows
+         --rail-per-view at every breakpoint */
+      var cardStep = function () {
+        var kids = track.children;
+        if (kids.length > 1) {
+          var step = kids[1].offsetLeft - kids[0].offsetLeft;
+          if (step > 8) return step * STEP_CARDS;
+        }
+        return page();
+      };
+
+      var isPaused = function () {
+        return document.hidden || !onScreen || held || (PAUSE_HOVER && hovered);
+      };
+
+      var tick = function () {
+        timer = null;
+        var max = track.scrollWidth - track.clientWidth;
+
+        /* nothing to scroll yet — the recently-viewed rail starts empty and
+           the recommendations rail is filled in after load, so just retry */
+        if (isPaused() || max <= 1) { schedule(); return; }
+
+        var left = track.scrollLeft;
+        if (left >= max - 1) dir = -1;      // last card — turn round
+        else if (left <= 1) dir = 1;        // first card — head back down
+
+        var stepSize = cardStep();
+        var delta = dir * stepSize;
+        if (dir > 0 && left + stepSize > max) delta = max - left;  // no overshoot
+        if (dir < 0 && left - stepSize < 0) delta = -left;
+
+        if (delta) track.scrollBy({ left: delta, behavior: 'smooth' });
+        schedule();
+      };
+
+      var schedule = function () {
+        if (timer) return;
+        timer = window.setTimeout(tick, DWELL + SLIDE);
+      };
+
+      if (window.IntersectionObserver) {
+        new IntersectionObserver(function (entries) {
+          onScreen = entries[0].isIntersecting;
+        }, { threshold: 0.25 }).observe(rail);
+      } else {
+        onScreen = true;
+      }
+
+      rail.addEventListener('mouseenter', function () { hovered = true; });
+      rail.addEventListener('mouseleave', function () { hovered = false; });
+      rail.addEventListener('pointerdown', function () { held = true; });
+      document.addEventListener('pointerup', function () {
+        window.setTimeout(function () { held = false; }, 1200);
+      });
+      rail.addEventListener('touchstart', function () { held = true; }, { passive: true });
+      rail.addEventListener('touchend', function () {
+        window.setTimeout(function () { held = false; }, 2500);
+      });
+      rail.addEventListener('touchcancel', function () {
+        window.setTimeout(function () { held = false; }, 2500);
+      });
+      rail.addEventListener('wheel', function () {
+        held = true;
+        window.clearTimeout(wheelTimer);
+        wheelTimer = window.setTimeout(function () { held = false; }, 1500);
+      }, { passive: true });
+      rail.addEventListener('focusin', function () { held = true; });
+      rail.addEventListener('focusout', function () { held = false; });
+
+      schedule();
     });
   })();
 

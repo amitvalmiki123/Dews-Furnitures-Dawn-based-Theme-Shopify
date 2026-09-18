@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Product rail — auto-slide (ping-pong)</title>
+<link rel="stylesheet" href="/theme_export/assets/style.css">
+<link rel="stylesheet" href="/theme_export/assets/component-dews-product.css">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#fbfaf8;font-family:Archivo,-apple-system,sans-serif;color:#171310}
+  .bar{position:sticky;top:0;z-index:9999;background:#171310;color:#fbfaf8;display:flex;gap:9px;
+       align-items:center;padding:9px 16px;flex-wrap:wrap}
+  .bar b{font-size:.78rem;font-weight:600}
+  .hint{font-size:.68rem;color:#9a9089;margin-left:auto}
+  .pane{padding:2rem clamp(1rem,3vw,3rem);border-top:2px solid #3a2f27}
+  .lbl{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+       padding:7px 16px;margin:-2rem calc(-1rem - 16px) 1.5rem;display:block}
+  @media (max-width:900px){.lbl{margin-left:-1rem;margin-right:-1rem}}
+  .lbl.on{background:#12301a;color:#7bd88f}
+  .lbl.off{background:#3a1414;color:#ff9b9b}
+  .status{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.72rem;color:#7c716a;
+          margin-top:1rem;text-align:right}
+  .note{font-size:.75rem;color:#7c716a;line-height:1.7;max-width:760px;margin:.25rem 0 0}
+  .note b{color:#171310}
+  .warn{display:none;margin-top:.75rem;padding:.6rem .8rem;border-radius:8px;background:#3a1414;
+        color:#ff9b9b;font-size:.74rem}
+  .warn.show{display:block}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <b>Product rail — auto-slide (ping-pong)</b>
+  <span class="hint">Ye preview ASLI /theme_export/assets/script.js load karta hai — jo code aap paste karenge wahi yahan chal raha hai</span>
+</div>
+
+<!-- ══════════════ RAIL 1 — AUTO-SLIDE ON ══════════════ -->
+<div class="pane">
+  <span class="lbl on">Auto-slide ON — aakhiri card ke baad reverse hokar wapas first card par</span>
+
+  <div class="rail" data-rail>
+    <div class="rail__track" data-rail-track id="trackA">
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a><span class="badge badge--sale">Save 18%</span></div><div class="product__info"><h3><a href="#">Sheesham Bed</a></h3><div class="price-row"><span class="price">₹ 42,900</span></div></div></article>
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Cane Armchair</a></h3><div class="price-row"><span class="price">₹ 18,500</span></div></div></article>
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a><span class="badge badge--new">New</span></div><div class="product__info"><h3><a href="#">Walnut Sideboard</a></h3><div class="price-row"><span class="price">₹ 36,400</span></div></div></article>
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Rattan Coffee Table</a></h3><div class="price-row"><span class="price">₹ 12,900</span></div></div></article>
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Teak Dining Set</a></h3><div class="price-row"><span class="price">₹ 89,000</span></div></div></article>
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Linen Lounge Chair</a></h3><div class="price-row"><span class="price">₹ 24,750</span></div></div></article>
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Oak Bookshelf</a></h3><div class="price-row"><span class="price">₹ 31,200</span></div></div></article>
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Cane Bar Stool</a></h3><div class="price-row"><span class="price">₹ 9,400</span></div></div></article>
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Rosewood Chest</a></h3><div class="price-row"><span class="price">₹ 27,600</span></div></div></article>
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Jute Floor Lamp</a></h3><div class="price-row"><span class="price">₹ 6,800</span></div></div></article>
+    </div>
+
+    <div class="rail__foot">
+      <div class="rail__progress"><span class="rail__bar" data-rail-bar></span></div>
+      <div class="rail__nav">
+        <button class="rail__btn" data-rail-prev aria-label="Previous products"><svg aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+        <button class="rail__btn" data-rail-next aria-label="Next products"><svg aria-hidden="true"><use href="#i-chev-r"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="status" id="statA">scrollLeft 0 / max 0</div>
+  <p class="note">
+    Har <b>3 second</b> me ek card aage, aakhiri card par pahunch kar <b>reverse</b> ho kar wapas pehle card tak,
+    phir dobara aage. <b>Kisi bhi layout value ko chhua nahi gaya</b> — sirf <code>scrollLeft</code> badalta hai,
+    isliye card width, grid, scroll-snap, progress bar aur arrows sab waise hi kaam karte hain.
+    Rail par <b>dabana / wheel / touch / keyboard focus</b> karne par slide ruk jata hai (1.2–2.5s baad resume).
+  </p>
+  <div class="warn" id="warnMotion">
+    ⚠️ Aapke OS me <b>prefers-reduced-motion</b> on hai — isliye auto-slide jaan-bujhkar band hai.
+    Ye bilkul sahi behaviour hai (accessibility), live store par bhi aisa hi hoga.
+  </div>
+</div>
+
+<!-- ══════════════ RAIL 2 — AUTO-SLIDE OFF (control) ══════════════ -->
+<div class="pane">
+  <span class="lbl off">Auto-slide OFF — <code>data-rail-auto="false"</code> (sirf arrows se chalta hai)</span>
+
+  <div class="rail" data-rail data-rail-auto="false">
+    <div class="rail__track" data-rail-track id="trackB">
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Sheesham Bed</a></h3><div class="price-row"><span class="price">₹ 42,900</span></div></div></article>
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Cane Armchair</a></h3><div class="price-row"><span class="price">₹ 18,500</span></div></div></article>
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Walnut Sideboard</a></h3><div class="price-row"><span class="price">₹ 36,400</span></div></div></article>
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Rattan Coffee Table</a></h3><div class="price-row"><span class="price">₹ 12,900</span></div></div></article>
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Teak Dining Set</a></h3><div class="price-row"><span class="price">₹ 89,000</span></div></div></article>
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Linen Lounge Chair</a></h3><div class="price-row"><span class="price">₹ 24,750</span></div></div></article>
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Oak Bookshelf</a></h3><div class="price-row"><span class="price">₹ 31,200</span></div></div></article>
+      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Cane Bar Stool</a></h3><div class="price-row"><span class="price">₹ 9,400</span></div></div></article>
+    </div>
+
+    <div class="rail__foot">
+      <div class="rail__progress"><span class="rail__bar" data-rail-bar></span></div>
+      <div class="rail__nav">
+        <button class="rail__btn" data-rail-prev aria-label="Previous products"><svg aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+        <button class="rail__btn" data-rail-next aria-label="Next products"><svg aria-hidden="true"><use href="#i-chev-r"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="status" id="statB">scrollLeft 0 / max 0</div>
+</div>
+
+<svg style="display:none">
+  <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<!-- the real theme script, unmodified -->
+<script src="/theme_export/assets/script.js" defer></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    ['A', 'B'].forEach(function (key) {
+      var t = document.getElementById('track' + key);
+      var s = document.getElementById('stat' + key);
+      if (!t || !s) return;
+      var show = function () {
+        var max = t.scrollWidth - t.clientWidth;
+        s.textContent = 'scrollLeft ' + Math.round(t.scrollLeft) + ' / max ' + Math.round(max);
+      };
+      t.addEventListener('scroll', show, { passive: true });
+      window.addEventListener('resize', show);
+      show();
+    });
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.getElementById('warnMotion').classList.add('show');
+    }
+  });
+</script>
+</body>
+</html>
