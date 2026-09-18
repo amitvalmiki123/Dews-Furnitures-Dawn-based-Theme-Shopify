@@ -410,24 +410,37 @@ span.mobile-facets__open-label.button-label {
 /* =============================================================================
    EMPTY STATE — "No products found" (collection + search)
    -----------------------------------------------------------------------------
-   .collection.collection--empty > .empty renders when a collection or a search
-   returns nothing. The basic rules above leave it as bare centred text, and
-   because it sits inside the .shop grid (262px filter rail + 1fr results) it
-   read as a small stray paragraph floating in the right-hand column.
+   TEXT ONLY. This touches NOTHING except the message that shows when a
+   collection or a search returns zero results:
+       .collection.collection--empty > .empty
+           <svg …>
+           <h3> No products found </h3>
+           <p>  Use fewer filters or remove all </p>
+   No card, no box, no background, no border, no button — so the product grid
+   and every other part of the collection / search page stay exactly as they
+   are. Nothing here is scoped by ID, so it works on all three stores.
 
-   ABOUT "FULL WIDTH": the filter rail is deliberately kept beside it. The
-   copy tells the shopper to use fewer filters, so they still need the rail in
-   order to clear them. Spanning both grid columns would push the rail above
-   the message and leave a 262px hole next to it, which looks broken. So the
-   card is made full width of the CONTENT area instead — it now has real
-   height, a background and a button, which is what makes it read as centred.
+   Why it needed a fix at all: .collection--empty sits inside .shop
+   (262px filter rail + 1fr results). The old rules were only
+   ".empty { text-align:center }", so the words were centred on the narrow
+   right-hand column and read as a stray paragraph off to one side.
+   width:100% on the wrapper + margin-inline:auto on the <p> now put the
+   words in the middle of the content area.
 
-   Dawn also leaves a 1.8rem absolutely-positioned loading spinner inside the
-   empty block; it never spins and can only get in the way, so it is hidden.
+   The filter rail is deliberately left in place beside the message — the copy
+   says "use fewer filters", so the shopper still needs the rail to clear
+   them. Spanning both columns would push the rail below the text.
+
+   Dawn also drops a 1.8rem absolutely-positioned loading spinner inside the
+   empty block. It never spins and only gets in the way, so it is hidden.
    ============================================================================= */
+
+/* the message wrapper fills the content column so the text can centre in it */
 .collection--empty {
   width: 100%;
 }
+
+/* hide Dawn's dead loading spinner */
 .collection--empty .loading-overlay {
   display: none !important;
 }
@@ -435,85 +448,63 @@ span.mobile-facets__open-label.button-label {
 .collection--empty .empty {
   width: 100%;
   box-sizing: border-box;
-  min-height: clamp(320px, 42vh, 460px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   text-align: center;
-  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.25rem, 4vw, 2.5rem);
-  background: var(--paper, #fbfaf8);
-  border: 1px solid var(--line, #e2dcd3);
-  border-radius: var(--r-lg, 20px);
-  box-shadow: var(--shadow-sm, 0 4px 18px rgba(23, 19, 16, 0.06));
+  padding: clamp(2rem, 5vw, 3.5rem) 1rem clamp(2.5rem, 6vw, 4rem);
 }
 
-/* the search icon, sat on a soft circle */
+/* search icon */
 .collection--empty .empty > svg {
   display: block;
-  width: 30px;
-  height: 30px;
-  box-sizing: content-box;
-  padding: 18px;
-  margin: 0 auto 1.5rem;
-  border-radius: 50%;
-  background: var(--bone, #f3efe9);
-  color: var(--ink-3, #4a3f37);
+  width: 34px;
+  height: 34px;
+  margin: 0 auto 1.1rem;
+  color: var(--muted-2, #9a9089);
 }
 
+/* "No products found" */
 .collection--empty .empty h3 {
   margin: 0;
   font-family: var(--font-accent, "Instrument Serif", Georgia, serif);
-  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
   font-weight: 400;
-  line-height: 1.15;
+  line-height: 1.2;
   letter-spacing: -0.02em;
   color: var(--ink, #171310);
 }
 
+/* "Use fewer filters or remove all" */
 .collection--empty .empty p {
-  margin: 1rem 0 0;
-  max-width: 46ch;
-  color: var(--muted, #7c716a);
-  font-size: var(--t-lead, 1rem);
+  margin: 0.85rem auto 0;
+  max-width: 44ch;
+  font-size: var(--t-body, 1.0313rem);
   line-height: 1.7;
+  color: var(--muted, #7c716a);
 }
 
-/* "use fewer filters or remove all" — the inline link reads as a button */
+/* "remove all" stays a plain underlined link, just a bit stronger */
 .collection--empty .empty p a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  margin-top: 1.4rem;
-  padding: 0.7rem 1.4rem;
-  border-radius: var(--r-pill, 999px);
-  background: var(--ink, #171310);
-  color: #fff;
-  font-size: 0.8rem;
+  color: var(--ink, #171310);
   font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: background 0.25s var(--ease, ease), color 0.25s var(--ease, ease);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .collection--empty .empty p a:hover {
-  background: var(--red, #e01b22);
-  color: #fff;
-  text-decoration: none;
+  color: var(--red, #e01b22);
 }
 
 @media screen and (max-width: 749px) {
   .collection--empty .empty {
-    min-height: 300px;
-    padding: 2.25rem 1.25rem;
-  }
-  .collection--empty .empty h3 {
-    font-size: 1.4rem;
+    padding: 1.75rem 0.5rem 2rem;
   }
   .collection--empty .empty > svg {
-    width: 24px;
-    height: 24px;
-    padding: 15px;
-    margin-bottom: 1.2rem;
+    width: 28px;
+    height: 28px;
+    margin-bottom: 0.9rem;
+  }
+  .collection--empty .empty h3 {
+    font-size: 1.35rem;
+  }
+  .collection--empty .empty p {
+    max-width: 34ch;
   }
 }
