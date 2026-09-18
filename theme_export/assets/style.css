@@ -2532,3 +2532,88 @@ section#shopify-section-template--28486573293749__judgeme-reviews {
     transition: none !important;
   }
 }
+
+/* ==========================================================================
+   PREDICTIVE SEARCH PANEL — stop the search page painting over it
+   --------------------------------------------------------------------------
+   Two independent faults. Both have to be fixed or the panel stays buried.
+
+   1. A STACKING CONTEXT ON THE SEARCH FORM  (the one that actually traps it)
+      The load-in fade block further up animates .chero__text > *, and
+      .search-page__form is a direct child of .chero__text on /search.
+      animation-fill-mode:both keeps the last keyframe applied, so the form is
+      left holding transform: translate3d(0, 0, 0) for good. Any transform
+      value — even a zero one — creates a stacking context, so the panel is
+      painted inside the form's context and can never rise above the form's
+      own siblings, whatever z-index it is given. (The form itself sits at
+      z-index:auto, which loses to .toolbar at 10 and .header at 100.)
+      Fix: take the form out of the animation and zero its transform.
+
+   2. A Z-INDEX THAT LOSES
+      With the stacking context gone, nothing else in the chain makes one —
+      .search-page__field is position:relative with z-index:auto, which does
+      not — so the panel's z-index is compared directly against:
+
+          .toolbar                 10   sticky
+          .header / header-group  100   sticky
+          .mobile-cta             120
+          .scrim                  190
+          .site-mobile-drawer     200
+          .modal                  300
+          .mobile-facets        99999
+
+      Dawn ships .predictive-search--search-template at z-index 5, so the
+      toolbar, the filter rail and the product cards all painted over the
+      panel. 150 clears the toolbar and the header while staying below the
+      scrim, the drawers, the modal and the mobile facets, which should still
+      cover it.
+
+      The earlier attempt at this sits inside @media (max-width: 576px), so it
+      never applied on desktop. Every rule below is outside any media query.
+   ========================================================================== */
+
+/* 1. remove the transform that was creating the stacking context */
+.search-page__form,
+.chero__text > .search-page__form,
+.phero__text > .search-page__form {
+  animation: none !important;
+  transform: none !important;
+}
+
+/* 2. lift the panel above the page content */
+body.template-search predictive-search[open] .predictive-search,
+body.template-search predictive-search[loading] .predictive-search {
+  display: block;
+  width: 100%;
+  z-index: 150;
+}
+body.template-search .predictive-search--search-template {
+  z-index: 150;
+}
+
+/* fully opaque — a translucent panel reads as "broken" over the grid */
+body.template-search .predictive-search {
+  background: var(--paper, #fbfaf8) !important;
+  opacity: 1 !important;
+}
+
+/* nothing on the page may clip the panel */
+body.template-search .chero,
+body.template-search .chero__text,
+body.template-search .search-page__form,
+body.template-search .search-page__search,
+body.template-search .search-page__field {
+  overflow: visible;
+}
+
+/* belt and braces: drop the sticky rails while the panel is open.
+   Both selectors use :has(), so on a browser without it the whole rule is
+   dropped — which is fine, because 150 already beats the toolbar's 10. */
+body.template-search:has(predictive-search[open]) .toolbar,
+body.template-search:has(predictive-search[open]) .filters--rail {
+  z-index: 1 !important;
+}
+body.template-search:has(predictive-search[loading]) .toolbar,
+body.template-search:has(predictive-search[loading]) .filters--rail {
+  z-index: 1 !important;
+}

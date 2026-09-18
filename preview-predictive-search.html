@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" class="js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Predictive search panel — before &amp; after</title>
+<link rel="stylesheet" href="/theme_export/assets/style.css">
+<link rel="stylesheet" href="/theme_export/assets/dews-collection.css">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#fbfaf8;font-family:Archivo,-apple-system,sans-serif}
+  .bar{position:sticky;top:0;z-index:9999;background:#171310;color:#fbfaf8;display:flex;gap:9px;
+       align-items:center;padding:9px 16px;flex-wrap:wrap}
+  .bar b{font-size:.78rem;font-weight:600}
+  button{background:#2a221c;color:#fbfaf8;border:1px solid #4a3f37;border-radius:999px;
+         padding:6px 12px;font-size:.72rem;cursor:pointer;font-weight:600;font-family:inherit}
+  button:hover,button.on{background:#e01b22;border-color:#e01b22}
+  .hint{font-size:.68rem;color:#9a9089;margin-left:auto}
+  .grid2{display:grid;grid-template-columns:1fr 1fr}
+  @media (max-width:1100px){.grid2{grid-template-columns:1fr}}
+  .lbl{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;padding:7px 16px}
+  .lbl.bad{background:#3a1414;color:#ff9b9b}
+  .lbl.good{background:#12301a;color:#7bd88f}
+  .vr{width:2px;background:#3a2f27}
+
+  /* ---------- shared demo shell ---------- */
+  .btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--ink);color:#fff;
+       border:0;border-radius:var(--r-pill);padding:.6rem 1.1rem;font-size:.8rem;font-weight:600;
+       text-decoration:none;cursor:pointer}
+  .ph{background:#e9e3da;border-radius:8px;aspect-ratio:1/1}
+  .pgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:1rem}
+  @media (max-width:749px){.pgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+  /* ---------- the predictive panel ---------- */
+  .predictive-search{position:absolute;top:calc(100% + .1rem);left:-.1rem;border:1px solid var(--line);
+      border-radius:var(--r-md);box-shadow:var(--shadow-md);max-height:min(70vh,560px);overflow-y:auto}
+  .ps-row{display:flex;align-items:center;gap:.75rem;padding:.6rem 1rem;border-bottom:1px solid var(--line-soft)}
+  .ps-row img{width:42px;height:42px;border-radius:6px;object-fit:cover;background:#e9e3da}
+  .ps-row b{font-size:.88rem;display:block}
+  .ps-row small{color:var(--muted);font-size:.78rem}
+  .ps-head{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+           padding:.7rem 1rem .4rem;font-weight:600}
+
+  /* ================= BEFORE: reproduce both faults ================= */
+  .before .search-page__form{
+    /* the load-in fade left this behind -> stacking context */
+    transform:translate3d(0,0,0);
+  }
+  .before .predictive-search{ z-index:5; width:100%; background:var(--paper) }
+
+  /* ================= AFTER: the shipped fix ================= */
+  .after .search-page__form{ animation:none !important; transform:none !important; }
+  .after .predictive-search{ z-index:150; width:100%; background:var(--paper,#fbfaf8); opacity:1 }
+  .after .chero,.after .chero__text,.after .search-page__form,
+  .after .search-page__search,.after .search-page__field{ overflow:visible }
+</style>
+</head>
+<body class="template-search">
+
+<div class="bar">
+  <b>Predictive search panel — before &amp; after</b>
+  <button id="btnToggle">Panel band karo / kholo</button>
+  <span class="hint">Dono taraf ek hi page — upar hero+search, neeche toolbar + facets + product grid</span>
+</div>
+
+<div class="grid2">
+
+  <!-- ══════════════ BEFORE ══════════════ -->
+  <div class="before">
+    <div class="lbl bad">Before — form pe transform (stacking context) + z-index 5</div>
+    <div class="demo">
+
+      <div class="shopify-section collection-banner-section">
+        <section class="section collection-banner search-banner">
+          <div class="container">
+            <div class="chero chero--single">
+              <div class="chero__text">
+                <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Search</p>
+                <h1>Find your perfect piece</h1>
+                <div class="chero__desc"><p>4 results for “bed”</p></div>
+
+                <div class="search-page__form">
+                  <div class="search-page__search">
+                    <div class="search-page__field">
+                      <svg width="19" height="19"><use href="#i-search"/></svg>
+                      <input class="search-page__input" value="bed" readonly>
+
+                      <!-- THE PANEL -->
+                      <div class="predictive-search predictive-search--search-template">
+                        <div class="ps-head">Products</div>
+                        <div class="ps-row"><img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=90&q=60" alt=""><span><b>Sheesham Queen Bed</b><small>₹42,999</small></span></div>
+                        <div class="ps-row"><img src="https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=90&q=60" alt=""><span><b>Study Table</b><small>₹16,750</small></span></div>
+                        <div class="ps-row"><img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=90&q=60" alt=""><span><b>Coffee Table</b><small>₹18,900</small></span></div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="container">
+        <div class="shop">
+          <aside class="filters filters--rail">
+            <div class="filters__head"><h2>Filter</h2></div>
+            <div class="ph" style="aspect-ratio:auto;height:180px"></div>
+          </aside>
+          <div>
+            <div class="toolbar"><div class="toolbar__group"><span class="toolbar__count"><b>4</b> products</span></div></div>
+            <div class="pgrid">
+              <div class="ph"></div><div class="ph"></div><div class="ph"></div>
+              <div class="ph"></div><div class="ph"></div><div class="ph"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="vr"></div>
+
+  <!-- ══════════════ AFTER ══════════════ -->
+  <div class="after">
+    <div class="lbl good">After — transform hataya + z-index 150</div>
+    <div class="demo">
+
+      <div class="shopify-section collection-banner-section">
+        <section class="section collection-banner search-banner">
+          <div class="container">
+            <div class="chero chero--single">
+              <div class="chero__text">
+                <p class="eyebrow"><i class="dew" aria-hidden="true"></i> Search</p>
+                <h1>Find your perfect piece</h1>
+                <div class="chero__desc"><p>4 results for “bed”</p></div>
+
+                <div class="search-page__form">
+                  <div class="search-page__search">
+                    <div class="search-page__field">
+                      <svg width="19" height="19"><use href="#i-search"/></svg>
+                      <input class="search-page__input" value="bed" readonly>
+
+                      <!-- THE PANEL -->
+                      <div class="predictive-search predictive-search--search-template">
+                        <div class="ps-head">Products</div>
+                        <div class="ps-row"><img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=90&q=60" alt=""><span><b>Sheesham Queen Bed</b><small>₹42,999</small></span></div>
+                        <div class="ps-row"><img src="https://images.unsplash.com/photo-1540932239986-30128078f3c5?w=90&q=60" alt=""><span><b>Study Table</b><small>₹16,750</small></span></div>
+                        <div class="ps-row"><img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=90&q=60" alt=""><span><b>Coffee Table</b><small>₹18,900</small></span></div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="container">
+        <div class="shop">
+          <aside class="filters filters--rail">
+            <div class="filters__head"><h2>Filter</h2></div>
+            <div class="ph" style="aspect-ratio:auto;height:180px"></div>
+          </aside>
+          <div>
+            <div class="toolbar"><div class="toolbar__group"><span class="toolbar__count"><b>4</b> products</span></div></div>
+            <div class="pgrid">
+              <div class="ph"></div><div class="ph"></div><div class="ph"></div>
+              <div class="ph"></div><div class="ph"></div><div class="ph"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<svg style="display:none"><symbol id="i-search" viewBox="0 0 24 24"><path d="M10 2a8 8 0 1 0 4.9 14.32l5.39 5.39 1.42-1.42-5.39-5.39A8 8 0 0 0 10 2zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12z"/></symbol></svg>
+
+<script>
+  document.getElementById('btnToggle').onclick = function () {
+    document.querySelectorAll('.predictive-search').forEach(function (p) {
+      p.style.display = (p.style.display === 'none') ? '' : 'none';
+    });
+  };
+</script>
+</body>
+</html>
