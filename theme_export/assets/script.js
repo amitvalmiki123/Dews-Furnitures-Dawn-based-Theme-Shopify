@@ -156,55 +156,24 @@
   })();
 
   /* ------------------------------------------------------------------
-     Product rail — arrows + scroll progress bar
+     Product rail — arrows + scroll progress bar + auto-slide
      ------------------------------------------------------------------ */
   (function rails() {
-    $$('[data-rail]').forEach(function (rail) {
-      var track = $('[data-rail-track]', rail);
-      var bar   = $('[data-rail-bar]', rail);
-      var prev  = $('[data-rail-prev]', rail);
-      var next  = $('[data-rail-next]', rail);
+
+    /* Auto-slide: one card at a time, turn round at the last card and drift
+       back to the first, over and over. The only thing it ever writes to is
+       `scrollLeft`, so card widths, the flex track, the CSS scroll-snap
+       points, the progress bar and the arrows keep behaving exactly as they
+       do — no layout value is touched, so nothing can shift or break.
+
+       It pauses while the shopper is using the rail (press, wheel, touch,
+       keyboard focus) and while the tab is hidden, and it only runs while
+       the rail is on screen. */
+    function autoSlide(rail, track) {
       if (!track) return;
-
-      var page = function () {
-        return Math.max(track.clientWidth * 0.8, 240);
-      };
-
-      var update = function () {
-        var max = track.scrollWidth - track.clientWidth;
-
-        if (bar) {
-          var visible = track.clientWidth / track.scrollWidth;
-          var ratio   = max > 0 ? track.scrollLeft / max : 0;
-          bar.style.width = Math.max(visible * 100, 12) + '%';
-          bar.style.transform = 'translateX(' + (ratio * ((1 / Math.max(visible, 0.12)) - 1) * 100) + '%)';
-        }
-        if (prev) prev.disabled = track.scrollLeft <= 2;
-        if (next) next.disabled = track.scrollLeft >= max - 2;
-      };
-
-      if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -page(), behavior: reduceMotion ? 'auto' : 'smooth' }); });
-      if (next) next.addEventListener('click', function () { track.scrollBy({ left:  page(), behavior: reduceMotion ? 'auto' : 'smooth' }); });
-
-      track.addEventListener('scroll', update, { passive: true });
-      window.addEventListener('resize', update);
-      update();
-
-      /* ----------------------------------------------------------------
-         Auto-slide — ping-pong.
-
-         The rail drifts one card at a time, turns round when it reaches
-         the last card, slides all the way back to the first and starts
-         over. The only thing it ever writes to is `scrollLeft`, so card
-         widths, the flex track, the CSS scroll-snap points, the progress
-         bar and the arrows all keep behaving exactly as they do now —
-         no layout value is touched, so nothing can shift or break.
-
-         It pauses while the shopper is actually using the rail (press,
-         wheel, touch, keyboard focus) and while the browser tab is
-         hidden, and it only runs while the rail is on screen.
-         ---------------------------------------------------------------- */
       if (rail.getAttribute('data-rail-auto') === 'false') return;
+      if (rail.getAttribute('data-rail-auto-init')) return;   // never twice
+      rail.setAttribute('data-rail-auto-init', '1');
       if (reduceMotion) return;
 
       var DWELL       = 3000;  // ms a card sits still before the next move
@@ -212,14 +181,18 @@
       var STEP_CARDS  = 1;     // cards per move (2 = two at a time)
       var PAUSE_HOVER = false; // true = also stop while the mouse rests on it
 
-      var dir       = 1;      // 1 = towards the last card, -1 = back to the first
-      var timer     = null;
+      var dir = 1;             // 1 = towards the last card, -1 = back to the first
+      var timer = null;
       var wheelTimer = null;
-      var onScreen  = false;
-      var hovered   = false;
-      var held      = false;  // pointer down / wheel / touch — real interaction
+      var onScreen = false;
+      var hovered = false;
+      var held = false;        // pointer down / wheel / touch — real interaction
 
-      /* one card + the gap between cards, measured live so it follows
+      var page = function () {
+        return Math.max(track.clientWidth * 0.8, 240);
+      };
+
+      /* one card plus the gap after it, measured live so it follows
          --rail-per-view at every breakpoint */
       var cardStep = function () {
         var kids = track.children;
@@ -238,8 +211,9 @@
         timer = null;
         var max = track.scrollWidth - track.clientWidth;
 
-        /* nothing to scroll yet — the recently-viewed rail starts empty and
-           the recommendations rail is filled in after load, so just retry */
+        /* Nothing to scroll yet, or the shopper is busy: try again shortly.
+           The recently-viewed track starts empty and the recommendations
+           markup is swapped in after load, so both start out here. */
         if (isPaused() || max <= 1) { schedule(); return; }
 
         var left = track.scrollLeft;
@@ -290,8 +264,67 @@
       rail.addEventListener('focusout', function () { held = false; });
 
       schedule();
-    });
+    }
+
+    /* Arrows + progress bar. Only for rails that are already in the document
+       when this file runs — the two PDP rails wire their own controls, and
+       binding them a second time would make one click jump two pages. */
+    function initRail(rail) {
+      var track = $('[data-rail-track]', rail);
+      if (!track) return;
+      var bar  = $('[data-rail-bar]', rail);
+      var prev = $('[data-rail-prev]', rail);
+      var next = $('[data-rail-next]', rail);
+
+      var page = function () {
+        return Math.max(track.clientWidth * 0.8, 240);
+      };
+
+      var update = function () {
+        var max = track.scrollWidth - track.clientWidth;
+
+        if (bar) {
+          var visible = track.clientWidth / track.scrollWidth;
+          var ratio   = max > 0 ? track.scrollLeft / max : 0;
+          bar.style.width = Math.max(visible * 100, 12) + '%';
+          bar.style.transform = 'translateX(' + (ratio * ((1 / Math.max(visible, 0.12)) - 1) * 100) + '%)';
+        }
+        if (prev) prev.disabled = track.scrollLeft <= 2;
+        if (next) next.disabled = track.scrollLeft >= max - 2;
+      };
+
+      if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -page(), behavior: reduceMotion ? 'auto' : 'smooth' }); });
+      if (next) next.addEventListener('click', function () { track.scrollBy({ left:  page(), behavior: reduceMotion ? 'auto' : 'smooth' }); });
+
+      track.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+
+      autoSlide(rail, track);
+    }
+
+    /* every rail that is already on the page */
+    $$('[data-rail]').forEach(initRail);
+
+    /* Rails that turn up later. <product-recommendations> swaps its markup
+       in after this file has run, and the recently-viewed rail fills its
+       track from localStorage, so neither is in the loop above. Both wire
+       their own arrows, so this only switches the auto-slide on for them. */
+    if (window.MutationObserver) {
+      var pending = null;
+      var scan = function () {
+        $$('[data-rail]').forEach(function (rail) {
+          if (rail.getAttribute('data-rail-auto-init')) return;
+          autoSlide(rail, $('[data-rail-track]', rail));
+        });
+      };
+      new MutationObserver(function () {
+        window.clearTimeout(pending);
+        pending = window.setTimeout(scan, 150);
+      }).observe(document.body, { childList: true, subtree: true });
+    }
   })();
+
 
   /* ------------------------------------------------------------------
      Wishlist — powered by the Wishlist Hero app (app embed).

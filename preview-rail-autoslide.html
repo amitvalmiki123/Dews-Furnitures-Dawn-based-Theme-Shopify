@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Product rail — auto-slide (ping-pong)</title>
+<title>Product rail — auto-slide (static + late-injected rails)</title>
 <link rel="stylesheet" href="/theme_export/assets/style.css">
 <link rel="stylesheet" href="/theme_export/assets/component-dews-product.css">
 <style>
@@ -15,29 +15,30 @@
   .hint{font-size:.68rem;color:#9a9089;margin-left:auto}
   .pane{padding:2rem clamp(1rem,3vw,3rem);border-top:2px solid #3a2f27}
   .lbl{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
-       padding:7px 16px;margin:-2rem calc(-1rem - 16px) 1.5rem;display:block}
-  @media (max-width:900px){.lbl{margin-left:-1rem;margin-right:-1rem}}
+       padding:7px 16px;margin:-2rem -1rem 1.5rem;display:block}
   .lbl.on{background:#12301a;color:#7bd88f}
+  .lbl.late{background:#12301a;color:#7bd88f}
   .lbl.off{background:#3a1414;color:#ff9b9b}
   .status{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.72rem;color:#7c716a;
           margin-top:1rem;text-align:right}
-  .note{font-size:.75rem;color:#7c716a;line-height:1.7;max-width:760px;margin:.25rem 0 0}
+  .note{font-size:.75rem;color:#7c716a;line-height:1.7;max-width:800px;margin:.25rem 0 0}
   .note b{color:#171310}
   .warn{display:none;margin-top:.75rem;padding:.6rem .8rem;border-radius:8px;background:#3a1414;
         color:#ff9b9b;font-size:.74rem}
   .warn.show{display:block}
+  .empty-tip{padding:2rem 0;color:#9a9089;font-size:.85rem}
 </style>
 </head>
 <body>
 
 <div class="bar">
-  <b>Product rail — auto-slide (ping-pong)</b>
-  <span class="hint">Ye preview ASLI /theme_export/assets/script.js load karta hai — jo code aap paste karenge wahi yahan chal raha hai</span>
+  <b>Product rail — auto-slide</b>
+  <span class="hint">Ye preview ASLI /theme_export/assets/script.js load karta hai — wahi code jo aap paste karenge</span>
 </div>
 
-<!-- ══════════════ RAIL 1 — AUTO-SLIDE ON ══════════════ -->
+<!-- ══════════════ RAIL A — STATIC (homepage jaisa) ══════════════ -->
 <div class="pane">
-  <span class="lbl on">Auto-slide ON — aakhiri card ke baad reverse hokar wapas first card par</span>
+  <span class="lbl on">Rail A — cards HTML me hain (homepage wala) — auto-slide chalu</span>
 
   <div class="rail" data-rail>
     <div class="rail__track" data-rail-track id="trackA">
@@ -49,8 +50,6 @@
       <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Linen Lounge Chair</a></h3><div class="price-row"><span class="price">₹ 24,750</span></div></div></article>
       <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Oak Bookshelf</a></h3><div class="price-row"><span class="price">₹ 31,200</span></div></div></article>
       <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Cane Bar Stool</a></h3><div class="price-row"><span class="price">₹ 9,400</span></div></div></article>
-      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Rosewood Chest</a></h3><div class="price-row"><span class="price">₹ 27,600</span></div></div></article>
-      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Jute Floor Lamp</a></h3><div class="price-row"><span class="price">₹ 6,800</span></div></div></article>
     </div>
 
     <div class="rail__foot">
@@ -64,31 +63,44 @@
 
   <div class="status" id="statA">scrollLeft 0 / max 0</div>
   <p class="note">
-    Har <b>3 second</b> me ek card aage, aakhiri card par pahunch kar <b>reverse</b> ho kar wapas pehle card tak,
-    phir dobara aage. <b>Kisi bhi layout value ko chhua nahi gaya</b> — sirf <code>scrollLeft</code> badalta hai,
-    isliye card width, grid, scroll-snap, progress bar aur arrows sab waise hi kaam karte hain.
-    Rail par <b>dabana / wheel / touch / keyboard focus</b> karne par slide ruk jata hai (1.2–2.5s baad resume).
+    Har <b>3 second</b> me ek card aage, aakhiri card par <b>reverse</b> ho kar wapas pehle card tak, phir dobara aage.
+    Sirf <code>scrollLeft</code> badalta hai — <b>koi layout value nahi chhuti</b>, isliye card width, grid, scroll-snap,
+    progress bar aur arrows sab waise hi.
   </p>
   <div class="warn" id="warnMotion">
-    ⚠️ Aapke OS me <b>prefers-reduced-motion</b> on hai — isliye auto-slide jaan-bujhkar band hai.
-    Ye bilkul sahi behaviour hai (accessibility), live store par bhi aisa hi hoga.
+    ⚠️ Aapke OS me <b>prefers-reduced-motion</b> on hai — isliye auto-slide jaan-bujhkar band hai (accessibility standard).
   </div>
 </div>
 
-<!-- ══════════════ RAIL 2 — AUTO-SLIDE OFF (control) ══════════════ -->
+<!-- ══════════════ RAIL B — INJECTED LATE (PDP: You may also like / Recently viewed) ══════════════ -->
 <div class="pane">
-  <span class="lbl off">Auto-slide OFF — <code>data-rail-auto="false"</code> (sirf arrows se chalta hai)</span>
+  <span class="lbl late">Rail B — poora rail 2 second baad JS se inject hota hai (jaise &lt;product-recommendations&gt;)</span>
+
+  <div id="lateWrap">
+    <p class="empty-tip">⏳ Rail abhi inject nahi hua… 2 second me aa jayega (jaise PDP par "You may also like" async load hota hai).</p>
+  </div>
+
+  <div class="status" id="statB">waiting…</div>
+  <p class="note">
+    Yahi wo case hai jo PDP par kaam nahi kar raha tha: <b>script.js ke chalne ke baad</b> rail DOM me aata hai,
+    to pehle wala code use kabhi dekh hi nahi paata tha. Naye code me <b>MutationObserver</b> hai jo naye
+    <code>[data-rail]</code> ko turant pakad leta hai aur auto-slide chalu kar deta hai.
+    (Arrows double-bind na ho, isliye late rails par sirf auto-slide lagaya jata hai — arrows unke apne section script wire karta hai.)
+  </p>
+</div>
+
+<!-- ══════════════ RAIL C — CONTROL (auto-slide off) ══════════════ -->
+<div class="pane">
+  <span class="lbl off">Rail C — <code>data-rail-auto="false"</code> (control — sirf arrows se chalta hai)</span>
 
   <div class="rail" data-rail data-rail-auto="false">
-    <div class="rail__track" data-rail-track id="trackB">
+    <div class="rail__track" data-rail-track id="trackC">
       <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Sheesham Bed</a></h3><div class="price-row"><span class="price">₹ 42,900</span></div></div></article>
       <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Cane Armchair</a></h3><div class="price-row"><span class="price">₹ 18,500</span></div></div></article>
       <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Walnut Sideboard</a></h3><div class="price-row"><span class="price">₹ 36,400</span></div></div></article>
       <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Rattan Coffee Table</a></h3><div class="price-row"><span class="price">₹ 12,900</span></div></div></article>
       <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Teak Dining Set</a></h3><div class="price-row"><span class="price">₹ 89,000</span></div></div></article>
       <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Linen Lounge Chair</a></h3><div class="price-row"><span class="price">₹ 24,750</span></div></div></article>
-      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Oak Bookshelf</a></h3><div class="price-row"><span class="price">₹ 31,200</span></div></div></article>
-      <article class="product"><div class="product__media"><a href="#"><img class="img-base" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt=""></a></div><div class="product__info"><h3><a href="#">Cane Bar Stool</a></h3><div class="price-row"><span class="price">₹ 9,400</span></div></div></article>
     </div>
 
     <div class="rail__foot">
@@ -100,7 +112,7 @@
     </div>
   </div>
 
-  <div class="status" id="statB">scrollLeft 0 / max 0</div>
+  <div class="status" id="statC">scrollLeft 0 / max 0</div>
 </div>
 
 <svg style="display:none">
@@ -113,7 +125,9 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    ['A', 'B'].forEach(function (key) {
+
+    /* live scroll readout for the rails that exist at load */
+    ['A', 'C'].forEach(function (key) {
       var t = document.getElementById('track' + key);
       var s = document.getElementById('stat' + key);
       if (!t || !s) return;
@@ -125,6 +139,47 @@
       window.addEventListener('resize', show);
       show();
     });
+
+    /* ---- inject a whole rail 2s later, exactly like <product-recommendations> ---- */
+    var IMG = '/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png';
+    var NAMES = ['Sheesham Bed', 'Cane Armchair', 'Walnut Sideboard', 'Rattan Coffee Table',
+                 'Teak Dining Set', 'Linen Lounge Chair', 'Oak Bookshelf', 'Cane Bar Stool'];
+    var PRICES = ['₹ 42,900', '₹ 18,500', '₹ 36,400', '₹ 12,900',
+                  '₹ 89,000', '₹ 24,750', '₹ 31,200', '₹ 9,400'];
+
+    var cards = NAMES.map(function (n, i) {
+      return '<article class="product">' +
+               '<div class="product__media"><a href="#"><img class="img-base" src="' + IMG + '" alt=""></a></div>' +
+               '<div class="product__info"><h3><a href="#">' + n + '</a></h3>' +
+               '<div class="price-row"><span class="price">' + PRICES[i] + '</span></div></div>' +
+             '</article>';
+    }).join('');
+
+    window.setTimeout(function () {
+      var wrap = document.getElementById('lateWrap');
+      if (!wrap) return;
+      wrap.innerHTML =
+        '<div class="rail" data-rail>' +
+          '<div class="rail__track" data-rail-track id="trackB">' + cards + '</div>' +
+          '<div class="rail__foot">' +
+            '<div class="rail__progress"><span class="rail__bar" data-rail-bar></span></div>' +
+            '<div class="rail__nav">' +
+              '<button class="rail__btn" data-rail-prev aria-label="Previous products"><svg aria-hidden="true"><use href="#i-chev-l"/></svg></button>' +
+              '<button class="rail__btn" data-rail-next aria-label="Next products"><svg aria-hidden="true"><use href="#i-chev-r"/></svg></button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+
+      var t = document.getElementById('trackB');
+      var s = document.getElementById('statB');
+      var show = function () {
+        var max = t.scrollWidth - t.clientWidth;
+        s.textContent = 'scrollLeft ' + Math.round(t.scrollLeft) + ' / max ' + Math.round(max);
+      };
+      t.addEventListener('scroll', show, { passive: true });
+      window.addEventListener('resize', show);
+      show();
+    }, 2000);
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       document.getElementById('warnMotion').classList.add('show');
