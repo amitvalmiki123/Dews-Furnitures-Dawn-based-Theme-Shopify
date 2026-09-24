@@ -1,58 +1,190 @@
 {%- comment -%}
-  Maps a finish / fabric value NAME to a hex color. Used as a fallback so the
-  product page still renders round colour swatches even when Shopify's native
-  swatch data (value.swatch) or the option_swatches metafield has no colour.
+  Maps a finish / fabric value NAME to a CSS colour. Used as a fallback so the
+  store still renders round colour swatches when Shopify's native swatch data
+  (value.swatch) has no colour — which is always the case for a filter built on
+  a plain text metafield such as custom.dim_colour.
 
-  Matching is case-insensitive and trims whitespace. Edit the list below to add
-  or change colours — this is the single place that maps names like "Espresso"
-  to their swatch colour.
+  HOW THE MATCHING WORKS NOW (two steps, so real shop values actually hit):
+
+    1. NOISE WORDS ARE STRIPPED FIRST. "Honey Finish" used to miss the list
+       because the list only knew "honey". The words " finish", " wood",
+       " colour", " color", " polish" and " stain" are removed before lookup,
+       so "Honey Finish" -> "honey", "Walnut Finish" -> "walnut".
+
+    2. KEYWORD MATCHING AS A SAFETY NET. If there is still no exact hit, the
+       name is scanned for words like "walnut", "teak", "honey", "natural" in
+       priority order, so a value nobody has listed yet — "Brown Walnut",
+       "Natural Teak Finish" — still gets a sensible wood tone instead of
+       falling through to the cream var(--bone-deep) that every unknown value
+       used to get.
+
+  Two-tone finishes ("Red & Black") return a gradient, which is valid anywhere
+  a colour is: every caller writes `background: {{ swatch_bg }};`.
 
   Accepts:
-    - name: {String} the option value name (e.g. "Espresso", "Ivory Linen")
+    - name: {String} the option / filter value name (e.g. "Walnut Finish")
 
-  Outputs the hex colour (e.g. #2a221c) or nothing when there is no match.
+  Outputs the colour (e.g. #6b4a33) or nothing when there is still no match —
+  each caller then falls back to var(--bone-deep).
+
+  Used by: snippets/facets-rail.liquid, snippets/dews-product-card.liquid,
+  sections/main-product.liquid — so one edit here fixes every swatch.
 {%- endcomment -%}
 {%- liquid
   assign n = name | downcase | strip
--%}
-{%- case n -%}
-  {%- comment -%} Frame / wood finishes {%- endcomment -%}
-  {%- when 'espresso', 'dark espresso', 'coffee', 'dark coffee', 'dark brown', 'dark walnut' -%}#2a221c
-  {%- when 'walnut' -%}#6b4a33
-  {%- when 'natural sheesham', 'sheesham', 'natural', 'natural wood', 'natural oak', 'natural sheesham wood' -%}#c9a274
-  {%- when 'oak', 'light oak', 'light wood', 'maple' -%}#b58a5a
-  {%- when 'teak' -%}#8b5a2b
-  {%- when 'mahogany' -%}#5c3a21
-  {%- when 'cherry', 'cherry wood' -%}#7a3b2e
-  {%- when 'brown', 'dark oak' -%}#6b4a33
-  {%- when 'black', 'ebony', 'wenge' -%}#1a1a1a
-  {%- when 'white', 'off white', 'offwhite' -%}#f5f3ef
-  {%- when 'ash', 'ash wood' -%}#cbb89d
-  {%- when 'cane', 'natural cane', 'rattan', 'honey' -%}#d8b489
-  {%- when 'pecan' -%}#8f5a2b
-  {%- when 'smoke', 'smoked', 'smoked oak' -%}#5d544c
-  {%- when 'mocha' -%}#6f4e37
-  {%- when 'caramel' -%}#b97a3d
-  {%- when 'cognac' -%}#9a4f2f
-  {%- when 'latte' -%}#cbb9a4
+  assign n = n | replace: '  ', ' '
+  assign n = n | replace: ' finish', ''
+  assign n = n | replace: ' wood', ''
+  assign n = n | replace: ' colour', ''
+  assign n = n | replace: ' color', ''
+  assign n = n | replace: ' polish', ''
+  assign n = n | replace: ' stain', ''
+  assign n = n | replace: '  ', ' '
+  assign n = n | strip
 
-  {%- comment -%} Cushion / fabric finishes {%- endcomment -%}
-  {%- when 'ivory linen', 'ivory', 'linen', 'cream linen' -%}#e8e2d8
-  {%- when 'oat boucle', 'oat bouclé', 'oat', 'boucle', 'bouclé', 'oat boucle linen' -%}#efe9dd
-  {%- when 'charcoal linen', 'charcoal', 'dark grey', 'dark gray', 'graphite' -%}#4a4440
-  {%- when 'beige' -%}#d8cfc0
-  {%- when 'grey', 'gray' -%}#8a857f
-  {%- when 'cream' -%}#f2ece2
-  {%- when 'sand' -%}#d9c9a8
-  {%- when 'stone' -%}#a89f92
-  {%- when 'taupe' -%}#9a8a76
-  {%- when 'camel', 'tan', 'leather tan', 'tan leather' -%}#c19a6b
-  {%- when 'terracotta', 'rust', 'clay' -%}#b0653f
-  {%- when 'bronze' -%}#8c6a3f
-  {%- when 'navy', 'navy blue' -%}#2c3540
-  {%- when 'olive', 'forest green', 'sage', 'moss' -%}#6b6a55
-  {%- when 'denim' -%}#4a5568
-  {%- when 'slate' -%}#5f6b6a
-  {%- when 'cloud', 'cloud white' -%}#ece8e0
-{%- else -%}
-{%- endcase -%}
+  assign hex = blank
+
+  case n
+    when 'red & black', 'red and black', 'red black', 'black & red'
+      assign hex = 'linear-gradient(135deg, #e01b22 0 50%, #171310 50% 100%)'
+    when 'espresso', 'dark espresso', 'coffee', 'dark coffee', 'dark brown', 'dark walnut'
+      assign hex = '#2a221c'
+    when 'walnut', 'brown walnut', 'walnut brown'
+      assign hex = '#6b4a33'
+    when 'mahogany'
+      assign hex = '#5c3a21'
+    when 'cherry', 'cherry wood'
+      assign hex = '#7a3b2e'
+    when 'brown', 'dark oak'
+      assign hex = '#6b4a33'
+    when 'natural brown'
+      assign hex = '#a97b50'
+    when 'natural teak'
+      assign hex = '#b07a42'
+    when 'teak'
+      assign hex = '#8b5a2b'
+    when 'natural sheesham', 'sheesham', 'natural', 'natural wood', 'natural oak'
+      assign hex = '#c9a274'
+    when 'oak', 'light oak', 'light', 'light wood', 'maple'
+      assign hex = '#b58a5a'
+    when 'pecan'
+      assign hex = '#8f5a2b'
+    when 'ash', 'ash wood'
+      assign hex = '#cbb89d'
+    when 'cane', 'natural cane', 'rattan', 'honey', 'honey cane'
+      assign hex = '#d8b489'
+    when 'black', 'ebony', 'wenge'
+      assign hex = '#1a1a1a'
+    when 'white', 'off white', 'offwhite', 'cloud', 'cloud white'
+      assign hex = '#f5f3ef'
+    when 'smoke', 'smoked', 'smoked oak'
+      assign hex = '#5d544c'
+    when 'mocha'
+      assign hex = '#6f4e37'
+    when 'caramel'
+      assign hex = '#b97a3d'
+    when 'cognac'
+      assign hex = '#9a4f2f'
+    when 'latte'
+      assign hex = '#cbb9a4'
+
+    when 'ivory linen', 'ivory', 'linen', 'cream linen'
+      assign hex = '#e8e2d8'
+    when 'oat boucle', 'oat bouclé', 'oat', 'boucle', 'bouclé', 'oat boucle linen'
+      assign hex = '#efe9dd'
+    when 'charcoal linen', 'charcoal', 'dark grey', 'dark gray', 'graphite'
+      assign hex = '#4a4440'
+    when 'beige'
+      assign hex = '#d8cfc0'
+    when 'grey', 'gray'
+      assign hex = '#8a857f'
+    when 'cream'
+      assign hex = '#f2ece2'
+    when 'sand'
+      assign hex = '#d9c9a8'
+    when 'stone'
+      assign hex = '#a89f92'
+    when 'taupe'
+      assign hex = '#9a8a76'
+    when 'camel', 'tan', 'leather tan', 'tan leather'
+      assign hex = '#c19a6b'
+    when 'terracotta', 'rust', 'clay'
+      assign hex = '#b0653f'
+    when 'bronze'
+      assign hex = '#8c6a3f'
+    when 'navy', 'navy blue'
+      assign hex = '#2c3540'
+    when 'olive', 'forest green', 'sage', 'moss'
+      assign hex = '#6b6a55'
+    when 'denim'
+      assign hex = '#4a5568'
+    when 'slate'
+      assign hex = '#5f6b6a'
+  endcase
+
+  if hex == blank
+    if n contains 'red' and n contains 'black'
+      assign hex = 'linear-gradient(135deg, #e01b22 0 50%, #171310 50% 100%)'
+    elsif n contains 'espresso' or n contains 'coffee' or n contains 'wenge' or n contains 'ebony'
+      assign hex = '#2a221c'
+    elsif n contains 'mahogany'
+      assign hex = '#5c3a21'
+    elsif n contains 'cherry'
+      assign hex = '#7a3b2e'
+    elsif n contains 'walnut'
+      assign hex = '#6b4a33'
+    elsif n contains 'sheesham'
+      assign hex = '#c9a274'
+    elsif n contains 'teak'
+      assign hex = '#8b5a2b'
+    elsif n contains 'oak'
+      assign hex = '#b58a5a'
+    elsif n contains 'maple'
+      assign hex = '#b58a5a'
+    elsif n contains 'honey'
+      assign hex = '#d8b489'
+    elsif n contains 'cane' or n contains 'rattan'
+      assign hex = '#d8b489'
+    elsif n contains 'pecan'
+      assign hex = '#8f5a2b'
+    elsif n contains 'ash'
+      assign hex = '#cbb89d'
+    elsif n contains 'smoke'
+      assign hex = '#5d544c'
+    elsif n contains 'mocha'
+      assign hex = '#6f4e37'
+    elsif n contains 'caramel'
+      assign hex = '#b97a3d'
+    elsif n contains 'cognac'
+      assign hex = '#9a4f2f'
+    elsif n contains 'natural'
+      assign hex = '#c9a274'
+    elsif n contains 'brown'
+      assign hex = '#6b4a33'
+    elsif n contains 'black'
+      assign hex = '#1a1a1a'
+    elsif n contains 'charcoal' or n contains 'graphite'
+      assign hex = '#4a4440'
+    elsif n contains 'grey' or n contains 'gray'
+      assign hex = '#8a857f'
+    elsif n contains 'ivory' or n contains 'linen' or n contains 'cream' or n contains 'oat' or n contains 'boucl'
+      assign hex = '#e8e2d8'
+    elsif n contains 'white'
+      assign hex = '#f5f3ef'
+    elsif n contains 'beige' or n contains 'sand' or n contains 'stone' or n contains 'taupe' or n contains 'camel' or n contains 'tan'
+      assign hex = '#d8cfc0'
+    elsif n contains 'terracotta' or n contains 'rust' or n contains 'clay' or n contains 'bronze'
+      assign hex = '#b0653f'
+    elsif n contains 'navy' or n contains 'blue'
+      assign hex = '#2c3540'
+    elsif n contains 'olive' or n contains 'sage' or n contains 'moss' or n contains 'green'
+      assign hex = '#6b6a55'
+    elsif n contains 'denim'
+      assign hex = '#4a5568'
+    elsif n contains 'slate'
+      assign hex = '#5f6b6a'
+    elsif n contains 'red'
+      assign hex = '#e01b22'
+    endif
+  endif
+-%}{{ hex }}

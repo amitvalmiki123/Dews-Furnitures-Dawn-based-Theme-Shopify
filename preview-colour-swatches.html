@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Colour filter swatches — before &amp; after</title>
+<link rel="stylesheet" href="/theme_export/assets/style.css">
+<link rel="stylesheet" href="/theme_export/assets/dews-collection.css">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#fbfaf8;font-family:Archivo,-apple-system,sans-serif;color:#171310}
+  .bar{position:sticky;top:0;z-index:9999;background:#171310;color:#fbfaf8;display:flex;gap:9px;
+       align-items:center;padding:9px 16px;flex-wrap:wrap}
+  .bar b{font-size:.78rem;font-weight:600}
+  .hint{font-size:.68rem;color:#9a9089;margin-left:auto}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:#3a2f27}
+  @media (max-width:1000px){.grid2{grid-template-columns:1fr}}
+  .pane{background:#fbfaf8}
+  .lbl{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;padding:7px 16px}
+  .lbl.bad{background:#3a1414;color:#ff9b9b}
+  .lbl.good{background:#12301a;color:#7bd88f}
+  .wrap{padding:1.5rem clamp(1rem,2vw,2rem) 2rem}
+  .facet-title{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+               color:var(--muted);margin-bottom:.9rem}
+  .key{margin-top:1.25rem;display:grid;gap:.35rem;max-width:420px}
+  .key div{display:flex;align-items:center;gap:.5rem;font-size:.72rem;color:#7c716a}
+  .key i{width:14px;height:14px;border-radius:50%;display:inline-block;border:1px solid rgba(23,19,16,.14);flex:0 0 auto}
+  .note{font-size:.75rem;color:#7c716a;line-height:1.7;max-width:760px;margin:1rem 0 0}
+  .note b{color:#171310}
+  table{border-collapse:collapse;margin-top:1rem;font-size:.74rem;width:100%;max-width:640px}
+  th,td{text-align:left;padding:.35rem .6rem;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:600;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase}
+  td code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <b>Colour filter swatches — <code>custom.dim_colour</code></b>
+  <span class="hint">Sirf "Brown" match hota tha, baaki sab <code>var(--bone-deep)</code> (cream)</span>
+</div>
+
+<div class="grid2">
+
+  <!-- ══════════════ BEFORE ══════════════ -->
+  <div class="pane">
+    <div class="lbl bad">Before — sirf "Brown" ko rang milta tha</div>
+    <div class="wrap">
+      <div class="facet-title">Colour</div>
+      <div class="swatch-list">
+        <label class="swatch-opt" style="background:#6b4a33;" title="Brown" aria-label="Brown"><input class="swatch-opt__input" type="checkbox" name="f" value="Brown"><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:var(--bone-deep);" title="Brown Finish" aria-label="Brown Finish"><input class="swatch-opt__input" type="checkbox" name="f" value="Brown Finish"><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:var(--bone-deep);" title="Brown Walnut" aria-label="Brown Walnut"><input class="swatch-opt__input" type="checkbox" name="f" value="Brown Walnut"><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:var(--bone-deep);" title="Honey Finish" aria-label="Honey Finish"><input class="swatch-opt__input" type="checkbox" name="f" value="Honey Finish"><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:var(--bone-deep);" title="Natural Brown Finish" aria-label="Natural Brown Finish"><input class="swatch-opt__input" type="checkbox" name="f" value="Natural Brown Finish"><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:var(--bone-deep);" title="Natural Finish" aria-label="Natural Finish"><input class="swatch-opt__input" type="checkbox" name="f" value="Natural Finish"><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:var(--bone-deep);" title="Natural Teak Finish" aria-label="Natural Teak Finish"><input class="swatch-opt__input" type="checkbox" name="f" value="Natural Teak Finish"><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:var(--bone-deep);" title="Oak Finish" aria-label="Oak Finish"><input class="swatch-opt__input" type="checkbox" name="f" value="Oak Finish"><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:var(--bone-deep);" title="Red &amp; Black" aria-label="Red &amp; Black"><input class="swatch-opt__input" type="checkbox" name="f" value="Red &amp; Black"><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:var(--bone-deep);" title="Walnut Finish" aria-label="Walnut Finish"><input class="swatch-opt__input" type="checkbox" name="f" value="Walnut Finish"><span class="swatch-opt__ring"></span></label>
+      </div>
+      <div class="key">
+        <div><i style="background:#6b4a33"></i> Brown — <b>ek hi match</b></div>
+        <div><i style="background:var(--bone-deep)"></i> baaki 9 values → <b>cream fallback</b></div>
+      </div>
+      <p class="note">
+        <code>snippets/dews-color-hex.liquid</code> sirf <b>exact</b> naam se match karta tha
+        (<code>case n</code> → <code>when 'brown'</code>). Shop ke asli values
+        "Brown Finish", "Honey Finish" jaise <b>extra shabdon</b> ke saath hain, to koi hit hi nahi hota tha.
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════════ AFTER ══════════════ -->
+  <div class="pane">
+    <div class="lbl good">After — noise-word strip + keyword matching (sabhi 10 values)</div>
+    <div class="wrap">
+      <div class="facet-title">Colour</div>
+      <div class="swatch-list">
+        <label class="swatch-opt" style="background:#6b4a33;" title="Brown" aria-label="Brown"><input class="swatch-opt__input" type="checkbox" name="f2" value="Brown" checked><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:#6b4a33;" title="Brown Finish" aria-label="Brown Finish"><input class="swatch-opt__input" type="checkbox" name="f2" value="Brown Finish"><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:#6b4a33;" title="Brown Walnut" aria-label="Brown Walnut"><input class="swatch-opt__input" type="checkbox" name="f2" value="Brown Walnut"><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:#d8b489;" title="Honey Finish" aria-label="Honey Finish"><input class="swatch-opt__input" type="checkbox" name="f2" value="Honey Finish"><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:#a97b50;" title="Natural Brown Finish" aria-label="Natural Brown Finish"><input class="swatch-opt__input" type="checkbox" name="f2" value="Natural Brown Finish"><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:#c9a274;" title="Natural Finish" aria-label="Natural Finish"><input class="swatch-opt__input" type="checkbox" name="f2" value="Natural Finish"><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:#b07a42;" title="Natural Teak Finish" aria-label="Natural Teak Finish"><input class="swatch-opt__input" type="checkbox" name="f2" value="Natural Teak Finish"><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:#b58a5a;" title="Oak Finish" aria-label="Oak Finish"><input class="swatch-opt__input" type="checkbox" name="f2" value="Oak Finish"><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:linear-gradient(135deg, #e01b22 0 50%, #171310 50% 100%);" title="Red &amp; Black" aria-label="Red &amp; Black"><input class="swatch-opt__input" type="checkbox" name="f2" value="Red &amp; Black"><span class="swatch-opt__ring"></span></label>
+        <label class="swatch-opt" style="background:#6b4a33;" title="Walnut Finish" aria-label="Walnut Finish"><input class="swatch-opt__input" type="checkbox" name="f2" value="Walnut Finish"><span class="swatch-opt__ring"></span></label>
+      </div>
+      <table>
+        <tr><th>Value</th><th>Rang</th><th>Kaise mila</th></tr>
+        <tr><td>Brown</td><td><code>#6b4a33</code></td><td>exact</td></tr>
+        <tr><td>Brown Finish</td><td><code>#6b4a33</code></td><td>" finish" hataya → exact</td></tr>
+        <tr><td>Brown Walnut</td><td><code>#6b4a33</code></td><td>exact (naya entry)</td></tr>
+        <tr><td>Honey Finish</td><td><code>#d8b489</code></td><td>" finish" hataya → exact</td></tr>
+        <tr><td>Natural Brown Finish</td><td><code>#a97b50</code></td><td>exact (naya entry)</td></tr>
+        <tr><td>Natural Finish</td><td><code>#c9a274</code></td><td>" finish" hataya → exact</td></tr>
+        <tr><td>Natural Teak Finish</td><td><code>#b07a42</code></td><td>exact (naya entry)</td></tr>
+        <tr><td>Oak Finish</td><td><code>#b58a5a</code></td><td>" finish" hataya → exact</td></tr>
+        <tr><td>Red &amp; Black</td><td><code>gradient</code></td><td>do-rang (naya)</td></tr>
+        <tr><td>Walnut Finish</td><td><code>#6b4a33</code></td><td>" finish" hataya → exact</td></tr>
+      </table>
+      <p class="note">
+        Aur bhi: koi <b>naya</b> value aaya (jaise "Smoked Oak Finish") to <b>keyword matching</b> usse bhi
+        rang dega — cream fallback sirf tab jab naam me koi bhi jaana-pehchaana shabd na ho.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
