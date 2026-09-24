@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>404 page — before &amp; after</title>
+<!-- same order as layout/theme.liquid: style.css first, base.css after -->
+<link rel="stylesheet" href="/theme_export/assets/style.css">
+<link rel="stylesheet" href="/theme_export/assets/base.css">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#fbfaf8;font-family:Archivo,-apple-system,sans-serif;color:#171310}
+  .bar{position:sticky;top:0;z-index:9999;background:#171310;color:#fbfaf8;display:flex;gap:9px;
+       align-items:center;padding:9px 16px;flex-wrap:wrap}
+  .bar b{font-size:.78rem;font-weight:600}
+  button.t{background:#2a221c;color:#fbfaf8;border:1px solid #4a3f37;border-radius:999px;
+         padding:6px 12px;font-size:.72rem;cursor:pointer;font-weight:600;font-family:inherit}
+  button.t:hover,button.t.on{background:#e01b22;border-color:#e01b22}
+  .hint{font-size:.68rem;color:#9a9089;margin-left:auto}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:#3a2f27}
+  @media (max-width:1000px){.grid2{grid-template-columns:1fr}}
+  .pane{background:#fbfaf8}
+  .lbl{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;padding:7px 16px}
+  .lbl.bad{background:#3a1414;color:#ff9b9b}
+  .lbl.good{background:#12301a;color:#7bd88f}
+  /* fake page chrome so the missing top/bottom space is obvious */
+  .chrome{background:#171310;color:#efe9e1;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+          padding:.7rem 1.25rem;font-weight:700}
+  .chrome--foot{background:#2a221c}
+  .spec{margin:.75rem 1.25rem 1.5rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+        font-size:.7rem;color:#7c716a;line-height:1.7}
+
+  /* ---- BEFORE: put Dawn's defaults back so the old page shows ---- */
+  .before .template-404{ padding-top:0 !important; padding-bottom:0 !important; }
+  .before .template-404 > p{
+    font-size:inherit; font-weight:400; letter-spacing:normal; text-transform:none; color:inherit;
+  }
+  .before .template-404 .title{
+    font-family:inherit !important;
+    font-size:3rem !important;
+    line-height:1.3 !important;
+    font-weight:400 !important;
+    letter-spacing:0 !important;
+    color:rgb(var(--color-foreground)) !important;
+    margin:3rem 0 2rem !important;
+  }
+  @media (min-width:750px){
+    .before .template-404 .title{ font-size:4rem !important; }
+  }
+  @media (min-width:990px){
+    .before .template-404 .title{ margin:5rem 0 3rem !important; }
+  }
+  .before .template-404 .title + .button,
+  .before .template-404 .button{
+    min-height:4.5rem; min-width:12rem; margin-top:2rem; padding:0 3rem;
+    border-radius:4px; font-size:1.5rem; font-weight:400; letter-spacing:normal;
+    transform:none;
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <b>404 page — heading / button size + top-bottom spacing</b>
+  <button class="t" id="btnM">Mobile width (390px)</button>
+  <span class="hint">Upar-niche kaale strips header/footer hain — inse chipakna clearly dikhta hai</span>
+</div>
+
+<!-- this is the inline <style> that sections/main-404.liquid prints in the body -->
+<style type="text/css">
+  .template-404 .title + * { margin-top: 1rem; }
+  @media screen and (min-width: 750px) {
+    .template-404 .title + * { margin-top: 2rem; }
+  }
+</style>
+
+<div class="grid2" id="g">
+
+  <!-- ══════════════ BEFORE ══════════════ -->
+  <div class="pane">
+    <div class="lbl bad">Before — 64px heading, 72px button, upar-niche bilkul space nahi</div>
+    <div class="chrome">Header</div>
+    <div class="before">
+      <div class="template-404 page-width page-margin center">
+        <p>404</p>
+        <h1 class="title">Page not found</h1>
+        <a href="#" class="button">Continue shopping</a>
+      </div>
+    </div>
+    <div class="chrome chrome--foot">Footer</div>
+    <div class="spec">
+      heading 48px (mobile) / 64px (desktop)<br>
+      button 72px tall · 24px text · 192px wide<br>
+      block margin 0 — Dawn ka <code>.page-margin{margin:7rem auto}</code><br>
+      theme ke <code>.page-width{margin:0 auto!important}</code> se mar gaya
+    </div>
+  </div>
+
+  <!-- ══════════════ AFTER ══════════════ -->
+  <div class="pane">
+    <div class="lbl good">After — 36/48px heading, 52px button (theme .btn jaisa), upar-niche hawa</div>
+    <div class="chrome">Header</div>
+    <div>
+      <div class="template-404 page-width page-margin center">
+        <p>404</p>
+        <h1 class="title">Page not found</h1>
+        <a href="#" class="button">Continue shopping</a>
+      </div>
+    </div>
+    <div class="chrome chrome--foot">Footer</div>
+    <div class="spec">
+      heading 36px (mobile) / 48px (desktop)<br>
+      button 52px tall · 14px text · pill radius<br>
+      padding-block clamp(3.5rem, 8vw, 7rem) = 56→112px<br>
+      <code>.title + .button</code> se top margin control (inline style ko beat karta hai)
+    </div>
+  </div>
+
+</div>
+
+<script>
+  var g = document.getElementById('g');
+  document.getElementById('btnM').onclick = function () {
+    this.classList.toggle('on');
+    g.style.maxWidth = this.classList.contains('on') ? '390px' : 'none';
+    g.style.margin   = this.classList.contains('on') ? '0 auto' : '0';
+  };
+</script>
+</body>
+</html>

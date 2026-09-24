@@ -2617,3 +2617,95 @@ body.template-search:has(predictive-search[loading]) .toolbar,
 body.template-search:has(predictive-search[loading]) .filters--rail {
   z-index: 1 !important;
 }
+
+/* =============================================================================
+   404 PAGE — spacing + sizes
+   -----------------------------------------------------------------------------
+   Dawn's 404 markup is:
+
+     <div class="template-404 page-width page-margin center">
+       <p>404</p>
+       <h1 class="title">Page not found</h1>
+       <a class="button" href="…">Continue shopping</a>
+     </div>
+
+   1. NO BREATHING ROOM. Dawn gives this block its space with
+      `.page-margin { margin: 7rem auto }`, but the theme's own `.page-width`
+      rule near the top of this file sets `margin: 0 auto !important`, which
+      wipes that margin out — so the block ends up glued to the header and to
+      the footer. PADDING is used here instead: it cannot be collapsed away
+      and no other rule on the page touches padding-block.
+
+   2. EVERYTHING IS HUGE. Dawn ships `h1 { font-size: 4rem }` (64px on
+      desktop, 48px on mobile) and `.button { min-height: 4.5rem;
+      font-size: 1.5rem; padding: 0 3rem; min-width: 12rem }` — a 72px tall
+      button with 24px text. Both are pulled back here and the button is
+      restyled to match the theme's own `.btn`, so the page finally looks
+      like the rest of the store.
+
+   Specificity notes (base.css loads AFTER this file, so order does not help):
+     `.template-404 .button`      (0,2,0) beats base.css `.button`      (0,1,0)
+     `.template-404 .title`       (0,2,0) beats base.css `h1` / `.title`(0,0,1 / 0,1,0)
+     `.template-404 .title + .button` (0,3,0) beats the inline `.template-404
+        .title + *` style block that main-404.liquid prints in the body (0,2,0)
+   ============================================================================= */
+
+/* 1. breathing room above and below the whole block */
+.template-404 {
+  padding-top: clamp(3.5rem, 8vw, 7rem);
+  padding-bottom: clamp(3.5rem, 8vw, 7rem);
+}
+
+/* 2. the small "404" label that sits above the heading */
+.template-404 > p {
+  margin: 0;
+  font-size: var(--t-label, 0.75rem);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted, #7c716a);
+}
+
+/* 3. "Page not found" — was 64px on desktop and 48px on mobile */
+.template-404 .title {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-heading-family, var(--font-accent)) !important;
+  font-size: clamp(2.25rem, 4.2vw, 3rem) !important;
+  line-height: 1.15 !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.015em !important;
+  color: var(--ink, #171310) !important;
+}
+
+/* 4. "Continue shopping" — now matches the theme's .btn instead of Dawn's
+      72px slab. The `+ .button` selector is what actually wins the top gap,
+      because main-404.liquid prints `.template-404 .title + *` inline. */
+.template-404 .title + .button,
+.template-404 .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  min-width: 0;
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  padding: 1rem 1.9rem;
+  border: 1px solid var(--ink, #171310);
+  border-radius: var(--r-pill, 999px);
+  background: var(--ink, #171310);
+  color: #fff;
+  font-size: var(--t-sm, 0.875rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background 0.35s var(--ease, ease),
+              border-color 0.35s var(--ease, ease),
+              transform 0.35s var(--ease, ease);
+}
+.template-404 .title + .button:hover,
+.template-404 .button:hover {
+  background: var(--red, #e01b22);
+  border-color: var(--red, #e01b22);
+  color: #fff;
+  transform: translateY(-2px);
+}
