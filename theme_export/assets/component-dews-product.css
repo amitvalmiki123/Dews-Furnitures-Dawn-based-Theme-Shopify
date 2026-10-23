@@ -52,12 +52,26 @@
   position:relative; border-radius:var(--r-md); overflow:hidden;
   background:var(--bone); aspect-ratio:1/1; cursor:zoom-in;
 }
-.gallery__main img{ width:100%; height:100%; object-fit:cover; transition:transform .45s var(--ease); }
+/* Horizontal film-strip of every product photo. The frame clips it;
+   JS translates this track so a swipe reveals the next image instead
+   of swapping one <img src>. */
+.gallery__track{
+  display:flex; height:100%;
+  will-change:transform;
+  transition:transform .5s cubic-bezier(.32,.72,.15,1);
+}
+.gallery__slide{
+  flex:0 0 100%; width:100%; height:100%; object-fit:cover;
+  display:block; pointer-events:none;
+  -webkit-user-drag:none; user-select:none;
+  transition:transform .45s var(--ease);
+}
 .gallery__main.is-zoomed{ cursor:zoom-out; }
-.gallery__main.is-zoomed img{ transform:scale(2); transition:transform .12s linear; }
-/* While a finger is dragging to the next photo, drop the 0.45s transform
-   ease so the image tracks the finger 1:1. */
-.gallery__main.is-swiping img{ transition: none; }
+.gallery__main.is-zoomed .gallery__slide.is-current{
+  transform:scale(2); transition:transform .12s linear;
+}
+/* Finger is dragging — track the finger 1:1, then the .5s ease snaps. */
+.gallery__main.is-swiping .gallery__track{ transition:none; }
 .gallery__hint{
   position:absolute; right:1rem; bottom:1rem; z-index:2;
   display:inline-flex; align-items:center; gap:.45rem;

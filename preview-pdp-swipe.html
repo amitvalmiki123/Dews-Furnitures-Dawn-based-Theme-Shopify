@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PDP main image — finger swipe to change photo</title>
+<title>PDP main image — smooth swipe</title>
 <link rel="stylesheet" href="/theme_export/assets/style.css">
 <link rel="stylesheet" href="/theme_export/assets/component-dews-product.css">
 <style>
@@ -28,7 +28,6 @@
   .note b{color:#171310}
   .keys{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;justify-content:center}
   .keys span{font-size:.65rem;background:#fff;border:1px solid #e8e2d8;border-radius:999px;padding:.28rem .7rem}
-  /* preview is a desktop iframe — force the mobile gallery layout */
   .gallery{position:static;padding-left:0;display:flex;flex-direction:column}
   .gallery__thumbs{
     position:static;width:auto;flex-direction:row;overflow-x:auto;overflow-y:hidden;order:2;
@@ -41,8 +40,8 @@
 </head>
 <body>
 <div class="bar">
-  <b>PDP parent image swipe</b>
-  <span class="hint">Badi image par finger left/right — photo badlegi. Hold = zoom. Upar/neeche = page scroll.</span>
+  <b>PDP parent image — smooth strip</b>
+  <span class="hint">Badi image drag/swipe — agli photo peeche se slide hoke aati hai, src-swap nahi.</span>
 </div>
 <div class="stage">
   <div class="phone">
@@ -52,21 +51,22 @@
     <div class="wrap">
       <div class="gallery" id="gallery">
         <div class="gallery__thumbs" role="tablist">
-          <button class="gallery__thumb is-active" role="tab" aria-selected="true"
-            data-full="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png">
+          <button class="gallery__thumb is-active" role="tab" aria-selected="true" data-full="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png">
             <img src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt="1" width="86" height="86">
           </button>
-          <button class="gallery__thumb" role="tab" aria-selected="false"
-            data-full="/752bf139-2f26-4367-9d3f-04c98778f61b.png">
+          <button class="gallery__thumb" role="tab" aria-selected="false" data-full="/752bf139-2f26-4367-9d3f-04c98778f61b.png">
             <img src="/752bf139-2f26-4367-9d3f-04c98778f61b.png" alt="2" width="86" height="86">
           </button>
-          <button class="gallery__thumb" role="tab" aria-selected="false"
-            data-full="/9cbdb68a-f219-4386-a080-58cf2ce7c878.png">
+          <button class="gallery__thumb" role="tab" aria-selected="false" data-full="/9cbdb68a-f219-4386-a080-58cf2ce7c878.png">
             <img src="/9cbdb68a-f219-4386-a080-58cf2ce7c878.png" alt="3" width="86" height="86">
           </button>
         </div>
         <div class="gallery__main" id="galleryMain">
-          <img id="galleryImg" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt="Product" width="900" height="900">
+          <div class="gallery__track" id="galleryTrack">
+            <img class="gallery__slide is-current" id="galleryImg" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt="1" width="900" height="900" draggable="false">
+            <img class="gallery__slide" src="/752bf139-2f26-4367-9d3f-04c98778f61b.png" alt="2" width="900" height="900" draggable="false">
+            <img class="gallery__slide" src="/9cbdb68a-f219-4386-a080-58cf2ce7c878.png" alt="3" width="900" height="900" draggable="false">
+          </div>
           <span class="gallery__tag">18% OFF</span>
           <span class="gallery__hint">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8.5v5M8.5 11h5" stroke-linecap="round"/></svg>
@@ -79,34 +79,32 @@
     <div class="status" id="status">image 1 / 3 — badi photo par drag karein</div>
   </div>
   <p class="note">
-    <b>Kya try karein:</b> parent image par mouse dabaye rakho aur left/right khicho
-    (phone par finger swipe). Thumbnail neeche khud active ho jayegi.
-    180ms hold = zoom (pehle jaisa). Vertical drag page scroll karega — block nahi.
+    <b>Kya try karein:</b> parent image par dabaye rakho aur left/right khicho.
+    Agli photo frame ke peeche se slide hoke aani chahiye — jhatka / blink nahi.
   </p>
   <div class="keys">
-    <span>← swipe = previous</span>
-    <span>swipe → = next</span>
+    <span>finger follows 1:1</span>
+    <span>release = 0.5s ease</span>
     <span>hold = zoom</span>
   </div>
 </div>
 <script src="/theme_export/assets/dews-pdp.js"></script>
 <script>
-  /* Preview-only: mouse drag bhi swipe kare, taaki desktop iframe me test ho. */
+  /* Preview-only mouse drag — production uses touch events. Moves the TRACK. */
   (function () {
     var main = document.getElementById('galleryMain');
-    var img = document.getElementById('galleryImg');
+    var track = document.getElementById('galleryTrack');
     var status = document.getElementById('status');
-    if (!main || !img) return;
+    if (!main || !track) return;
     var thumbs = Array.prototype.slice.call(document.querySelectorAll('.gallery__thumb'));
-    function n() {
+    function idx() {
       var i = thumbs.findIndex(function (t) { return t.classList.contains('is-active'); });
-      return (i < 0 ? 0 : i) + 1;
+      return i < 0 ? 0 : i;
     }
-    function report() { status.textContent = 'image ' + n() + ' / ' + thumbs.length; }
+    function report() { status.textContent = 'image ' + (idx() + 1) + ' / ' + thumbs.length; }
     thumbs.forEach(function (t) { t.addEventListener('click', report); });
-    new MutationObserver(report).observe(thumbs[0].parentNode, { attributes: true, subtree: true, attributeFilter: ['class'] });
 
-    var down = false, startX = 0, startY = 0, locked = null, lastDx = 0, skipClick = false;
+    var down = false, startX = 0, startY = 0, locked = null, lastDx = 0, skipClick = false, startAt = 0;
     main.addEventListener('click', function (e) {
       if (!skipClick) return;
       skipClick = false;
@@ -114,7 +112,7 @@
     }, true);
     main.addEventListener('mousedown', function (e) {
       if (e.button !== 0) return;
-      down = true; locked = null; lastDx = 0;
+      down = true; locked = null; lastDx = 0; startAt = Date.now();
       startX = e.clientX; startY = e.clientY;
     });
     window.addEventListener('mousemove', function (e) {
@@ -126,20 +124,29 @@
       }
       if (locked !== 'x') return;
       lastDx = dx;
+      var w = main.getBoundingClientRect().width || 1;
+      var i = idx();
+      var shift = dx;
+      if (i === 0 && shift > 0) shift *= 0.38;
+      if (i === thumbs.length - 1 && shift < 0) shift *= 0.38;
       main.classList.add('is-swiping');
-      img.style.transform = 'translateX(' + dx + 'px)';
+      track.style.transform = 'translate3d(' + (-i * w + shift) + 'px,0,0)';
       e.preventDefault();
     });
     window.addEventListener('mouseup', function () {
       if (!down) return;
       down = false;
-      main.classList.remove('is-swiping');
-      img.style.transform = '';
       if (locked !== 'x') return;
       skipClick = true;
-      var i = thumbs.findIndex(function (t) { return t.classList.contains('is-active'); });
-      if (lastDx <= -48 && i < thumbs.length - 1) thumbs[i + 1].click();
-      else if (lastDx >= 48 && i > 0) thumbs[i - 1].click();
+      var dt = Math.max(1, Date.now() - startAt);
+      var flick = Math.abs(lastDx) > 28 && (Math.abs(lastDx) / dt) > 0.45;
+      var i = idx();
+      var next = i;
+      if (lastDx <= -48 || (lastDx < -28 && flick)) next = i + 1;
+      else if (lastDx >= 48 || (lastDx > 28 && flick)) next = i - 1;
+      if (next < 0) next = 0;
+      if (next > thumbs.length - 1) next = thumbs.length - 1;
+      thumbs[next].click();
       report();
     });
   })();

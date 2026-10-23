@@ -119,14 +119,28 @@
             </div>
 
             <div class="gallery__main" id="galleryMain">
-              <img
-                id="galleryImg"
-                src="{{ product.featured_media | image_url: width: 1200 }}"
-                alt="{{ product.featured_media.alt | default: product.title | escape }}"
-                width="900"
-                height="900"
-                fetchpriority="high"
-              >
+              <div class="gallery__track" id="galleryTrack">
+                {%- for media in product.media -%}
+                  {%- liquid
+                    if media.media_type == 'image'
+                      assign slide_img = media | image_url: width: 1200
+                    else
+                      assign slide_img = media.preview_image | image_url: width: 1200
+                    endif
+                  -%}
+                  <img
+                    class="gallery__slide{% if forloop.first %} is-current{% endif %}"
+                    {% if forloop.first %}id="galleryImg"{% endif %}
+                    src="{{ slide_img }}"
+                    alt="{{ media.alt | default: product.title | escape }}"
+                    width="900"
+                    height="900"
+                    {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                    data-media-id="{{ media.id }}"
+                    draggable="false"
+                  >
+                {%- endfor -%}
+              </div>
               {%- comment -%} Discount tag on the main image — only when the
                  product is actually reduced, so nothing shows at full price. {%- endcomment -%}
               {%- if product.compare_at_price > product.price -%}

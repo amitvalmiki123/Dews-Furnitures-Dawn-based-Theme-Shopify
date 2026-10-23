@@ -99,38 +99,67 @@
     var root = document.getElementById('gallery');
     if (!root) return;
     var main = document.getElementById('galleryMain');
-    var img = document.getElementById('galleryImg');
-    if (!main || !img) return;
+    var track = document.getElementById('galleryTrack');
+    if (!main || !track) return;
+    var slides = qsa('.gallery__slide', track);
     var thumbs = qsa('.gallery__thumb', root);
+    var count = slides.length;
+    if (!count) return;
     var current = 0;
-    thumbs.forEach(function (thumb, i) {
-      if (thumb.classList.contains('is-active')) current = i;
+    slides.forEach(function (s, i) {
+      s.draggable = false;
+      if (s.classList.contains('is-current')) current = i;
     });
-    img.draggable = false;
+
+    function slideAt() {
+      return slides[current] || null;
+    }
+
+    /* Translate the film-strip. dx is extra pixels from the finger; at rest
+       it is 0 so the current photo sits flush in the frame. Rubber-band the
+       ends so the strip doesn't fly off into empty space. */
+    function applyTrack(dx, animate) {
+      var w = main.getBoundingClientRect().width || 1;
+      var shift = dx || 0;
+      if (current === 0 && shift > 0) shift *= 0.38;
+      if (current >= count - 1 && shift < 0) shift *= 0.38;
+      if (animate) main.classList.remove('is-swiping');
+      else main.classList.add('is-swiping');
+      track.style.transform = 'translate3d(' + (-current * w + shift) + 'px,0,0)';
+    }
 
     function selectIndex(i) {
-      if (i < 0 || i >= thumbs.length) return;
+      if (i < 0) i = 0;
+      if (i >= count) i = count - 1;
       current = i;
-      var thumb = thumbs[i];
-      var full = thumb.getAttribute('data-full');
-      if (full) img.src = full;
+      slides.forEach(function (s, j) {
+        s.classList.toggle('is-current', j === i);
+      });
       thumbs.forEach(function (t, j) {
         var on = j === i;
         t.classList.toggle('is-active', on);
         t.setAttribute('aria-selected', String(on));
       });
-      // Keep the selected thumbnail visible inside the scrollable rail, and
-      // on mobile pull the next ones in when the last visible one is tapped.
-      revealThumb(root.querySelector('.gallery__thumbs'), thumb);
+      if (thumbs[i]) {
+        revealThumb(root.querySelector('.gallery__thumbs'), thumbs[i]);
+      }
       main.classList.remove('is-zoomed');
-      img.style.transformOrigin = 'center';
-      img.style.transform = '';
+      var img = slideAt();
+      if (img) img.style.transformOrigin = 'center';
+      applyTrack(0, true);
     }
 
     thumbs.forEach(function (thumb, i) {
       thumb.addEventListener('click', function () {
         selectIndex(i);
       });
+    });
+
+    applyTrack(0, false);
+    main.classList.remove('is-swiping');
+    window.addEventListener('resize', function () {
+      applyTrack(0, false);
+      main.classList.remove('is-swiping');
     });
 
     /* ---------------- zoom + swipe ----------------
@@ -140,9 +169,8 @@
        Mobile (touch) has two gestures on the SAME big image, decided by
        what the finger does in the first ~180ms:
 
-         1. Quick HORIZONTAL flick  → next / previous photo
-            (this is the missing piece — thumbs already slid, the parent
-            image did not).
+         1. Quick HORIZONTAL flick → the film-strip follows the finger,
+            then eases to the next / previous photo. No src-swap, so no jolt.
          2. Rest the finger, then slide → zoom opens on that spot and
             follows the finger; lift closes it. A quick TAP still toggles
             zoom, same as before.
@@ -158,16 +186,16 @@
     var sliding       = false;  // this gesture opened the zoom, so it closes it
     var skipNextClick = false;  // swallow the click a browser fires after a slide
     var axisLock      = null;   // 'x' | 'y' | null — decided once per gesture
-    var lastDx        = 0;      // horizontal travel of the current gesture
-    var startX = 0, startY = 0;
+    var lastDx        = 0;
+    var startX = 0, startY = 0, startAt = 0;
 
     function setOrigin(clientX, clientY) {
+      var img = slideAt();
+      if (!img) return;
       var r = main.getBoundingClientRect();
       if (!r.width || !r.height) return;
       var x = ((clientX - r.left) / r.width) * 100;
       var y = ((clientY - r.top) / r.height) * 100;
-      /* Keep the zoom window inside the picture instead of showing blank
-         space past the edges. */
       x = Math.max(0, Math.min(100, x));
       y = Math.max(0, Math.min(100, y));
       img.style.transformOrigin = x + '% ' + y + '%';
@@ -182,12 +210,8 @@
 
     function closeZoom() {
       main.classList.remove('is-zoomed');
-      img.style.transformOrigin = 'center';
-    }
-
-    function clearSwipe() {
-      main.classList.remove('is-swiping');
-      img.style.transform = '';
+      var img = slideAt();
+      if (img) img.style.transformOrigin = 'center';
     }
 
     /* ---- mouse ---- */
@@ -222,8 +246,8 @@
       skipNextClick = false;
       axisLock = null;
       lastDx = 0;
-      clearSwipe();
-      if (e.touches.length !== 1) {      // pinch or two fingers: never zoom
+      startAt = Date.now();
+      if (e.touches.length !== 1) {
         cancelHold();
         if (sliding) {
           sliding = false;
@@ -235,11 +259,9 @@
       startX = t.clientX;
       startY = t.clientY;
       cancelHold();
-      /* Don't arm the zoom hold if there is only one photo — swipe would
-         do nothing anyway, and a still finger should still zoom. */
       holdTimer = window.setTimeout(function () {
         holdTimer = null;
-        if (axisLock === 'x') return;    // already committed to a photo swipe
+        if (axisLock === 'x') return;
         sliding = true;
         openZoom(t.clientX, t.clientY);
       }, HOLD_MS);
@@ -253,8 +275,6 @@
       var absX = Math.abs(dx);
       var absY = Math.abs(dy);
 
-      /* Zooming — the finger pans the picture, so the page must not scroll
-         underneath it. Photo-swipe is disabled while zoomed. */
       if (sliding) {
         if (e.cancelable) e.preventDefault();
         setOrigin(t.clientX, t.clientY);
@@ -267,13 +287,11 @@
         cancelHold();
       }
 
-      if (axisLock === 'y') return;      // page scroll — do not preventDefault
+      if (axisLock === 'y') return;
 
-      /* Horizontal photo swipe. */
-      if (thumbs.length < 2) return;
+      if (count < 2) return;
       lastDx = dx;
-      main.classList.add('is-swiping');
-      img.style.transform = 'translateX(' + dx + 'px)';
+      applyTrack(dx, false);
       if (e.cancelable) e.preventDefault();
     }, { passive: false });
 
@@ -285,20 +303,22 @@
         skipNextClick = true;
         return;
       }
-      if (axisLock === 'x' && thumbs.length > 1) {
+      if (axisLock === 'x' && count > 1) {
         var dx = lastDx;
-        clearSwipe();
-        if (dx <= -SWIPE_MIN) selectIndex(current + 1);
-        else if (dx >= SWIPE_MIN) selectIndex(current - 1);
+        var dt = Math.max(1, Date.now() - startAt);
+        var flick = Math.abs(dx) > 28 && (Math.abs(dx) / dt) > 0.45;
+        var next = current;
+        if (dx <= -SWIPE_MIN || (dx < -28 && flick)) next = current + 1;
+        else if (dx >= SWIPE_MIN || (dx > 28 && flick)) next = current - 1;
+        selectIndex(next);
         skipNextClick = true;
         return;
       }
-      clearSwipe();
+      applyTrack(0, true);
     }
     main.addEventListener('touchend', endTouch);
     main.addEventListener('touchcancel', endTouch);
     main.addEventListener('contextmenu', function (e) {
-      /* no "save image" sheet while a long press is being used to zoom */
       if (sliding) e.preventDefault();
     });
   }
@@ -362,10 +382,12 @@
       var variant = event && event.data && event.data.variant;
       if (!variant) return;
 
-      // swap main gallery image to the variant's featured media (if present)
-      if (variant.featured_media && variant.featured_media.src) {
-        var img = document.getElementById('galleryImg');
-        if (img) img.src = variant.featured_media.src;
+      // slide the gallery strip to the variant's featured media
+      if (variant.featured_media && variant.featured_media.id) {
+        var thumb = document.querySelector(
+          '#gallery .gallery__thumb[data-media-id="' + variant.featured_media.id + '"]'
+        );
+        if (thumb) thumb.click();
       }
 
       // refresh the sticky price from the already-updated main price block
