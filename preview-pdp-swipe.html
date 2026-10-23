@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PDP main image — finger swipe to change photo</title>
+<link rel="stylesheet" href="/theme_export/assets/style.css">
+<link rel="stylesheet" href="/theme_export/assets/component-dews-product.css">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#d7e4e4;font-family:Archivo,-apple-system,sans-serif;color:#171310}
+  .bar{position:sticky;top:0;z-index:9999;background:#171310;color:#fbfaf8;display:flex;gap:9px;
+       align-items:center;padding:9px 16px;flex-wrap:wrap}
+  .bar b{font-size:.78rem;font-weight:600}
+  .hint{font-size:.68rem;color:#9a9089;margin-left:auto}
+  .stage{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:18px 12px 40px}
+  .phone{width:360px;background:#fbfaf8;border-radius:18px;overflow:hidden;
+         box-shadow:0 18px 50px rgba(23,19,16,.18);border:1px solid #e8e2d8}
+  .phone-head{display:flex;align-items:center;justify-content:space-between;
+              padding:10px 12px;border-bottom:1px solid #ece7e0;font-size:.72rem;font-weight:700;letter-spacing:.04em}
+  .phone-head span{font-size:.9rem}
+  .crumb{padding:8px 14px 0;font-size:.68rem;color:#7c716a}
+  .title{padding:4px 14px 10px;font-size:.82rem;font-weight:600;line-height:1.35}
+  .wrap{padding:0 12px 14px}
+  .status{margin:10px 14px 0;font-size:.7rem;color:#7c716a;text-align:center;
+          font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .note{max-width:360px;margin:14px auto 0;font-size:.75rem;color:#4a433e;line-height:1.55}
+  .note b{color:#171310}
+  .keys{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;justify-content:center}
+  .keys span{font-size:.65rem;background:#fff;border:1px solid #e8e2d8;border-radius:999px;padding:.28rem .7rem}
+  /* preview is a desktop iframe — force the mobile gallery layout */
+  .gallery{position:static;padding-left:0;display:flex;flex-direction:column}
+  .gallery__thumbs{
+    position:static;width:auto;flex-direction:row;overflow-x:auto;overflow-y:hidden;order:2;
+    -webkit-mask-image:none;mask-image:none;margin-top:.9rem
+  }
+  .gallery__thumb{width:72px}
+  .gallery__main{order:1;cursor:grab}
+  .gallery__main.is-swiping{cursor:grabbing}
+</style>
+</head>
+<body>
+<div class="bar">
+  <b>PDP parent image swipe</b>
+  <span class="hint">Badi image par finger left/right — photo badlegi. Hold = zoom. Upar/neeche = page scroll.</span>
+</div>
+<div class="stage">
+  <div class="phone">
+    <div class="phone-head"><span>☰</span> DEW'S FURNITURE <span>♡</span></div>
+    <div class="crumb">Home · Collections</div>
+    <div class="title">Sheesham Wood TV Stand with Rattan Doors</div>
+    <div class="wrap">
+      <div class="gallery" id="gallery">
+        <div class="gallery__thumbs" role="tablist">
+          <button class="gallery__thumb is-active" role="tab" aria-selected="true"
+            data-full="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png">
+            <img src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt="1" width="86" height="86">
+          </button>
+          <button class="gallery__thumb" role="tab" aria-selected="false"
+            data-full="/752bf139-2f26-4367-9d3f-04c98778f61b.png">
+            <img src="/752bf139-2f26-4367-9d3f-04c98778f61b.png" alt="2" width="86" height="86">
+          </button>
+          <button class="gallery__thumb" role="tab" aria-selected="false"
+            data-full="/9cbdb68a-f219-4386-a080-58cf2ce7c878.png">
+            <img src="/9cbdb68a-f219-4386-a080-58cf2ce7c878.png" alt="3" width="86" height="86">
+          </button>
+        </div>
+        <div class="gallery__main" id="galleryMain">
+          <img id="galleryImg" src="/10b372ff-1810-4bf2-9fcd-6954a536c1fb.png" alt="Product" width="900" height="900">
+          <span class="gallery__tag">18% OFF</span>
+          <span class="gallery__hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8.5v5M8.5 11h5" stroke-linecap="round"/></svg>
+            <span class="gallery__hint-text gallery__hint-text--mouse">Swipe for next · click to zoom</span>
+            <span class="gallery__hint-text gallery__hint-text--touch">Swipe for next · hold to zoom</span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="status" id="status">image 1 / 3 — badi photo par drag karein</div>
+  </div>
+  <p class="note">
+    <b>Kya try karein:</b> parent image par mouse dabaye rakho aur left/right khicho
+    (phone par finger swipe). Thumbnail neeche khud active ho jayegi.
+    180ms hold = zoom (pehle jaisa). Vertical drag page scroll karega — block nahi.
+  </p>
+  <div class="keys">
+    <span>← swipe = previous</span>
+    <span>swipe → = next</span>
+    <span>hold = zoom</span>
+  </div>
+</div>
+<script src="/theme_export/assets/dews-pdp.js"></script>
+<script>
+  /* Preview-only: mouse drag bhi swipe kare, taaki desktop iframe me test ho. */
+  (function () {
+    var main = document.getElementById('galleryMain');
+    var img = document.getElementById('galleryImg');
+    var status = document.getElementById('status');
+    if (!main || !img) return;
+    var thumbs = Array.prototype.slice.call(document.querySelectorAll('.gallery__thumb'));
+    function n() {
+      var i = thumbs.findIndex(function (t) { return t.classList.contains('is-active'); });
+      return (i < 0 ? 0 : i) + 1;
+    }
+    function report() { status.textContent = 'image ' + n() + ' / ' + thumbs.length; }
+    thumbs.forEach(function (t) { t.addEventListener('click', report); });
+    new MutationObserver(report).observe(thumbs[0].parentNode, { attributes: true, subtree: true, attributeFilter: ['class'] });
+
+    var down = false, startX = 0, startY = 0, locked = null, lastDx = 0, skipClick = false;
+    main.addEventListener('click', function (e) {
+      if (!skipClick) return;
+      skipClick = false;
+      e.stopImmediatePropagation();
+    }, true);
+    main.addEventListener('mousedown', function (e) {
+      if (e.button !== 0) return;
+      down = true; locked = null; lastDx = 0;
+      startX = e.clientX; startY = e.clientY;
+    });
+    window.addEventListener('mousemove', function (e) {
+      if (!down) return;
+      var dx = e.clientX - startX, dy = e.clientY - startY;
+      if (!locked) {
+        if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+        locked = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      }
+      if (locked !== 'x') return;
+      lastDx = dx;
+      main.classList.add('is-swiping');
+      img.style.transform = 'translateX(' + dx + 'px)';
+      e.preventDefault();
+    });
+    window.addEventListener('mouseup', function () {
+      if (!down) return;
+      down = false;
+      main.classList.remove('is-swiping');
+      img.style.transform = '';
+      if (locked !== 'x') return;
+      skipClick = true;
+      var i = thumbs.findIndex(function (t) { return t.classList.contains('is-active'); });
+      if (lastDx <= -48 && i < thumbs.length - 1) thumbs[i + 1].click();
+      else if (lastDx >= 48 && i > 0) thumbs[i - 1].click();
+      report();
+    });
+  })();
+</script>
+</body>
+</html>

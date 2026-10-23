@@ -1,6 +1,6 @@
 /* ==========================================================================
    Dew's Furniture — PDP interactions
-   - Gallery thumbnail switching + click-to-zoom (pointer-following origin)
+   - Gallery thumbnail switching + main-image swipe (touch) + click-to-zoom
    - Sticky add-to-cart (shows once the buy row scrolls past)
    - Variant change sync: featured image + sticky price + wishlist data
    (FAQ accordion lives in script.js — shared with the homepage FAQ)
@@ -102,43 +102,63 @@
     var img = document.getElementById('galleryImg');
     if (!main || !img) return;
     var thumbs = qsa('.gallery__thumb', root);
+    var current = 0;
+    thumbs.forEach(function (thumb, i) {
+      if (thumb.classList.contains('is-active')) current = i;
+    });
+    img.draggable = false;
 
-    thumbs.forEach(function (thumb) {
+    function selectIndex(i) {
+      if (i < 0 || i >= thumbs.length) return;
+      current = i;
+      var thumb = thumbs[i];
+      var full = thumb.getAttribute('data-full');
+      if (full) img.src = full;
+      thumbs.forEach(function (t, j) {
+        var on = j === i;
+        t.classList.toggle('is-active', on);
+        t.setAttribute('aria-selected', String(on));
+      });
+      // Keep the selected thumbnail visible inside the scrollable rail, and
+      // on mobile pull the next ones in when the last visible one is tapped.
+      revealThumb(root.querySelector('.gallery__thumbs'), thumb);
+      main.classList.remove('is-zoomed');
+      img.style.transformOrigin = 'center';
+      img.style.transform = '';
+    }
+
+    thumbs.forEach(function (thumb, i) {
       thumb.addEventListener('click', function () {
-        var full = thumb.getAttribute('data-full');
-        if (!full) return;
-        img.src = full;
-        thumbs.forEach(function (t) {
-          var on = t === thumb;
-          t.classList.toggle('is-active', on);
-          t.setAttribute('aria-selected', String(on));
-        });
-        // Keep the selected thumbnail visible inside the scrollable rail, and
-        // on mobile pull the next ones in when the last visible one is tapped.
-        revealThumb(root.querySelector('.gallery__thumbs'), thumb);
-        main.classList.remove('is-zoomed');
-        img.style.transformOrigin = 'center';
+        selectIndex(i);
       });
     });
 
-    /* ---------------- zoom ----------------
+    /* ---------------- zoom + swipe ----------------
        Desktop (mouse) is unchanged: click toggles the zoom and moving the
        pointer around the frame moves the zoomed region with it.
 
-       Mobile (touch) used to be click-only, so the zoom always opened on the
-       exact spot that was tapped and seeing another part of the product meant
-       tapping to close and tapping again somewhere else. A finger now behaves
-       like the mouse: rest it on the picture for a moment and the zoom opens
-       on that spot, keep it down and slide and the zoom follows the finger,
-       lift it and the zoom closes. A quick tap still toggles the zoom on and
-       off, so nothing that worked before is lost. */
+       Mobile (touch) has two gestures on the SAME big image, decided by
+       what the finger does in the first ~180ms:
 
-    var HOLD_MS  = 180;   // how long a finger must rest before the zoom opens
-    var MOVE_TOL = 10;    // px of movement that counts as a slide, not a tap
+         1. Quick HORIZONTAL flick  → next / previous photo
+            (this is the missing piece — thumbs already slid, the parent
+            image did not).
+         2. Rest the finger, then slide → zoom opens on that spot and
+            follows the finger; lift closes it. A quick TAP still toggles
+            zoom, same as before.
+         3. VERTICAL move → the page scrolls. We never call preventDefault
+            on a vertical gesture, and .gallery__main is not touch-action:none.
+    */
+
+    var HOLD_MS   = 180;  // how long a finger must rest before the zoom opens
+    var MOVE_TOL  = 10;   // px before we decide "this is a slide, not a tap"
+    var SWIPE_MIN = 48;   // px of horizontal travel that changes the photo
 
     var holdTimer     = null;
-    var sliding       = false;   // this gesture opened the zoom, so it closes it
-    var skipNextClick = false;   // swallow the click a browser fires after a slide
+    var sliding       = false;  // this gesture opened the zoom, so it closes it
+    var skipNextClick = false;  // swallow the click a browser fires after a slide
+    var axisLock      = null;   // 'x' | 'y' | null — decided once per gesture
+    var lastDx        = 0;      // horizontal travel of the current gesture
     var startX = 0, startY = 0;
 
     function setOrigin(clientX, clientY) {
@@ -165,6 +185,11 @@
       img.style.transformOrigin = 'center';
     }
 
+    function clearSwipe() {
+      main.classList.remove('is-swiping');
+      img.style.transform = '';
+    }
+
     /* ---- mouse ---- */
     main.addEventListener('click', function () {
       if (skipNextClick) {
@@ -185,7 +210,7 @@
       closeZoom();
     });
 
-    /* ---- touch: hold to zoom, slide to pan, lift to close ---- */
+    /* ---- touch ---- */
     function cancelHold() {
       if (holdTimer) {
         window.clearTimeout(holdTimer);
@@ -195,6 +220,9 @@
 
     main.addEventListener('touchstart', function (e) {
       skipNextClick = false;
+      axisLock = null;
+      lastDx = 0;
+      clearSwipe();
       if (e.touches.length !== 1) {      // pinch or two fingers: never zoom
         cancelHold();
         if (sliding) {
@@ -207,8 +235,11 @@
       startX = t.clientX;
       startY = t.clientY;
       cancelHold();
+      /* Don't arm the zoom hold if there is only one photo — swipe would
+         do nothing anyway, and a still finger should still zoom. */
       holdTimer = window.setTimeout(function () {
         holdTimer = null;
+        if (axisLock === 'x') return;    // already committed to a photo swipe
         sliding = true;
         openZoom(t.clientX, t.clientY);
       }, HOLD_MS);
@@ -217,26 +248,52 @@
     main.addEventListener('touchmove', function (e) {
       if (e.touches.length !== 1) return;
       var t = e.touches[0];
-      var moved = Math.abs(t.clientX - startX) > MOVE_TOL ||
-                  Math.abs(t.clientY - startY) > MOVE_TOL;
+      var dx = t.clientX - startX;
+      var dy = t.clientY - startY;
+      var absX = Math.abs(dx);
+      var absY = Math.abs(dy);
 
-      if (!sliding) {
-        /* A plain swipe: let the page scroll and drop the pending hold. */
-        if (moved) cancelHold();
+      /* Zooming — the finger pans the picture, so the page must not scroll
+         underneath it. Photo-swipe is disabled while zoomed. */
+      if (sliding) {
+        if (e.cancelable) e.preventDefault();
+        setOrigin(t.clientX, t.clientY);
         return;
       }
-      /* Zooming — the finger pans the picture, so the page must not scroll
-         underneath it. */
+
+      if (!axisLock) {
+        if (absX <= MOVE_TOL && absY <= MOVE_TOL) return;
+        axisLock = absX > absY ? 'x' : 'y';
+        cancelHold();
+      }
+
+      if (axisLock === 'y') return;      // page scroll — do not preventDefault
+
+      /* Horizontal photo swipe. */
+      if (thumbs.length < 2) return;
+      lastDx = dx;
+      main.classList.add('is-swiping');
+      img.style.transform = 'translateX(' + dx + 'px)';
       if (e.cancelable) e.preventDefault();
-      setOrigin(t.clientX, t.clientY);
     }, { passive: false });
 
     function endTouch() {
       cancelHold();
-      if (!sliding) return;
-      sliding = false;
-      closeZoom();
-      skipNextClick = true;
+      if (sliding) {
+        sliding = false;
+        closeZoom();
+        skipNextClick = true;
+        return;
+      }
+      if (axisLock === 'x' && thumbs.length > 1) {
+        var dx = lastDx;
+        clearSwipe();
+        if (dx <= -SWIPE_MIN) selectIndex(current + 1);
+        else if (dx >= SWIPE_MIN) selectIndex(current - 1);
+        skipNextClick = true;
+        return;
+      }
+      clearSwipe();
     }
     main.addEventListener('touchend', endTouch);
     main.addEventListener('touchcancel', endTouch);
