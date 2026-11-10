@@ -411,10 +411,31 @@
     });
   }
 
+  /* ---------------- Rating → reviews ----------------
+     Judge.me's star badge links to #judgeme_product_reviews. The reviews
+     carousel on this theme did not have that id, so the click did nothing.
+     We own the jump: smooth-scroll to the Reviews heading (or the Judge.me
+     section if the heading is missing). */
+  function initReviewJump() {
+    var rating = qs('[data-scroll-to-reviews], .pdp__rating');
+    if (!rating) return;
+    var target = document.getElementById('judgeme_product_reviews')
+      || qs('.dews-reviews-heading')
+      || document.getElementById('shopify-section-reviews-heading')
+      || document.getElementById('shopify-section-judgeme-reviews');
+    if (!target) return;
+
+    rating.addEventListener('click', function (e) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
   ready(function () {
     initGallery();
     initStickyAtc();
     initVariantSync();
     recordRecentlyViewed();
+    initReviewJump();
   });
 })();

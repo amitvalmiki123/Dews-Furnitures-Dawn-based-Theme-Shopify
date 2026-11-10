@@ -170,14 +170,22 @@
             </p>
             <h1 id="p-title">{{ product.title | escape }}</h1>
 
-            {%- comment -%} rating (app block, e.g. Judge.me preview badge) {%- endcomment -%}
+            {%- comment -%} rating — Judge.me preview badge. Click scrolls to
+               #judgeme_product_reviews (Reviews heading + carousel below). {%- endcomment -%}
             {%- if section.settings.show_rating -%}
-              <div class="pdp__rating">
+              <div class="pdp__rating" data-scroll-to-reviews>
+                {%- assign has_app_rating = false -%}
                 {%- for block in section.blocks -%}
                   {%- if block.type == '@app' -%}
+                    {%- assign has_app_rating = true -%}
                     {% render block %}
                   {%- endif -%}
                 {%- endfor -%}
+                {%- unless has_app_rating -%}
+                  <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}">
+                    {{ product.metafields.judgeme.badge }}
+                  </div>
+                {%- endunless -%}
               </div>
             {%- endif -%}
 

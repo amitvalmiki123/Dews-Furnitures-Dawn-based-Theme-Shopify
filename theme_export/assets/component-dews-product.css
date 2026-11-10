@@ -96,9 +96,14 @@
 
 /* --- info column (media sticks on the left instead) --- */
 .pdp__info h1{ font-size:clamp(1.65rem,2.7vw,2.5rem); margin-top:.8rem; }
-.pdp__rating{ display:flex; align-items:center; gap:.6rem; margin-top:.9rem; font-size:.85rem; color:var(--muted); }
+.pdp__rating{ display:flex; align-items:center; gap:.6rem; margin-top:.9rem; font-size:.85rem; color:var(--muted); cursor:pointer; }
 .pdp__rating a{ text-decoration:underline; text-underline-offset:3px; }
 .pdp__rating a:hover{ color:var(--red-ink); }
+/* Stars jump here — sit below the sticky header, not under it. */
+#judgeme_product_reviews,
+.dews-reviews-heading{
+  scroll-margin-top: calc(var(--header-h) + var(--announce-h, 0px) + 12px);
+}
 
 .pdp__price{ display:flex; align-items:baseline; flex-wrap:wrap; gap:.8rem; margin-top:1.2rem; }
 .pdp__price .price{ font-size:1.65rem; letter-spacing:-.03em; }

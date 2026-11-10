@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PDP — star rating scrolls to reviews</title>
+<link rel="stylesheet" href="/theme_export/assets/style.css">
+<link rel="stylesheet" href="/theme_export/assets/component-dews-product.css">
+<style>
+  body{margin:0;background:#fbfaf8;font-family:Archivo,-apple-system,sans-serif;color:#171310}
+  .bar{position:sticky;top:0;z-index:20;background:#171310;color:#fbfaf8;padding:10px 16px;font-size:.78rem;font-weight:600}
+  .fake-header{height:76px;background:#fff;border-bottom:1px solid #ece7e0;display:flex;align-items:center;justify-content:center;font-weight:700;letter-spacing:.04em}
+  .wrap{max-width:520px;margin:0 auto;padding:24px 16px 80px}
+  .stars{color:#e01b22;letter-spacing:.12em;font-size:1.05rem}
+  .pdp__rating{margin-top:.4rem}
+  .count{font-size:.82rem;color:#7c716a;margin-left:.4rem}
+  .filler{color:#7c716a;line-height:1.7;font-size:.9rem}
+  .rev{background:#f3efe9;border-radius:12px;padding:18px;margin-top:12px}
+  .rev b{display:block;margin-bottom:.35rem}
+</style>
+</head>
+<body>
+<div class="bar">PDP rating click → smooth scroll to reviews (Judge.me heading)</div>
+<div class="fake-header">DEW'S FURNITURE</div>
+<div class="wrap">
+  <p class="eyebrow" style="margin:0"><i class="dew"></i> Living Room</p>
+  <h1 style="margin:.4rem 0 0;font-size:1.6rem">Sheesham Wood TV Stand</h1>
+  <div class="pdp__rating" data-scroll-to-reviews>
+    <span class="stars" aria-hidden="true">★★★★★</span>
+    <span class="count">4.8 · 12 reviews — click me</span>
+  </div>
+  <p class="filler">
+    Price, add to cart, description accordion… page content so there is room to scroll.
+    Click the stars above. You should land on “What owners say”, not stay here.
+  </p>
+  <p class="filler">Kiln-dried sheesham frames, cane woven panel by panel. Built slowly, priced honestly.</p>
+  <p class="filler" style="min-height:55vh">↓ reviews are below this gap ↓</p>
+
+  <section class="section dews-reviews-heading" id="judgeme_product_reviews">
+    <p class="eyebrow"><i class="dew"></i> Customer reviews</p>
+    <h2 id="rev-title">What owners say</h2>
+    <div class="rev"><b>Ananya S. ★★★★★</b> The cane work is even tighter in person.</div>
+    <div class="rev"><b>Vikram M. ★★★★★</b> Sheesham grain has so much warmth under lamp light.</div>
+  </section>
+</div>
+<script src="/theme_export/assets/dews-pdp.js"></script>
+</body>
+</html>
